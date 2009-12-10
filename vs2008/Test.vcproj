@@ -42,7 +42,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="0"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\src&quot;"
-				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;PRAGMA_UNIT_TESTS"
+				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;PRAGMA_UNIT_TESTS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="3"
@@ -117,7 +117,7 @@
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\src&quot;"
-				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE"
+				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
@@ -347,6 +347,18 @@
 					RelativePath="..\src\pragma\graphics\UnitTest.h"
 					>
 				</File>
+				<Filter
+					Name="import"
+					>
+					<File
+						RelativePath="..\src\pragma\graphics\import\ASE_Parser.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\src\pragma\graphics\import\ASE_Parser.h"
+						>
+					</File>
+				</Filter>
 			</Filter>
 			<Filter
 				Name="tests"

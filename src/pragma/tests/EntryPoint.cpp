@@ -12,6 +12,7 @@
 #include "pragma/geometry/UnitTest.h"
 
 #include "pragma/graphics/UnitTest.h"
+#include "pragma/graphics/import/ASE_Parser.h"
 
 using namespace pragma;
 
@@ -274,6 +275,9 @@ int main(int argc, char* argv[])
 	pragma::DoIntersectionTests();
 	pragma::DoGraphicsTests();
 #endif
+
+	// Load ASE file
+	ParseASE("..\\src\\pragma\\tests\\Torus.ASE");
 
 	CKdTree lMap;
 
