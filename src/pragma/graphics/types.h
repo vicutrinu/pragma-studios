@@ -1,5 +1,6 @@
 #pragma once
 
+#include <pragma/types.h>
 #include <pragma/geometry/types.h>
 
 namespace pragma

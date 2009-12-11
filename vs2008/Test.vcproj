@@ -171,6 +171,10 @@
 		<Filter
 			Name="pragma"
 			>
+			<File
+				RelativePath="..\src\pragma\types.h"
+				>
+			</File>
 			<Filter
 				Name="debug"
 				>
@@ -317,6 +321,14 @@
 				</File>
 				<File
 					RelativePath="..\src\pragma\graphics\Camera.h"
+					>
+				</File>
+				<File
+					RelativePath="..\src\pragma\graphics\Mesh.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\src\pragma\graphics\Mesh.h"
 					>
 				</File>
 				<File

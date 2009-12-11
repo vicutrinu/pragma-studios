@@ -2,5 +2,7 @@
 
 namespace pragma
 {
-	bool ParseASE(const char* aFilename);
+	class Mesh;
+
+	bool ParseASE(const char* aFilename, Mesh& aMesh);
 }

@@ -177,6 +177,25 @@ namespace pragma
 
 		pragma_error_if(!lRetVal, "UnitTest: matrix4x4 is not working properly. Check size");
 
+		matrix4x4f lInverse = Inverse(lMatrix);
+		matrix4x4f lIdentity = lMatrix * lInverse;
+		lRetVal = lRetVal &&
+				  abs<float>(1 - lIdentity.i[0][0]) < math::type_traits<float>::epsilon &&
+				  abs<float>(1 - lIdentity.i[1][1]) < math::type_traits<float>::epsilon &&
+				  abs<float>(1 - lIdentity.i[2][2]) < math::type_traits<float>::epsilon &&
+				  abs<float>(1 - lIdentity.i[3][3]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[0][0]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[0][2]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[0][3]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[1][0]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[1][2]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[1][3]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[2][0]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[2][1]) < math::type_traits<float>::epsilon &&
+				  abs<float>(lIdentity.i[2][3]) < math::type_traits<float>::epsilon ;
+		pragma_error_if(!lRetVal, "UnitTest: Inverse of matrix4x4 is not working properly.");
+
+
 		return lRetVal;
 	}
 	

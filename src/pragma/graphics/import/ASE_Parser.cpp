@@ -5,6 +5,8 @@
 #include <vector>
 #include <string>
 
+#include <pragma/graphics/Mesh.h>
+
 namespace pragma
 {
 
@@ -23,15 +25,6 @@ namespace pragma
 	{
 		return (float)atof(aString.c_str());
 	}
-
-	struct TFace
-	{
-		int mA;
-		int mB;
-		int mC;
-		int mSmoothingID;
-		int mMaterialID;
-	};
 
 	/**
 	 *	Dado un grupo de tokens, busca una clave en el y retorna el siguiente elemento (que debe ser una seccion seccion)
@@ -153,7 +146,7 @@ namespace pragma
 		}
 	}
 
-	bool ParseASE(const char* aFilename)
+	bool ParseASE(const char* aFilename, Mesh& aMesh)
 	{
 		FILE* handle = fopen(aFilename, "rb");
 
@@ -185,7 +178,7 @@ namespace pragma
 		std::string lName = GetSection("*NODE_NAME", lObjectSection);
 		if(!lName.empty())
 		{
-			//lName es el nombre
+			aMesh = Mesh(lName.c_str());
 		}
 
 		std::vector<std::string> lMeshSection;
@@ -206,6 +199,7 @@ namespace pragma
 
 		std::vector<std::string>::iterator lIter = lVertexListSection.begin();
 		std::vector<vector3f> lPositions;
+		lPositions.reserve(lVertexCount);
 		while(lIter != lVertexListSection.end())
 		{
 			vector3f lVector( Parse<float>(lIter[2])
@@ -214,6 +208,8 @@ namespace pragma
 			lPositions.push_back(lVector);
 			lIter+= 5;
 		}
+
+		aMesh.SetVertexs(&lPositions[0], lPositions.size());
 
 		lString = GetSection("*MESH_NUMFACES", lMeshSection);
 		if(lString.empty())
@@ -228,19 +224,24 @@ namespace pragma
 			return false;
 
 		lIter = lFaceListSection.begin();
-		std::vector<TFace> lFaces;
+		std::vector<Mesh::TTriangle> lFaces;
+		lFaces.reserve(lFaceCount);
 		while(lIter != lFaceListSection.end())
 		{
-			lFaces.push_back(TFace());
-			TFace& lFace = lFaces.back();
-			lFace.mA = Parse<int>(lIter[3]);
-			lFace.mB = Parse<int>(lIter[5]);
-			lFace.mC = Parse<int>(lIter[7]);
+			lFaces.push_back(Mesh::TTriangle());
+			Mesh::TTriangle& lFace = lFaces.back();
+			lFace.mVertex[0] = Parse<int>(lIter[3]);
+			lFace.mVertex[1] = Parse<int>(lIter[5]);
+			lFace.mVertex[2] = Parse<int>(lIter[7]);
+			/*
 			lFace.mSmoothingID = Parse<int>(lIter[15]);
 			lFace.mMaterialID = Parse<int>(lIter[17]);
+			*/
 			
 			lIter+= 18;
 		}
+
+		aMesh.SetTriangles(&lFaces[0], lFaces.size());
 
 		return true;
 	}

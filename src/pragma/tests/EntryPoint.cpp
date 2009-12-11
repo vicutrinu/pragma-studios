@@ -13,6 +13,9 @@
 
 #include "pragma/graphics/UnitTest.h"
 #include "pragma/graphics/import/ASE_Parser.h"
+#include "pragma/graphics/Mesh.h"
+
+#include "pragma/graphics/Camera.h"
 
 using namespace pragma;
 
@@ -277,7 +280,23 @@ int main(int argc, char* argv[])
 #endif
 
 	// Load ASE file
-	ParseASE("..\\src\\pragma\\tests\\Torus.ASE");
+	pragma::Mesh lMesh;
+	ParseASE("..\\src\\pragma\\tests\\Torus.ASE", lMesh);
+
+	Camera lCamera;
+	lCamera.SetProjection(45, 1, 0.1f, 100.f);
+	lCamera.SetTransform( Point(0,0,-5), Vector(0,0,-1), Vector(0,1,0) );
+
+	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
+	Inverse(lTransform);
+
+	for(size_t i = 0; i < 512; ++i)
+	{
+		for(size_t j = 0; j < 512; ++j)
+		{
+			
+		}
+	}
 
 	CKdTree lMap;
 
