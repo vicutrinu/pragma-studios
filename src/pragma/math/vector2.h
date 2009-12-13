@@ -2,7 +2,11 @@
 
 namespace pragma
 {
-	
+
+	/**
+	 *	base_vector2 debe ser un tipo sin constructores. De esta manera podemos usar este tipo
+	 *	dentro de uniones anonimas.
+	 */
 	template <typename T>
 	struct base_vector2
 	{
@@ -17,6 +21,9 @@ namespace pragma
 		};
 	};
 
+	/**
+	 *	Esta clase unicamente proporciona constructores para objetos del tipo base_vector2
+	 */
 	template <typename T>
 	struct vector2 : public base_vector2<T>
 	{
