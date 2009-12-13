@@ -1,0 +1,5 @@
+
+namespace pragma
+{
+	bool DoGraphicsTests();
+}
