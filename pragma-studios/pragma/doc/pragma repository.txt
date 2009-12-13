@@ -1,8 +1,0 @@
-#Pragma Studios Repository
---------------------------
-
-Este repositorio contiene todo el codigo hecho por mi humilde persona (Victor Soria) desde finales de 2009 hasta dia de hoy. Creo este repositorio simplemente para tener un lugar donde poder disponer de una copia de todo lo que hago, y al mismo tiempo que cualquiera pueda bajarselo y poder aprovechar lo poco que sea realmente aprovechable de todas las mierdas que meta aqui. 
-
-Mis principales inquietudes programantiles estas relacionadas con los graficos y el render, ya sea usando hardware grafico o bien via software rendering. Uno de mis principales proyectos, o al menos en eso espero que se convierta, es un raytracer. En un principio planeo vincular el proyecto a mi blog personal y ir publicando capitulos explicativos con el paso a paso de como hacer un raytracer sencillo.
-
-Espero que este repositorio vaya creciendo con el tiempo con un monton de cosas que se me ocurran. La otra opcion es que se quede vacio y pasados unos meses acabe borrandolo... :P
