@@ -1,5 +1,6 @@
 #pragma once
 
+#include <pragma/math/math.h>
 #include "vector3.h"
 #include "type_traits.h"
 
@@ -8,77 +9,77 @@ namespace pragma
 
 	//---[ vector2<T> ] ---//
 	template <typename T>
-	inline vector2<T> operator+(const vector2<T>& aSrc1, const vector2<T>& aSrc2)
+	inline base_vector2<T> operator+(const base_vector2<T>& aSrc1, const base_vector2<T>& aSrc2)
 	{
 		return vector2<T>(aSrc1.x + aSrc2.x, aSrc1.y + aSrc2.y);
 	}
 
 	template <typename T>
-	inline vector2<T> operator-(const vector2<T>& aSrc1, const vector2<T>& aSrc2)
+	inline base_vector2<T> operator-(const base_vector2<T>& aSrc1, const base_vector2<T>& aSrc2)
 	{
 		return vector2<T>(aSrc1.x - aSrc2.x, aSrc1.y - aSrc2.y);
 	}
 
 	template <typename T>
-	inline bool operator==(const vector2<T>& aSrc1, const vector2<T>& aSrc2)
+	inline bool operator==(const base_vector2<T>& aSrc1, const base_vector2<T>& aSrc2)
 	{
 		return aSrc1.x == aSrc2.x && aSrc1.y == aSrc2.y;
 	}
 
 	//---[ vector3<T> ] ---//
 	template <typename T>
-	inline vector3<T> operator+(const vector3<T>& aSrc1, const vector3<T>& aSrc2)
+	inline base_vector3<T> operator+(const base_vector3<T>& aSrc1, const base_vector3<T>& aSrc2)
 	{
 		return vector3<T>(aSrc1.x + aSrc2.x, aSrc1.y + aSrc2.y, aSrc1.z + aSrc2.z);
 	}
 
 	template <typename T>
-	inline vector3<T> operator-(const vector3<T>& aSrc1, const vector3<T>& aSrc2)
+	inline base_vector3<T> operator-(const base_vector3<T>& aSrc1, const base_vector3<T>& aSrc2)
 	{
 		return vector3<T>(aSrc1.x - aSrc2.x, aSrc1.y - aSrc2.y, aSrc1.z - aSrc2.z);
 	}
 
 	template <typename T>
-	inline bool operator==(const vector3<T>& aSrc1, const vector3<T>& aSrc2)
+	inline bool operator==(const base_vector3<T>& aSrc1, const base_vector3<T>& aSrc2)
 	{
 		return aSrc1.x == aSrc2.x && aSrc1.y == aSrc2.y && aSrc1.z == aSrc2.z;
 	}
 
 	//---[ vector4<T> ] ---//
 	template <typename T>
-	inline vector4<T> operator+(const vector4<T>& aSrc1, const vector4<T>& aSrc2)
+	inline base_vector4<T> operator+(const base_vector4<T>& aSrc1, const base_vector4<T>& aSrc2)
 	{
 		return vector4<T>(aSrc1.x + aSrc2.x, aSrc1.y + aSrc2.y, aSrc1.z + aSrc2.z, aSrc1.w + aSrc2.w);
 	}
 
 	template <typename T>
-	inline vector4<T> operator-(const vector4<T>& aSrc1, const vector4<T>& aSrc2)
+	inline base_vector4<T> operator-(const base_vector4<T>& aSrc1, const base_vector4<T>& aSrc2)
 	{
 		return vector4<T>(aSrc1.x - aSrc2.x, aSrc1.y - aSrc2.y, aSrc1.z - aSrc2.z, aSrc1.w - aSrc2.w);
 	}
 
 	template <typename T>
-	inline bool operator==(const vector4<T>& aSrc1, const vector4<T>& aSrc2)
+	inline bool operator==(const base_vector4<T>& aSrc1, const base_vector4<T>& aSrc2)
 	{
 		return aSrc1.x == aSrc2.x && aSrc1.y == aSrc2.y && aSrc1.z == aSrc2.z && aSrc1.w == aSrc2.w;
 	}
 
 	//---[ vector2<T> ] ---//
 	template <typename T>
-	inline vector2<T> operator*(const vector2<T>& aSrc, T aScale)
+	inline base_vector2<T> operator*(const base_vector2<T>& aSrc, T aScale)
 	{
 		return vector2<T>( aSrc.x * aScale, aSrc.y * aScale);
 	}
 
 	//---[ vector3<T> ] ---//
 	template <typename T>
-	inline vector3<T> operator*(const vector3<T>& aSrc, T aScale)
+	inline base_vector3<T> operator*(const base_vector3<T>& aSrc, T aScale)
 	{
 		return vector3<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale);
 	}
 
 	template <typename T>
-	inline vector3<T> CrossProduct(const vector3<T>& aSrc1, const vector3<T> aSrc2)
+	inline base_vector3<T> CrossProduct(const base_vector3<T>& aSrc1, const base_vector3<T> aSrc2)
 	{
 		return vector3<T>( aSrc1.y * aSrc2.z - aSrc1.z * aSrc2.y
 						 , aSrc1.z * aSrc2.x - aSrc1.x * aSrc2.z
@@ -86,7 +87,7 @@ namespace pragma
 	}
 
 	template <typename T>
-	inline T DotProduct(const vector3<T>& aSrc1, const vector3<T> aSrc2)
+	inline T DotProduct(const base_vector3<T>& aSrc1, const base_vector3<T> aSrc2)
 	{
 		return aSrc1.x * aSrc2.x + aSrc1.y * aSrc2.y + aSrc1.z * aSrc2.z;
 	}
@@ -205,7 +206,7 @@ namespace pragma
 		T fA5 = aSrc.i[0][2]*aSrc.i[1][3] - aSrc.i[0][3]*aSrc.i[1][2];
 		T fB0 = aSrc.i[2][0]*aSrc.i[3][1] - aSrc.i[2][1]*aSrc.i[3][0];
 		T fB1 = aSrc.i[2][0]*aSrc.i[3][2] - aSrc.i[2][2]*aSrc.i[3][0];
-		T fB2 = aSrc.i[2][0]*aSrc.i[3][3] - aSrc.i[2][2]*aSrc.i[3][0];
+		T fB2 = aSrc.i[2][0]*aSrc.i[3][3] - aSrc.i[2][3]*aSrc.i[3][0];
 		T fB3 = aSrc.i[2][1]*aSrc.i[3][2] - aSrc.i[2][2]*aSrc.i[3][1];
 		T fB4 = aSrc.i[2][1]*aSrc.i[3][3] - aSrc.i[2][3]*aSrc.i[3][1];
 		T fB5 = aSrc.i[2][2]*aSrc.i[3][3] - aSrc.i[2][3]*aSrc.i[3][2];

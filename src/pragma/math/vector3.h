@@ -5,16 +5,8 @@
 namespace pragma
 {
 	template <typename T>
-	struct vector3
+	struct base_vector3
 	{
-		vector3 () { }
-
-		vector3 (const T& aX, const T& aY, const T& aZ)
-			: x(aX), y(aY), z(aZ) { }
-
-		vector3 (const vector2<T>& aVector2, const T& aValue)
-			: x(aVector2.x), y(aVector2.y), z(aValue) { }
-
 		union
 		{
 			T i[3];
@@ -24,6 +16,32 @@ namespace pragma
 				T y;
 				T z;
 			};
-		};
+		};		
+	};
+	
+	template <typename T>
+	struct vector3 : public base_vector3<T>
+	{
+		vector3 () { }
+		
+		vector3 (const base_vector3<T>& aVector)
+		{
+			*(base_vector3*)this = aVector;
+		}
+
+		vector3 (const T& aX, const T& aY, const T& aZ)
+		{
+			base_vector3<T>::x = aX;
+			base_vector3<T>::y = aY;
+			base_vector3<T>::z = aZ;
+		}
+
+		vector3 (const vector2<T>& aVector2, const T& aValue)
+		{
+			base_vector3<T>::x = aVector2.x;
+			base_vector3<T>::y = aVector2.y;
+			base_vector3<T>::z = aValue;
+		}
+
 	};
 };

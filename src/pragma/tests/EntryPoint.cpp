@@ -290,13 +290,14 @@ int main(int argc, char* argv[])
 	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
 	Inverse(lTransform);
 
-	for(size_t i = 0; i < 512; ++i)
+	/*for(size_t i = 0; i < 512; ++i)
 	{
 		for(size_t j = 0; j < 512; ++j)
 		{
-			
+			vector4f lRay(j, i, 0, 1);
+			lTransform * lRay;
 		}
-	}
+	}*/
 
 	CKdTree lMap;
 

@@ -27,9 +27,9 @@ namespace pragma
 			T i[3][3];
 			struct
 			{
-				vector3<T> mRow0;
-				vector3<T> mRow1;
-				vector3<T> mRow2;
+				base_vector3<T> mRow0;
+				base_vector3<T> mRow1;
+				base_vector3<T> mRow2;
 			};
 		};
 	};
