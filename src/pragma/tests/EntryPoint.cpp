@@ -281,23 +281,63 @@ int main(int argc, char* argv[])
 
 	// Load ASE file
 	pragma::Mesh lMesh;
-	ParseASE("..\\src\\pragma\\tests\\Torus.ASE", lMesh);
+	ParseASE("..\\src\\pragma\\tests\\Triangle.ASE", lMesh);
+
+	matrix4x4f lTraslation( 1, 0, 0, 1
+						  , 0, 1, 0, 2
+						  , 0, 0, 1, 3
+						  , 0, 0, 0, 1 );
+
+	matrix4x4f lInvTraslation = Inverse(lTraslation);
+
+	vector4f lPutoPunto(0, 0, 10, 1);
+	vector4f lPutoRes = TransformPoint(lTraslation, lPutoPunto);
+	lPutoRes = TransformPoint(lInvTraslation, lPutoRes);
 
 	Camera lCamera;
-	lCamera.SetProjection(45, 1, 0.1f, 100.f);
-	lCamera.SetTransform( Point(0,0,-5), Vector(0,0,-1), Vector(0,1,0) );
+	lCamera.SetProjection(45, 1, 0.1, 100.f);
+	lCamera.SetTransform( Point(0,0,3), Vector(0,0,-1), Vector(0,1,0) );
 
 	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
-	Inverse(lTransform);
 
-	/*for(size_t i = 0; i < 512; ++i)
+	vector4f lVector(-5,-5,-2,1);
+	vector4f lRes;
+	lRes = TransformPoint(lTransform, lVector);
+	lRes = lRes * (1.f / lRes.w);
+
+	lTransform = Inverse(lTransform);
+
+	FILE* handle = fopen("out.raw","wb");
+
+	for(size_t i = 0; i < 512; ++i)
 	{
 		for(size_t j = 0; j < 512; ++j)
 		{
-			vector4f lRay(j, i, 0, 1);
-			lTransform * lRay;
+			vector4f lRay(((j*2.f)/511)-1, ((i*2.f)/511)-1, 1, 1);
+			lRes = TransformPoint(lTransform, lRay);
+			lRes = lRes * (1.f / lRes.w);
+
+			vector2f lOut;
+			float lDistance;
+
+			size_t lCount;
+			if(IntersectRayTriangle_2Sided<float>(lMesh.GetVertexs(lCount)[0], lMesh.GetVertexs(lCount)[1], lMesh.GetVertexs(lCount)[2]
+									   , vector3f(0,0,3), Normalize(vector3f(lRes.x, lRes.y, lRes.z)), 1000, lOut, lDistance))
+			{
+				putc(255, handle);
+				putc(255, handle);
+				putc(255, handle);
+			}
+			else
+			{
+				putc(0, handle);
+				putc(0, handle);
+				putc(0, handle);
+			}
 		}
-	}*/
+	}
+
+	fclose(handle);
 
 	CKdTree lMap;
 

@@ -7,6 +7,18 @@
 namespace pragma
 {
 
+	template <typename T>
+	inline vector3<T> operator-(const base_vector3<T>& aVector)
+	{
+		return vector3<T>(-aVector.x, -aVector.y, -aVector.z);
+	}
+
+	template <typename T>
+	inline vector4<T> operator-(const base_vector4<T>& aVector)
+	{
+		return vector4<T>(-aVector.x, -aVector.y, -aVector.z, -aVector.w);
+	}
+
 	//---[ vector2<T> ] ---//
 	template <typename T>
 	inline base_vector2<T> operator+(const base_vector2<T>& aSrc1, const base_vector2<T>& aSrc2)
@@ -239,6 +251,24 @@ namespace pragma
 		kInv = kInv * fInvDet;
 
 		return kInv;
+	}
+
+	template <typename T>
+	inline base_vector4<T> TransformPoint(const matrix4x4<T>& aMatrix, const base_vector4<T>& aColumnVector)
+	{
+		return vector4<T>( DotProduct<T>(aMatrix.mRow0, aColumnVector)
+						 , DotProduct<T>(aMatrix.mRow1, aColumnVector)
+						 , DotProduct<T>(aMatrix.mRow2, aColumnVector)
+						 , DotProduct<T>(aMatrix.mRow3, aColumnVector) );
+	}
+
+	template <typename T>
+	inline base_vector4<T> TransformPoint(const base_vector4<T>& aVector, const matrix4x4<T>& aMatrix)
+	{
+		return vector4<T>( DotProduct<T>( aVector, vector4<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2], aMatrix.i[0][3]) )
+						 , DotProduct<T>( aVector, vector4<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2], aMatrix.i[0][3]) )
+						 , DotProduct<T>( aVector, vector4<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2], aMatrix.i[0][3]) )
+						 , DotProduct<T>( aVector, vector4<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2], aMatrix.i[0][3]) ) );
 	}
 
 }
