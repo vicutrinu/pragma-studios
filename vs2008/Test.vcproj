@@ -332,6 +332,28 @@
 					>
 				</File>
 				<File
+					RelativePath="..\src\pragma\graphics\MeshCollision.cpp"
+					>
+					<FileConfiguration
+						Name="Debug|Win32"
+						>
+						<Tool
+							Name="VCCLCompilerTool"
+							Optimization="2"
+							EnableIntrinsicFunctions="true"
+							WholeProgramOptimization="true"
+							MinimalRebuild="false"
+							BasicRuntimeChecks="0"
+							EnableFunctionLevelLinking="true"
+							DebugInformationFormat="3"
+						/>
+					</FileConfiguration>
+				</File>
+				<File
+					RelativePath="..\src\pragma\graphics\MeshCollision.h"
+					>
+				</File>
+				<File
 					RelativePath="..\src\pragma\graphics\types.h"
 					>
 				</File>

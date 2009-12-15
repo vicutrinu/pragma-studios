@@ -16,6 +16,7 @@
 #include "pragma/graphics/Mesh.h"
 
 #include "pragma/graphics/Camera.h"
+#include "pragma/graphics/MeshCollision.h"
 
 using namespace pragma;
 
@@ -281,58 +282,67 @@ int main(int argc, char* argv[])
 
 	// Load ASE file
 	pragma::Mesh lMesh;
-	ParseASE("..\\src\\pragma\\tests\\Triangle.ASE", lMesh);
+	ParseASE("..\\src\\pragma\\tests\\Torus.ASE", lMesh);
 
-	matrix4x4f lTraslation( 1, 0, 0, 1
-						  , 0, 1, 0, 2
-						  , 0, 0, 1, 3
-						  , 0, 0, 0, 1 );
-
-	matrix4x4f lInvTraslation = Inverse(lTraslation);
-
-	vector4f lPutoPunto(0, 0, 10, 1);
-	vector4f lPutoRes = TransformPoint(lTraslation, lPutoPunto);
-	lPutoRes = TransformPoint(lInvTraslation, lPutoRes);
-
+	vector3f lCameraPos(50,50,50);
 	Camera lCamera;
-	lCamera.SetProjection(45, 1, 0.1, 100.f);
-	lCamera.SetTransform( Point(0,0,3), Vector(0,0,-1), Vector(0,1,0) );
+	lCamera.SetProjection(45, 1, 1.f, 300.f);
+	lCamera.SetTransform( lCameraPos, Vector(0,0,0), Vector(0,1,0) );
 
 	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
 
-	vector4f lVector(-5,-5,-2,1);
-	vector4f lRes;
-	lRes = TransformPoint(lTransform, lVector);
-	lRes = lRes * (1.f / lRes.w);
+	vector4f lPutoPunto(0, 0, 10, 1);
+	vector4f lPutoRes = TransformPoint(lCamera.GetTransform(), lPutoPunto);
+	lPutoRes = lPutoRes * (1.f/lPutoRes.w);
+	
 
 	lTransform = Inverse(lTransform);
 
 	FILE* handle = fopen("out.raw","wb");
 
+	MeshCollision lCollisionMap(lMesh);
+
+	Point lLigth(-50,50,0);
+
+	size_t lVertexCount;
+	const Point* lVertexs = lMesh.GetVertexs(lVertexCount);
+
 	for(size_t i = 0; i < 512; ++i)
 	{
 		for(size_t j = 0; j < 512; ++j)
 		{
-			vector4f lRay(((j*2.f)/511)-1, ((i*2.f)/511)-1, 1, 1);
-			lRes = TransformPoint(lTransform, lRay);
+			vector4f lRay(((j*2.f)/511)-1, 1-((i*2.f)/511), 1, 1);
+			vector4f lRes = TransformPoint(lTransform, lRay);
 			lRes = lRes * (1.f / lRes.w);
+
+			vector3f lDir(lRes.x, lRes.y, lRes.z);
+			lDir = Normalize(lDir);
 
 			vector2f lOut;
 			float lDistance;
+			int lTriIndex;
 
-			size_t lCount;
-			if(IntersectRayTriangle_2Sided<float>(lMesh.GetVertexs(lCount)[0], lMesh.GetVertexs(lCount)[1], lMesh.GetVertexs(lCount)[2]
-									   , vector3f(0,0,3), Normalize(vector3f(lRes.x, lRes.y, lRes.z)), 1000, lOut, lDistance))
+			if( lCollisionMap.IntersectRay( lCameraPos, lDir, 1000, lTriIndex, lOut, lDistance ) )
 			{
-				putc(255, handle);
-				putc(255, handle);
-				putc(255, handle);
+				size_t lCount;
+				const Mesh::TTriangle& lTri = lMesh.GetTriangles(lCount)[lTriIndex];
+				Point lCollisionPoint = (lVertexs[lTri.mVertex[0]] * lOut.x) + 
+										(lVertexs[lTri.mVertex[1]] * lOut.y) + 
+										(lVertexs[lTri.mVertex[2]] * (1.f - (lOut.x + lOut.y))); 
+				/*
+				float pollas = Length<float>(lCollisionPoint - lCameraPos);
+				if( lCollisionMap.IntersectRay( lCollisionPoint, lLigth ) == true)
+				{
+					putc(0, handle); putc(0, handle); putc(0, handle);
+				}
+				else*/
+				{
+					putc(255, handle); putc(255, handle); putc(255, handle);
+				}
 			}
 			else
 			{
-				putc(0, handle);
-				putc(0, handle);
-				putc(0, handle);
+				putc(0, handle); putc(0, handle); putc(0, handle);
 			}
 		}
 	}
