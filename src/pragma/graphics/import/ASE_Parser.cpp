@@ -198,13 +198,13 @@ namespace pragma
 			return false;
 
 		std::vector<std::string>::iterator lIter = lVertexListSection.begin();
-		std::vector<vector3f> lPositions;
+		std::vector<Point> lPositions;
 		lPositions.reserve(lVertexCount);
 		while(lIter != lVertexListSection.end())
 		{
-			vector3f lVector( Parse<float>(lIter[2])
-							, Parse<float>(lIter[3])
-							, Parse<float>(lIter[4]) );
+			Point lVector( Parse<float>(lIter[2])
+						  , Parse<float>(lIter[3])
+						  , Parse<float>(lIter[4]) );
 			lPositions.push_back(lVector);
 			lIter+= 5;
 		}
@@ -233,6 +233,8 @@ namespace pragma
 			lFace.mVertex[0] = Parse<int>(lIter[3]);
 			lFace.mVertex[1] = Parse<int>(lIter[5]);
 			lFace.mVertex[2] = Parse<int>(lIter[7]);
+			lFace.mNormal = -1;
+			lFace.mVertexNormal[0] = lFace.mVertexNormal[1] = lFace.mVertexNormal[2] = -1;
 			/*
 			lFace.mSmoothingID = Parse<int>(lIter[15]);
 			lFace.mMaterialID = Parse<int>(lIter[17]);
@@ -242,6 +244,40 @@ namespace pragma
 		}
 
 		aMesh.SetTriangles(&lFaces[0], lFaces.size());
+
+		bool lBuildNormals = true;
+
+		std::vector<std::string> lNormalsSection;
+		std::vector<Vector> lNormals;
+		int lCount = 0;
+		if(GetSection("*MESH_NORMALS", lObjectSection, lNormalsSection))
+		{
+			lIter = lNormalsSection.begin();
+			while(lIter != lNormalsSection.end())
+			{
+				Mesh::TTriangle& lTri = aMesh.EditTriangle(lCount);
+				Vector lVector( Parse<float>(lIter[2]), -Parse<float>(lIter[4]), Parse<float>(lIter[3]) );
+				lNormals.push_back(lVector); // Face Normal
+				lVector = Vector( Parse<float>(lIter[7]), -Parse<float>(lIter[9]), Parse<float>(lIter[8]) );
+				lNormals.push_back(lVector); // Vertex Normal
+				lVector = Vector( Parse<float>(lIter[12]), -Parse<float>(lIter[14]), Parse<float>(lIter[13]) );
+				lNormals.push_back(lVector); // Vertex Normal
+				lVector = Vector( Parse<float>(lIter[17]), -Parse<float>(lIter[19]), Parse<float>(lIter[18]) );
+				lNormals.push_back(lVector); // Vertex Normal
+				lTri.mNormal = lCount * 4;
+				lTri.mVertexNormal[0] = lCount * 4 + 1;
+				lTri.mVertexNormal[1] = lCount * 4 + 2;
+				lTri.mVertexNormal[2] = lCount * 4 + 3;
+
+				lCount++;				
+				lIter+= 20;
+			}
+			aMesh.SetNormals(&lNormals[0], lNormals.size());
+			lBuildNormals = false;
+		}
+
+		if(lBuildNormals)
+			aMesh.BuildNormals();
 
 		return true;
 	}

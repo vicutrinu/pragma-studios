@@ -16,4 +16,16 @@ namespace pragma
 		return 1.f / ::tan(aValue);
 	}
 
+	template <>
+	double sqrt(const double& aValue)
+	{
+		return ::sqrt(aValue);
+	}
+
+	template <>
+	double Cot(const double & aValue)
+	{
+		return double(1) / ::tan(aValue);
+	}
+
 }

@@ -7,9 +7,17 @@ namespace pragma
 
 	bool DoIntersectionTests()
 	{
-		vector3f lA(0,0,0);
+		vector3f lA(-1,0,0);
 		vector3f lB(0,1,0);
 		vector3f lC(1,0,0);
+		// Estos 3 puntos forman el triangulo:
+		//      .
+		//     / \
+		//    /   \
+		//   /     \
+		//  /       \
+		// .---------.
+		// alineado con el plano XY (Z = 0)
 
 		vector2f lOut;
 		float lDistanceOut;
@@ -18,9 +26,11 @@ namespace pragma
 
 		if(lRetVal)
 		{
-			vector3f lOrigin(0.5f,0.5f,-1);
+			vector3f lOrigin(0,0.5,-1);
 			vector3f lDir(0,0,1);
 			lRetVal = IntersectRayTriangle(lA, lB, lC, lOrigin, lDir, lOut, lDistanceOut);
+			vector3f lIntersection = lA + ( (lB-lA) * lOut.x + 
+									        (lC-lA) * lOut.y );
 			pragma_error_if(!lRetVal, "IntersectRayTriangle is not working properly");
 		}
 

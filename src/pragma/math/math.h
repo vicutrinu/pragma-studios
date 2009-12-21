@@ -1,5 +1,7 @@
 #pragma once
 
+#include <pragma/math/type_traits.h>
+
 namespace pragma
 {
 	template <typename T>
@@ -10,6 +12,9 @@ namespace pragma
 
 	template <typename T>
 	T max(const T& aValue1, const T& aValue2) { return (aValue1 > aValue2)? aValue1 : aValue2; }
+
+	template <typename T>
+	bool near(T aValue1, T aValue2) { return abs<T>(aValue1 - aValue2) < math::type_traits<T>::epsilon; }
 
 	template <typename T>
 	T sqrt(const T& aValue);

@@ -93,9 +93,9 @@ namespace pragma
 	template <typename T>
 	inline base_vector3<T> CrossProduct(const base_vector3<T>& aSrc1, const base_vector3<T> aSrc2)
 	{
-		return vector3<T>( aSrc1.y * aSrc2.z - aSrc1.z * aSrc2.y
-						 , aSrc1.z * aSrc2.x - aSrc1.x * aSrc2.z
-						 , aSrc1.x * aSrc2.y - aSrc1.y * aSrc2.x );
+		return vector3<T>( (aSrc1.y * aSrc2.z) - (aSrc1.z * aSrc2.y)
+						 , (aSrc1.z * aSrc2.x) - (aSrc1.x * aSrc2.z)
+						 , (aSrc1.x * aSrc2.y) - (aSrc1.y * aSrc2.x) );
 	}
 
 	template <typename T>

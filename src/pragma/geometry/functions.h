@@ -20,19 +20,19 @@ namespace pragma
 	}
 
 	template <typename T>
-	T SqLength(const vector3<T>& aVector)
+	T SqLength(const base_vector3<T>& aVector)
 	{
 		return DotProduct(aVector, aVector);
 	}
 
 	template <typename T>
-	T Length(const vector3<T>& aVector)
+	T Length(const base_vector3<T>& aVector)
 	{
 		return pragma::sqrt<T>( SqLength(aVector) );
 	}
 
 	template <typename T>
-	vector3<T> Normalize(const vector3<T>& aVector)
+	vector3<T> Normalize(const base_vector3<T>& aVector)
 	{
 		return aVector * ( T(1) / Length(aVector) );
 	}

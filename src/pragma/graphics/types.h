@@ -5,7 +5,8 @@
 
 namespace pragma
 {
-	typedef vector3f Point;
-	typedef vector3f Vector;
-	typedef float    Real;
+	typedef vector3<double> Point;
+	typedef vector3<double> Vector;
+	typedef vector2<double> Vector2;
+	typedef double    Real;
 }

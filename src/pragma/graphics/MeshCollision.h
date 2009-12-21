@@ -9,8 +9,8 @@ namespace pragma
 	public:
 		MeshCollision(const Mesh& aMesh);
 
-		bool IntersectRay( const vector3f& aOrigin, const vector3f& aDirection, float aRayLength, int& aIndex, vector2f& aBarycentric, float& aDistance);
-		bool IntersectRay( const vector3f& aOrigin, const vector3f& aDestination);
+		bool IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, int& aIndex, Vector2& aBarycentric, Real& aDistance );
+		bool IntersectRay( const Point& aOrigin, const Point& aDestination );
 
 	private:
 		const Mesh& mMesh;

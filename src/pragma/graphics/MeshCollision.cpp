@@ -12,10 +12,10 @@ namespace pragma
 
 	}
 
-	bool MeshCollision::IntersectRay( const vector3f& aOrigin, const vector3f& aDestination)
+	bool MeshCollision::IntersectRay( const Point& aOrigin, const Point& aDestination)
 	{
-		vector3f lDirection = Normalize<float>(aDestination - aOrigin);
-		float lRayLength = Length<float>(aDestination - aOrigin);
+		Vector lDirection = Normalize<Real>(aDestination - aOrigin);
+		Real lRayLength = Length<Real>(aDestination - aOrigin);
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
 
@@ -24,11 +24,12 @@ namespace pragma
 
 		for(size_t i = 0; i < lTriCount; ++i, ++lTris)
 		{
-			float lDistance;
-			vector2f lBarycentric;
-			if( IntersectRayTriangle_2Sided( lVertexs[lTris->mVertex[0]], lVertexs[lTris->mVertex[1]]
-										   , lVertexs[lTris->mVertex[2]], aOrigin, lDirection, lRayLength
-										   , lBarycentric, lDistance ) == true )
+			Real lDistance;
+			Vector2 lBarycentric;
+			if( IntersectRayTriangle( lVertexs[lTris->mVertex[0]], lVertexs[lTris->mVertex[1]]
+									, lVertexs[lTris->mVertex[2]], aOrigin, lDirection, lRayLength
+									, lBarycentric, lDistance ) == true && 
+				lDistance >= 0 )
 			{
 				return true;
 			}
@@ -38,7 +39,7 @@ namespace pragma
 		return false;
 	}
 
-	bool MeshCollision::IntersectRay( const vector3f& aOrigin, const vector3f& aDirection, float aRayLength, int& aIndex, vector2f& aBarycentric, float& aDistance)
+	bool MeshCollision::IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, int& aIndex, Vector2& aBarycentric, Real& aDistance)
 	{
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
@@ -50,11 +51,12 @@ namespace pragma
 		aIndex = -1;
 		for(size_t i = 0; i < lTriCount; ++i, ++lTris)
 		{
-			float lDistance;
-			vector2f lBarycentric;
-			if( IntersectRayTriangle_2Sided( lVertexs[lTris->mVertex[0]], lVertexs[lTris->mVertex[1]]
+			Real lDistance;
+			Vector2 lBarycentric;
+			if( IntersectRayTriangle( lVertexs[lTris->mVertex[0]], lVertexs[lTris->mVertex[1]]
 									, lVertexs[lTris->mVertex[2]], aOrigin, aDirection, aRayLength
-									, lBarycentric, lDistance ) == true )
+									, lBarycentric, lDistance ) == true &&
+				lDistance >= 0)
 			{
 				if( lDistance < aDistance ||
 					aIndex == -1 )

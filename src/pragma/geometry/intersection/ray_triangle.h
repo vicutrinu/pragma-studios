@@ -34,7 +34,7 @@ namespace pragma
 		if(aBarycentric.x < 0 || aBarycentric.x > lDet)
 			return false;
 
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 
 		// Calculate second component of barycentric coordinates, and test bounds
 		aBarycentric.y = DotProduct(aRayDir, lQ);
@@ -69,7 +69,7 @@ namespace pragma
 		vector3<T> lT = aRayOrigin - aV0;
 
 		// Distance test
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 		aDistance = DotProduct(lEdge1, lQ);
 		T lInv_det = T(1) / lDet;
 		aDistance*= lInv_det;
@@ -114,7 +114,7 @@ namespace pragma
 		if(u < 0 || u > lDet)
 			return false;
 
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 
 		// Calculate second component of barycentric coordinates, and test bounds
 		T v = DotProduct(aRayDir, lQ);
@@ -150,7 +150,7 @@ namespace pragma
 		if(aBarycentric.x < T(0) || aBarycentric.x > T(1))
 			return false;
 
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 
 		// Calculate second component of barycentric coordinates, and test bounds
 		aBarycentric.y = DotProduct(aRayDir, lQ) * lInvDet;
@@ -182,7 +182,7 @@ namespace pragma
 		T lInvDet = T(1) / lDet;
 
 		vector3<T> lT = aRayOrigin - aV0;
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 		aDistance = DotProduct(lEdge1, lQ) * lInvDet;
 		if(aDistance > aRayLength)
 			return false;
@@ -225,7 +225,7 @@ namespace pragma
 		if(u < T(0) || u > T(1))
 			return false;
 
-		vector3f lQ = CrossProduct(lT, lEdge0);
+		vector3<T> lQ = CrossProduct(lT, lEdge0);
 
 		// Calculate second component of barycentric coordinates, and test bounds
 		T v = DotProduct(aRayDir, lQ) * lInvDet;
