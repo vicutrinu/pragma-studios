@@ -41,6 +41,8 @@ namespace pragma
 		const Vector&		GetVertexNormal		( Index aNormalIndex ) const { return mNormals[aNormalIndex]; }
 
 		TTriangle&			EditTriangle		( int aTriIndex ) { return mTriangles[aTriIndex]; }
+
+		bool				GetTriangleVertexs	( int aTriIndex, Vector& aA, Vector& aB, Vector& aC) const;
 		/*
 		void				AddVertexs		( const Point* aVertexs, size_t aCount );
 		void				AddTriangles	( const TTriangle* aTriangles, size_t aCount );

@@ -47,4 +47,14 @@ namespace pragma
 			mTriangles[i].mVertexNormal[0] = mTriangles[i].mVertexNormal[1] = mTriangles[i].mVertexNormal[2] = i;
 		}
 	}
+
+	bool Mesh::GetTriangleVertexs( int aTriIndex, Vector& aA, Vector& aB, Vector& aC) const
+	{
+		if(aTriIndex < 0 || aTriIndex >= (signed)mTriangles.size())
+			return false;
+
+		aA = mVertexs[mTriangles[aTriIndex].mVertex[0]];
+		aB = mVertexs[mTriangles[aTriIndex].mVertex[1]];
+		aC = mVertexs[mTriangles[aTriIndex].mVertex[2]];
+	}
 }

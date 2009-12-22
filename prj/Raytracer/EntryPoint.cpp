@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
 	// Load ASE file
 	pragma::Mesh lMesh;
-	ParseASE("..\\src\\pragma\\tests\\ComplexTorus.ASE", lMesh);
+	ParseASE("scenes\\Torus.ASE", lMesh);
 
 	Vector lCameraPos(30,30,30);
 	Camera lCamera;
@@ -26,15 +26,7 @@ int main(int argc, char* argv[])
 	lCamera.SetTransform( lCameraPos, Vector(0,0,0), Vector(0,1,0) );
 
 	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
-
-	vector4f lPutoPunto(0, 0, 0, 1);
-	vector4f lPutoRes = TransformPoint(lTransform, lPutoPunto);
-	lPutoRes = lPutoRes * (1.f/lPutoRes.w);
-	
 	lTransform = Inverse(lTransform);
-
-	lPutoPunto = TransformPoint(lTransform, lPutoRes);
-	lPutoPunto = lPutoPunto * (1.f/lPutoPunto.w);
 
 	FILE* handle = fopen("out.raw","wb");
 

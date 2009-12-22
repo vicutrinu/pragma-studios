@@ -83,11 +83,23 @@ namespace pragma
 		return vector2<T>( aSrc.x * aScale, aSrc.y * aScale);
 	}
 
+	template <typename T>
+	inline base_vector2<T> operator/(const base_vector2<T>& aSrc, T aInvScale)
+	{
+		return  aSrc * (T(1) / aInvScale);
+	}
+
 	//---[ vector3<T> ] ---//
 	template <typename T>
 	inline base_vector3<T> operator*(const base_vector3<T>& aSrc, T aScale)
 	{
 		return vector3<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale);
+	}
+
+	template <typename T>
+	inline base_vector3<T> operator/(const base_vector3<T>& aSrc, T aInvScale)
+	{
+		return  aSrc * (T(1) / aInvScale);
 	}
 
 	template <typename T>
@@ -105,16 +117,22 @@ namespace pragma
 	}
 
 	template <typename T>
-	inline T DotProduct(const vector4<T>& aSrc1, const vector4<T> aSrc2)
+	inline T DotProduct(const base_vector4<T>& aSrc1, const base_vector4<T> aSrc2)
 	{
 		return aSrc1.x * aSrc2.x + aSrc1.y * aSrc2.y + aSrc1.z * aSrc2.z + aSrc1.w * aSrc2.w;
 	}
 
 	//---[ vector4<T> ] ---//
 	template <typename T>
-	inline vector4<T> operator*(const vector4<T>& aSrc, T aScale)
+	inline base_vector4<T> operator*(const base_vector4<T>& aSrc, T aScale)
 	{
 		return vector4<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale, aSrc.w * aScale);
+	}
+
+	template <typename T>
+	inline base_vector4<T> operator/(const base_vector4<T>& aSrc, T aInvScale)
+	{
+		return aSrc * (T(1) / aInvScale);
 	}
 
 	//---[ matrix3x3<T> ] ---//

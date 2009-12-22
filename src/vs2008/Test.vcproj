@@ -41,7 +41,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..&quot;"
 				PreprocessorDefinitions="WIN32;_DEBUG;_CONSOLE;PRAGMA_UNIT_TESTS;_CRT_SECURE_NO_WARNINGS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -116,7 +116,7 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
-				AdditionalIncludeDirectories="&quot;$(ProjectDir)..\src&quot;"
+				AdditionalIncludeDirectories="&quot;$(ProjectDir)..&quot;"
 				PreprocessorDefinitions="WIN32;NDEBUG;_CONSOLE;_CRT_SECURE_NO_WARNINGS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -172,14 +172,14 @@
 			Name="pragma"
 			>
 			<File
-				RelativePath="..\src\pragma\types.h"
+				RelativePath="..\pragma\types.h"
 				>
 			</File>
 			<Filter
 				Name="debug"
 				>
 				<File
-					RelativePath="..\src\pragma\debug\debug.h"
+					RelativePath="..\pragma\debug\debug.h"
 					>
 				</File>
 			</Filter>
@@ -187,15 +187,15 @@
 				Name="geometry"
 				>
 				<File
-					RelativePath="..\src\pragma\geometry\functions.h"
+					RelativePath="..\pragma\geometry\functions.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\geometry\types.h"
+					RelativePath="..\pragma\geometry\types.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\geometry\UnitTest.cpp"
+					RelativePath="..\pragma\geometry\UnitTest.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -215,18 +215,18 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\pragma\geometry\UnitTest.h"
+					RelativePath="..\pragma\geometry\UnitTest.h"
 					>
 				</File>
 				<Filter
 					Name="intersection"
 					>
 					<File
-						RelativePath="..\src\pragma\geometry\AABB.h"
+						RelativePath="..\pragma\geometry\AABB.h"
 						>
 					</File>
 					<File
-						RelativePath="..\src\pragma\geometry\intersection\ray_triangle.h"
+						RelativePath="..\pragma\geometry\intersection\ray_triangle.h"
 						>
 					</File>
 				</Filter>
@@ -235,39 +235,39 @@
 				Name="math"
 				>
 				<File
-					RelativePath="..\src\pragma\math\functions.h"
+					RelativePath="..\pragma\math\functions.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\math.cpp"
+					RelativePath="..\pragma\math\math.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\math.h"
+					RelativePath="..\pragma\math\math.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\matrix3x3.h"
+					RelativePath="..\pragma\math\matrix3x3.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\matrix4x4.h"
+					RelativePath="..\pragma\math\matrix4x4.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\type_traits.cpp"
+					RelativePath="..\pragma\math\type_traits.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\type_traits.h"
+					RelativePath="..\pragma\math\type_traits.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\types.h"
+					RelativePath="..\pragma\math\types.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\UnitTest.cpp"
+					RelativePath="..\pragma\math\UnitTest.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -288,7 +288,7 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\UnitTest.h"
+					RelativePath="..\pragma\math\UnitTest.h"
 					>
 					<FileConfiguration
 						Name="Release|Win32"
@@ -300,15 +300,15 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\vector2.h"
+					RelativePath="..\pragma\math\vector2.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\vector3.h"
+					RelativePath="..\pragma\math\vector3.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\math\vector4.h"
+					RelativePath="..\pragma\math\vector4.h"
 					>
 				</File>
 			</Filter>
@@ -316,35 +316,35 @@
 				Name="graphics"
 				>
 				<File
-					RelativePath="..\src\pragma\graphics\Camera.cpp"
+					RelativePath="..\pragma\graphics\Camera.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\Camera.h"
+					RelativePath="..\pragma\graphics\Camera.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\Mesh.cpp"
+					RelativePath="..\pragma\graphics\Mesh.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\Mesh.h"
+					RelativePath="..\pragma\graphics\Mesh.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\MeshCollision.cpp"
+					RelativePath="..\pragma\graphics\MeshCollision.cpp"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\MeshCollision.h"
+					RelativePath="..\pragma\graphics\MeshCollision.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\types.h"
+					RelativePath="..\pragma\graphics\types.h"
 					>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\UnitTest.cpp"
+					RelativePath="..\pragma\graphics\UnitTest.cpp"
 					>
 					<FileConfiguration
 						Name="Debug|Win32"
@@ -364,18 +364,18 @@
 					</FileConfiguration>
 				</File>
 				<File
-					RelativePath="..\src\pragma\graphics\UnitTest.h"
+					RelativePath="..\pragma\graphics\UnitTest.h"
 					>
 				</File>
 				<Filter
 					Name="import"
 					>
 					<File
-						RelativePath="..\src\pragma\graphics\import\ASE_Parser.cpp"
+						RelativePath="..\pragma\graphics\import\ASE_Parser.cpp"
 						>
 					</File>
 					<File
-						RelativePath="..\src\pragma\graphics\import\ASE_Parser.h"
+						RelativePath="..\pragma\graphics\import\ASE_Parser.h"
 						>
 					</File>
 				</Filter>
@@ -384,7 +384,7 @@
 				Name="tests"
 				>
 				<File
-					RelativePath="..\src\pragma\tests\EntryPoint.cpp"
+					RelativePath="..\pragma\tests\EntryPoint.cpp"
 					>
 				</File>
 			</Filter>
