@@ -2,7 +2,9 @@
 
 #include <pragma/graphics/MeshCollision.h>
 #include <pragma/geometry/intersection/ray_triangle.h>
+#include <pragma/geometry/intersection/ray_box.h>
 #include <pragma/geometry/functions.h>
+#include <pragma/math/functions.h>
 
 namespace pragma
 {
@@ -14,6 +16,9 @@ namespace pragma
 
 	bool MeshCollision::IntersectRay( const Point& aOrigin, const Point& aDestination)
 	{
+		if(!IntersectRayBox(mMesh.GetBoundingBox(), aOrigin, Normalize(aDestination-aOrigin)))
+			return false;
+
 		Vector lDirection = Normalize<Real>(aDestination - aOrigin);
 		Real lRayLength = Length<Real>(aDestination - aOrigin);
 		size_t lVertexCount;
@@ -41,6 +46,14 @@ namespace pragma
 
 	bool MeshCollision::IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, int& aIndex, Vector2& aBarycentric, Real& aDistance)
 	{
+		if(!IntersectRayBox(mMesh.GetBoundingBox(), aOrigin, aDirection))
+			return false;
+
+		/* Test
+		Vector lOut;
+		IntersectRayBox<double>( mMesh.GetBoundingBox().mMin, mMesh.GetBoundingBox().mMax, aOrigin, aDirection, 1000., lOut);
+		*/
+
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
 

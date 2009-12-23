@@ -17,6 +17,12 @@ namespace pragma
 		mVertexs.clear();
 		mVertexs.reserve(aCount);
 		mVertexs.insert(mVertexs.begin(), aVertexs, aVertexs+aCount);
+		if(aCount > 0)
+		{
+			mAABB.mMax = mAABB.mMin = mVertexs[0];
+			for(size_t i = 1; i < mVertexs.size(); ++i)
+				mAABB.AddPoint(mVertexs[i]);
+		}
 	}
 
 	void Mesh::SetTriangles( const TTriangle* aTriangles, size_t aCount )
@@ -56,5 +62,7 @@ namespace pragma
 		aA = mVertexs[mTriangles[aTriIndex].mVertex[0]];
 		aB = mVertexs[mTriangles[aTriIndex].mVertex[1]];
 		aC = mVertexs[mTriangles[aTriIndex].mVertex[2]];
+
+		return true;
 	}
 }

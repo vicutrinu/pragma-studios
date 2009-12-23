@@ -197,6 +197,10 @@
 					Name="intersection"
 					>
 					<File
+						RelativePath="..\..\..\src\pragma\geometry\intersection\ray_box.h"
+						>
+					</File>
+					<File
 						RelativePath="..\..\..\src\pragma\geometry\intersection\ray_triangle.h"
 						>
 					</File>

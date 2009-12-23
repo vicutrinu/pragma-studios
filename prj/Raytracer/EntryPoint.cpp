@@ -62,7 +62,7 @@ int main(int argc, char* argv[])
 				lCollisionPoint = lCollisionPoint + Normalize<Real>(lCollisionPoint-lLigth) * (4.f * math::type_traits<Real>::epsilon);
 				if(lCollisionMap.IntersectRay( lCollisionPoint, lLigth ))
 				{
-					putc(lDistance * 255. / 200, handle); putc(0, handle); putc(0, handle);
+					putc(int(lDistance * 255. / 200), handle); putc(0, handle); putc(0, handle);
 				}
 				else
 				{
@@ -73,11 +73,11 @@ int main(int argc, char* argv[])
 					float lPollas = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
 					if(lPollas > 0)
 					{
-						putc(lDistance * 255. / 200, handle); putc(lPollas*255, handle); putc(255, handle);
+						putc(int(lDistance * 255. / 200), handle); putc(lPollas*255, handle); putc(255, handle);
 					}
 					else
 					{
-						putc(lDistance * 255. / 200, handle); putc(0, handle); putc(255, handle);
+						putc(int(lDistance * 255. / 200), handle); putc(0, handle); putc(255, handle);
 					}
 				}
 			}

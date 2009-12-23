@@ -3,6 +3,7 @@
 #include <pragma/graphics/types.h>
 #include <string>
 #include <vector>
+#include <pragma/geometry/AABB.h>
 
 namespace pragma
 {
@@ -48,10 +49,14 @@ namespace pragma
 		void				AddTriangles	( const TTriangle* aTriangles, size_t aCount );
 		*/
 
+		const AABB&			GetBoundingBox		() const { return mAABB; }
+
 	private:
 		std::string				mName;
 		std::vector<Point>		mVertexs;
 		std::vector<TTriangle>	mTriangles;
 		std::vector<Vector>		mNormals;
+
+		AABB					mAABB;
 	};
 }

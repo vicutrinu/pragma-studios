@@ -83,8 +83,8 @@ namespace pragma
 		return vector2<T>( aSrc.x * aScale, aSrc.y * aScale);
 	}
 
-	template <typename T>
-	inline base_vector2<T> operator/(const base_vector2<T>& aSrc, T aInvScale)
+	template <typename T, typename T2>
+	inline base_vector2<T> operator/(const base_vector2<T>& aSrc, T2 aInvScale)
 	{
 		return  aSrc * (T(1) / aInvScale);
 	}
@@ -96,8 +96,8 @@ namespace pragma
 		return vector3<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale);
 	}
 
-	template <typename T>
-	inline base_vector3<T> operator/(const base_vector3<T>& aSrc, T aInvScale)
+	template <typename T, typename T2>
+	inline base_vector3<T> operator/(const base_vector3<T>& aSrc, T2 aInvScale)
 	{
 		return  aSrc * (T(1) / aInvScale);
 	}
@@ -129,8 +129,8 @@ namespace pragma
 		return vector4<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale, aSrc.w * aScale);
 	}
 
-	template <typename T>
-	inline base_vector4<T> operator/(const base_vector4<T>& aSrc, T aInvScale)
+	template <typename T, typename T2>
+	inline base_vector4<T> operator/(const base_vector4<T>& aSrc, T2 aInvScale)
 	{
 		return aSrc * (T(1) / aInvScale);
 	}

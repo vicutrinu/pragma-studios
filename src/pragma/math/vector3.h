@@ -51,5 +51,14 @@ namespace pragma
 			base_vector3<T>::z = aValue;
 		}
 
+		template<typename T2>
+		vector3 (const base_vector3<T2>& aVector)
+		{
+			// Algun type_trait deberia decirme si se puede hacer la conversion de forma segura
+			base_vector3<T>::x = T(aVector.x);
+			base_vector3<T>::y = T(aVector.y);
+			base_vector3<T>::z = T(aVector.z);
+		}
+
 	};
 };
