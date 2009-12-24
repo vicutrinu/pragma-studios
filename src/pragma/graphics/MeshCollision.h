@@ -13,9 +13,6 @@ namespace pragma
 		bool IntersectRay( const Point& aOrigin, const Point& aDestination );
 
 	private:
-		void BuildKdTree();
-
-	private:
 
 		struct TTriangle
 		{
@@ -39,5 +36,9 @@ namespace pragma
 		const Mesh& mMesh;
 
 		void Split(TNode& aNode, int aPlane);
+
+	private:
+		void BuildKdTree();
+		void WalkKdTree(const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode, std::vector<int>& aTriangleList);
 	};
 }

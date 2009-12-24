@@ -42,6 +42,7 @@ namespace pragma
 		const Vector&		GetVertexNormal		( Index aNormalIndex ) const { return mNormals[aNormalIndex]; }
 
 		TTriangle&			EditTriangle		( int aTriIndex ) { return mTriangles[aTriIndex]; }
+		const TTriangle&	GetTriangle			( int aTriIndex ) const { return mTriangles[aTriIndex]; }
 
 		bool				GetTriangleVertexs	( int aTriIndex, Vector& aA, Vector& aB, Vector& aC) const;
 		/*

@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
 	// Load ASE file
 	pragma::Mesh lMesh;
-	ParseASE("scenes\\Torus.ASE", lMesh);
+	ParseASE("scenes\\ComplexTorus.ASE", lMesh);
 
 	Vector lCameraPos(30,30,30);
 	Camera lCamera;
