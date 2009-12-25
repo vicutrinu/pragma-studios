@@ -40,5 +40,6 @@ namespace pragma
 	private:
 		void BuildKdTree();
 		void WalkKdTree(const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode, std::vector<int>& aTriangleList);
+		bool IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric, Real& aDistance);
 	};
 }

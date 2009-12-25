@@ -51,7 +51,15 @@ namespace pragma
 	{
 		if(aNode.mLeft == -1)
 		{
-			for(size_t i = 0; i < aNode.mTriangles.size(); ++i)
+			Real aDistance;
+			Vector2 aBarycentric;
+			int aIndex;
+			if(IntersectRayTriangleList(aOrigin, aDirection, Length(aDestination-aOrigin), aNode.mTriangles, aIndex, aBarycentric, aDistance))
+			{
+				aTriangleList.push_back(aIndex);
+			}
+
+			/*for(size_t i = 0; i < aNode.mTriangles.size(); ++i)
 			{
 				bool lFound = false;
 				for(size_t j = 0; j < aTriangleList.size(); ++j)
@@ -64,7 +72,7 @@ namespace pragma
 				}
 				if(!lFound)
 					aTriangleList.push_back(aNode.mTriangles[i]);
-			}
+			}*/
 			return;
 		}
 
@@ -108,15 +116,20 @@ namespace pragma
 		std::vector<int> lTriangleList;
 		WalkKdTree(aOrigin, lDestination, aDirection, *mRootNode, lTriangleList);
 
+		return IntersectRayTriangleList(aOrigin, aDirection, aRayLength, lTriangleList, aIndex, aBarycentric, aDistance);
+	}
+
+	bool MeshCollision::IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric, Real& aDistance)
+	{
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
 
 		aDistance = 0;
 		aIndex = -1;
 
-		for(size_t i = 0; i < lTriangleList.size(); ++i)
+		for(size_t i = 0; i < aTriangleList.size(); ++i)
 		{
-			const Mesh::TTriangle& lTri = mMesh.GetTriangle(lTriangleList[i]);
+			const Mesh::TTriangle& lTri = mMesh.GetTriangle(aTriangleList[i]);
 			Real lDistance;
 			Vector2 lBarycentric;
 			if( IntersectRayTriangle( lVertexs[lTri.mVertex[0]], lVertexs[lTri.mVertex[1]]
@@ -129,7 +142,7 @@ namespace pragma
 				{
 					aDistance = lDistance;
 					aBarycentric = lBarycentric;
-					aIndex = lTriangleList[i];
+					aIndex = aTriangleList[i];
 				}
 			}
 
@@ -210,11 +223,11 @@ namespace pragma
 		}
 
 		if( mNodes[aNode.mLeft].mTriangles.size() > 1 &&
-			mNodes[aNode.mLeft].mTriangles.size() > 50 )
+			mNodes[aNode.mLeft].mTriangles.size() > 200 )
 			Split(mNodes[aNode.mLeft], (aPlane+1)%3);
 
 		if( mNodes[aNode.mRight].mTriangles.size() > 1 && 
-			mNodes[aNode.mRight].mTriangles.size() > 50 )
+			mNodes[aNode.mRight].mTriangles.size() > 200 )
 			Split(mNodes[aNode.mRight], (aPlane+1)%3);
 	}
 

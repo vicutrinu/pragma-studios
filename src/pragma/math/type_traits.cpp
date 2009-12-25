@@ -6,5 +6,5 @@ namespace pragma { namespace math
 	const float type_traits<float>::epsilon = 0.00001f;
 	
 	template<>
-	const double type_traits<double>::epsilon = 0.000001;
+	const double type_traits<double>::epsilon = 0.00000001;
 } }

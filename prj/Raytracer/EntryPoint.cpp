@@ -18,7 +18,7 @@ int main(int argc, char* argv[])
 {
 	// Load ASE file
 	pragma::Mesh lMesh;
-	ParseASE("scenes\\ComplexTorus.ASE", lMesh);
+	ParseASE("scenes\\Sphere.ASE", lMesh);
 
 	Vector lCameraPos(30,30,30);
 	Camera lCamera;
@@ -32,7 +32,7 @@ int main(int argc, char* argv[])
 
 	MeshCollision lCollisionMap(lMesh);
 
-	Point lLigth(-50,50,0);
+	Point lLigth(1000,1000,2000);
 
 	size_t lVertexCount;
 	const Point* lVertexs = lMesh.GetVertexs(lVertexCount);
@@ -69,7 +69,7 @@ int main(int argc, char* argv[])
 					Vector lNormal = lMesh.GetVertexNormal(lTri.mVertexNormal[0]) * Real(1.f-lOut.x-lOut.y) + 
 									 lMesh.GetVertexNormal(lTri.mVertexNormal[1]) * Real(lOut.x) + 
 									 lMesh.GetVertexNormal(lTri.mVertexNormal[2]) * Real(lOut.y);
-					//lNormal = lMesh.GetTriangleNormal(lTriIndex);
+					lNormal = lMesh.GetTriangleNormal(lTriIndex);
 					float lPollas = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
 					if(lPollas > 0)
 					{
