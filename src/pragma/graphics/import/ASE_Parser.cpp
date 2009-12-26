@@ -256,13 +256,13 @@ namespace pragma
 			while(lIter != lNormalsSection.end())
 			{
 				Mesh::TTriangle& lTri = aMesh.EditTriangle(lCount);
-				Vector lVector( Parse<float>(lIter[2]), -Parse<float>(lIter[4]), Parse<float>(lIter[3]) );
+				Vector lVector( Parse<float>(lIter[2]), Parse<float>(lIter[3]), Parse<float>(lIter[4]) );
 				lNormals.push_back(lVector); // Face Normal
-				lVector = Vector( Parse<float>(lIter[7]), -Parse<float>(lIter[9]), Parse<float>(lIter[8]) );
+				lVector = Vector( Parse<float>(lIter[7]), Parse<float>(lIter[8]), Parse<float>(lIter[9]) );
 				lNormals.push_back(lVector); // Vertex Normal
-				lVector = Vector( Parse<float>(lIter[12]), -Parse<float>(lIter[14]), Parse<float>(lIter[13]) );
+				lVector = Vector( Parse<float>(lIter[12]), Parse<float>(lIter[13]), Parse<float>(lIter[14]) );
 				lNormals.push_back(lVector); // Vertex Normal
-				lVector = Vector( Parse<float>(lIter[17]), -Parse<float>(lIter[19]), Parse<float>(lIter[18]) );
+				lVector = Vector( Parse<float>(lIter[17]), Parse<float>(lIter[18]), Parse<float>(lIter[19]) );
 				lNormals.push_back(lVector); // Vertex Normal
 				lTri.mNormal = lCount * 4;
 				lTri.mVertexNormal[0] = lCount * 4 + 1;

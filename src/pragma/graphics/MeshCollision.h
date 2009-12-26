@@ -1,16 +1,28 @@
 #pragma once
 
 #include <pragma/graphics/Mesh.h>
+#include <pragma/system/clock.h>
 
 namespace pragma
 {
 	class MeshCollision
 	{
 	public:
-		MeshCollision(const Mesh& aMesh);
+		struct TResult
+		{
+			int		mTriangleIndex;
+			Vector2 mBarycentric;
+			Vector	mPosition;
+		};
 
-		bool IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, int& aIndex, Vector2& aBarycentric, Real& aDistance );
-		bool IntersectRay( const Point& aOrigin, const Point& aDestination );
+	public:
+				MeshCollision	( const Mesh& aMesh );
+
+		bool	IntersectRay	( const Point& aOrigin, const Vector& aDirection, Real aRayLength, TResult& aResult );
+		bool	IntersectRay	( const Point& aOrigin, const Point& aDestination );
+
+		void	ResetStats		() { mTracedRays = 0; }
+		size_t	TracedRays		() const { return mTracedRays; }
 
 	private:
 
@@ -31,15 +43,19 @@ namespace pragma
 
 		std::vector<TTriangle>	mTriangles;
 		std::vector<TNode>		mNodes;
-		TNode*					mRootNode;
+		size_t					mMaxPolysPerNode;
+		TResult					mLastResult;
 
 		const Mesh& mMesh;
 
-		void Split(TNode& aNode, int aPlane);
+		void	BuildKdTree					( size_t aDepth, size_t aMaxPolysPerNode );
+		void	Split						( TNode& aNode, int aPlane, size_t aDepth );
 
 	private:
-		void BuildKdTree();
-		void WalkKdTree(const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode, std::vector<int>& aTriangleList);
-		bool IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric, Real& aDistance);
+		bool	WalkKdTree					( const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode );
+		bool	IntersectRayTriangleList	( const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric );
+
+		// stats
+		size_t		 mTracedRays;
 	};
 }

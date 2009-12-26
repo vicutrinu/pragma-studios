@@ -36,4 +36,14 @@ namespace pragma
 	{
 		return aVector * ( T(1) / Length(aVector) );
 	}
+
+	template< typename T>
+	void ComputeFromBarycentric( const T& aA, const T& aB, const T& aC
+							   , const Vector2& aBarycentric
+							   , T& aResult )
+	{
+		aResult = aA * Real(1 - aBarycentric.x - aBarycentric.y) + 
+				  aB * Real(aBarycentric.x) + 
+				  aC * Real(aBarycentric.y);
+	}
 }

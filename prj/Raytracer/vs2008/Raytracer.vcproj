@@ -170,6 +170,10 @@
 		<Filter
 			Name="pragma"
 			>
+			<File
+				RelativePath="..\..\..\src\pragma\types.h"
+				>
+			</File>
 			<Filter
 				Name="debug"
 				>
@@ -295,6 +299,18 @@
 				</File>
 				<File
 					RelativePath="..\..\..\src\pragma\math\vector4.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="system"
+				>
+				<File
+					RelativePath="..\..\..\src\pragma\system\clock.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\system\clock.h"
 					>
 				</File>
 			</Filter>

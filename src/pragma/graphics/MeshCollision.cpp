@@ -6,12 +6,41 @@
 #include <pragma/geometry/functions.h>
 #include <pragma/math/functions.h>
 
+#include <stdio.h>
+
 namespace pragma
 {
 	MeshCollision::MeshCollision(const Mesh& aMesh)
 		: mMesh(aMesh)
 	{
-		BuildKdTree();
+		BuildKdTree(30, 50);
+	}
+
+	bool MeshCollision::IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, TResult& aResult )
+	{
+		if(!IntersectRayBox(mMesh.GetBoundingBox(), aOrigin, aDirection))
+			return false;
+
+		Point lDestination = aOrigin + (aDirection * aRayLength);
+		std::vector<int> lTriangleList;
+
+		if( WalkKdTree(aOrigin, lDestination, aDirection, mNodes[0]) )
+		{
+			aResult.mTriangleIndex	= mLastResult.mTriangleIndex;
+			aResult.mBarycentric	= mLastResult.mBarycentric;
+
+			size_t lCount;
+			const Mesh::TTriangle& lTri = mMesh.GetTriangles(lCount)[aResult.mTriangleIndex];
+			size_t lVertexCount;
+			const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
+
+			ComputeFromBarycentric( lVertexs[ lTri.mVertex[0] ], lVertexs[ lTri.mVertex[1] ], lVertexs[ lTri.mVertex[2] ]
+								  , aResult.mBarycentric, aResult.mPosition );
+
+			return true;
+		}
+		else
+			return false;
 	}
 
 	bool MeshCollision::IntersectRay( const Point& aOrigin, const Point& aDestination)
@@ -21,59 +50,22 @@ namespace pragma
 
 		Vector lDirection = Normalize<Real>(aDestination - aOrigin);
 
-
-		std::vector<int> lTriangleList;
-		WalkKdTree(aOrigin, aDestination, lDirection, *mRootNode, lTriangleList);
-
-		size_t lVertexCount;
-		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
-		Real lRayLength = Length<Real>(aDestination - aOrigin);
-
-		for(size_t i = 0; i < lTriangleList.size(); ++i)
-		{
-			const Mesh::TTriangle& lTri = mMesh.GetTriangle(lTriangleList[i]);
-			Real lDistance;
-			Vector2 lBarycentric;
-			if( IntersectRayTriangle( lVertexs[lTri.mVertex[0]], lVertexs[lTri.mVertex[1]]
-									, lVertexs[lTri.mVertex[2]], aOrigin, lDirection, lRayLength
-									, lBarycentric, lDistance ) == true && 
-				lDistance >= 0 )
-			{
-				return true;
-			}
-
-		}
-
-		return false;
+		return WalkKdTree(aOrigin, aDestination, lDirection, mNodes[0]);
 	}
 
-	void MeshCollision::WalkKdTree(const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode, std::vector<int>& aTriangleList)
+	bool MeshCollision::WalkKdTree( const Point& aOrigin, const Point& aDestination, const Vector& aDirection, const TNode& aNode )
 	{
 		if(aNode.mLeft == -1)
 		{
-			Real aDistance;
-			Vector2 aBarycentric;
-			int aIndex;
-			if(IntersectRayTriangleList(aOrigin, aDirection, Length(aDestination-aOrigin), aNode.mTriangles, aIndex, aBarycentric, aDistance))
+			Vector2 lBarycentric;
+			int lIndex;
+			if(IntersectRayTriangleList(aOrigin, aDirection, Length(aDestination-aOrigin), aNode.mTriangles, lIndex, lBarycentric))
 			{
-				aTriangleList.push_back(aIndex);
+				mLastResult.mTriangleIndex = lIndex;
+				mLastResult.mBarycentric = lBarycentric;
+				return true;
 			}
-
-			/*for(size_t i = 0; i < aNode.mTriangles.size(); ++i)
-			{
-				bool lFound = false;
-				for(size_t j = 0; j < aTriangleList.size(); ++j)
-				{
-					if(aNode.mTriangles[i] == aTriangleList[j])
-					{
-						lFound = true;
-						break;
-					}
-				}
-				if(!lFound)
-					aTriangleList.push_back(aNode.mTriangles[i]);
-			}*/
-			return;
+			return false;			
 		}
 
 		int lPlane = aNode.mSplitAxis;
@@ -81,14 +73,17 @@ namespace pragma
 		{
 			if(aDestination.i[lPlane] < aNode.mSplitPlane)
 			{
-				WalkKdTree(aOrigin, aDestination, aDirection, mNodes[aNode.mLeft], aTriangleList);
+				return WalkKdTree(aOrigin, aDestination, aDirection, mNodes[aNode.mLeft]);
 			}
 			else
 			{
 				Real lScale = (aNode.mSplitPlane - aOrigin.i[lPlane]) / aDirection.i[lPlane];
 				Point lIntersection = aOrigin + (aDirection * lScale);
-				WalkKdTree(aOrigin, lIntersection, aDirection, mNodes[aNode.mLeft], aTriangleList);
-				WalkKdTree(lIntersection, aDestination, aDirection, mNodes[aNode.mRight], aTriangleList);
+				if( !WalkKdTree(aOrigin, lIntersection, aDirection, mNodes[aNode.mLeft]) &&
+					!WalkKdTree(lIntersection, aDestination, aDirection, mNodes[aNode.mRight]) )
+					return false;
+				else
+					return true;
 			}
 		}
 		else
@@ -97,34 +92,26 @@ namespace pragma
 			{
 				Real lScale = (aNode.mSplitPlane - aOrigin.i[lPlane]) / aDirection.i[lPlane];
 				Point lIntersection = aOrigin + (aDirection * lScale);
-				WalkKdTree(aOrigin, lIntersection, aDirection, mNodes[aNode.mRight], aTriangleList);
-				WalkKdTree(lIntersection, aDestination, aDirection, mNodes[aNode.mLeft], aTriangleList);
+
+				Vector lDir2 = Normalize(lIntersection - aOrigin);
+
+				if( !WalkKdTree(aOrigin, lIntersection, aDirection, mNodes[aNode.mRight]) &&
+					!WalkKdTree(lIntersection, aDestination, aDirection, mNodes[aNode.mLeft]) )
+					return false;
+				else
+					return true;
 			}
 			else
-			{
-				WalkKdTree(aOrigin, aDestination, aDirection, mNodes[aNode.mRight], aTriangleList);
-			}
+				return WalkKdTree(aOrigin, aDestination, aDirection, mNodes[aNode.mRight]);
 		}
 	}
 
-	bool MeshCollision::IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, int& aIndex, Vector2& aBarycentric, Real& aDistance)
-	{
-		if(!IntersectRayBox(mMesh.GetBoundingBox(), aOrigin, aDirection))
-			return false;
-
-		Point lDestination = aOrigin + (aDirection * aRayLength);
-		std::vector<int> lTriangleList;
-		WalkKdTree(aOrigin, lDestination, aDirection, *mRootNode, lTriangleList);
-
-		return IntersectRayTriangleList(aOrigin, aDirection, aRayLength, lTriangleList, aIndex, aBarycentric, aDistance);
-	}
-
-	bool MeshCollision::IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric, Real& aDistance)
+	bool MeshCollision::IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric)
 	{
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);
 
-		aDistance = 0;
+		Real aNearesDistance = 0;
 		aIndex = -1;
 
 		for(size_t i = 0; i < aTriangleList.size(); ++i)
@@ -137,28 +124,30 @@ namespace pragma
 									, lBarycentric, lDistance ) == true &&
 				lDistance >= 0)
 			{
-				if( lDistance < aDistance ||
+				if( lDistance < aNearesDistance ||
 					aIndex == -1 )
 				{
-					aDistance = lDistance;
+					aNearesDistance = lDistance;
 					aBarycentric = lBarycentric;
 					aIndex = aTriangleList[i];
 				}
 			}
-
 		}
+
+		mTracedRays+= aTriangleList.size();
 
 		return aIndex != -1;
 	}
 
-	void MeshCollision::BuildKdTree()
+	void MeshCollision::BuildKdTree( size_t aDepth, size_t aMaxPolysPerNode )
 	{
-		mNodes.reserve(4096);
+		aDepth = min<size_t>(aDepth, 15);
+		mNodes.reserve((uint32)1<<aDepth);
 		mNodes.push_back(TNode());
-		mRootNode = &mNodes.back();
 
-		mRootNode->mTriangles.reserve(mMesh.GetNumTriangles());
-		std::vector<int>& lTriangles = mRootNode->mTriangles;
+		TNode& lRootNode = mNodes.back();
+		lRootNode.mTriangles.reserve(mMesh.GetNumTriangles());
+		std::vector<int>& lTriangles = lRootNode.mTriangles;
 		for(size_t i = 0; i < mMesh.GetNumTriangles(); ++i)
 		{
 			lTriangles.push_back(i);
@@ -168,10 +157,11 @@ namespace pragma
 			lTri.mCentroid = (lTri.mA + lTri.mB + lTri.mC) / Real(3);
 		}
 
-		Split(*mRootNode, 0);
+		mMaxPolysPerNode = aMaxPolysPerNode;
+		Split(lRootNode, 0, aDepth);
 	}
 
-	void MeshCollision::Split(TNode& aNode, int aPlane)
+	void MeshCollision::Split(TNode& aNode, int aPlane, size_t aDepth)
 	{
 		aNode.mSplitAxis = aPlane;
 		aNode.mSplitPlane = 0;
@@ -223,12 +213,14 @@ namespace pragma
 		}
 
 		if( mNodes[aNode.mLeft].mTriangles.size() > 1 &&
-			mNodes[aNode.mLeft].mTriangles.size() > 200 )
-			Split(mNodes[aNode.mLeft], (aPlane+1)%3);
+			mNodes[aNode.mLeft].mTriangles.size() > mMaxPolysPerNode &&
+			aDepth > 0 )
+			Split(mNodes[aNode.mLeft], (aPlane+1)%3, aDepth-1);
 
 		if( mNodes[aNode.mRight].mTriangles.size() > 1 && 
-			mNodes[aNode.mRight].mTriangles.size() > 200 )
-			Split(mNodes[aNode.mRight], (aPlane+1)%3);
+			mNodes[aNode.mRight].mTriangles.size() > mMaxPolysPerNode &&
+			aDepth > 0 )
+			Split(mNodes[aNode.mRight], (aPlane+1)%3, aDepth-1);
 	}
 
 }
