@@ -38,6 +38,8 @@ namespace pragma
 		void				SetNormals			( const Vector* aNormals, size_t aCount );
 
 		void				BuildNormals		();
+		void				BuildFaceNormals	();
+
 		const Vector&		GetTriangleNormal	( int aTriIndex ) const { return mNormals[mTriangles[aTriIndex].mNormal]; }
 		const Vector&		GetVertexNormal		( Index aNormalIndex ) const { return mNormals[aNormalIndex]; }
 

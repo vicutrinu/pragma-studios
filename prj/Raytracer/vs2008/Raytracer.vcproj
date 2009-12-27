@@ -249,7 +249,15 @@
 						>
 					</File>
 					<File
-						RelativePath="..\..\..\src\pragma\graphics\import\ASE_Parser.h"
+						RelativePath="..\..\..\src\pragma\graphics\import\OBJ_Parser.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\src\pragma\graphics\import\Parsers.cpp"
+						>
+					</File>
+					<File
+						RelativePath="..\..\..\src\pragma\graphics\import\Parsers.h"
 						>
 					</File>
 				</Filter>

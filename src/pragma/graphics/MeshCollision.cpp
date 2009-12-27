@@ -13,7 +13,7 @@ namespace pragma
 	MeshCollision::MeshCollision(const Mesh& aMesh)
 		: mMesh(aMesh)
 	{
-		BuildKdTree(30, 50);
+		BuildKdTree(10, 50);
 	}
 
 	bool MeshCollision::IntersectRay( const Point& aOrigin, const Vector& aDirection, Real aRayLength, TResult& aResult )
@@ -141,8 +141,8 @@ namespace pragma
 
 	void MeshCollision::BuildKdTree( size_t aDepth, size_t aMaxPolysPerNode )
 	{
-		aDepth = min<size_t>(aDepth, 15);
-		mNodes.reserve((uint32)1<<aDepth);
+		aDepth = min<size_t>(aDepth, 10);
+		mNodes.reserve((uint32)1<<(aDepth*2));
 		mNodes.push_back(TNode());
 
 		TNode& lRootNode = mNodes.back();
@@ -212,6 +212,8 @@ namespace pragma
 				lLeft.push_back(lRight[i]);
 		}
 
+		aNode.mTriangles.clear();
+
 		if( mNodes[aNode.mLeft].mTriangles.size() > 1 &&
 			mNodes[aNode.mLeft].mTriangles.size() > mMaxPolysPerNode &&
 			aDepth > 0 )
@@ -221,6 +223,7 @@ namespace pragma
 			mNodes[aNode.mRight].mTriangles.size() > mMaxPolysPerNode &&
 			aDepth > 0 )
 			Split(mNodes[aNode.mRight], (aPlane+1)%3, aDepth-1);
+
 	}
 
 }

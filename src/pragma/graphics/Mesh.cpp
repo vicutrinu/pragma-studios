@@ -54,6 +54,21 @@ namespace pragma
 		}
 	}
 
+	void Mesh::BuildFaceNormals()
+	{
+		size_t lOffset = mNormals.size();
+		for(size_t i = 0; i < mTriangles.size(); ++i)
+		{
+			const Point& lA = mVertexs[ mTriangles[i].mVertex[0] ];
+			const Point& lB = mVertexs[ mTriangles[i].mVertex[1] ];
+			const Point& lC = mVertexs[ mTriangles[i].mVertex[2] ];
+			Vector lNormal = CrossProduct( lB - lA, lC - lA );
+			lNormal = Normalize(lNormal);
+			mNormals.push_back(lNormal);
+			mTriangles[i].mNormal = lOffset + i;
+		}
+	}
+
 	bool Mesh::GetTriangleVertexs( int aTriIndex, Vector& aA, Vector& aB, Vector& aC) const
 	{
 		if(aTriIndex < 0 || aTriIndex >= (signed)mTriangles.size())

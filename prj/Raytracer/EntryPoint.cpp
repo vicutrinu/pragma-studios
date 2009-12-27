@@ -1,5 +1,5 @@
 #include <pragma/graphics/Mesh.h>
-#include <pragma/graphics/import/ASE_Parser.h>
+#include <pragma/graphics/import/Parsers.h>
 #include <pragma/graphics/Camera.h>
 #include <pragma/graphics/MeshCollision.h>
 
@@ -21,7 +21,7 @@ int main(int argc, char* argv[])
 	// Load ASE file
 	TMillisecond lStart = GetTimeMilliseconds();
 	pragma::Mesh lMesh;
-	ParseASE("scenes\\ComplexTorus.ASE", lMesh);
+	ParseOBJ("scenes\\reloj.OBJ", lMesh);
 	TMillisecond lEnd = GetTimeMilliseconds();
 	printf("Parsed ASE file in %d milliseconds\n", lEnd - lStart);
 
@@ -84,8 +84,8 @@ int main(int argc, char* argv[])
 					Point lA, lB, lC;
 					lMesh.GetTriangleVertexs(lResult.mTriangleIndex, lA, lB, lC);
 					lNormal = Normalize( CrossProduct( lB - lA, lC - lA ) );
-					float lDiffuse = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
 					*/
+					Real lDiffuse = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
 					if(lDiffuse > 0)
 					{
 						lPtr[0] = 255; lPtr[1] = lDiffuse*255; lPtr[2] = lResult.mTriangleIndex*25;
