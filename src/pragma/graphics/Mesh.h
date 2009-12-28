@@ -18,6 +18,7 @@ namespace pragma
 			Index	mVertexNormal[3];
 			Index	mNormal;
 			//Vector	mPlaneNormal;
+			Index	mMaterial;
 		};
 
 	public:

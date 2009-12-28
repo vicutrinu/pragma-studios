@@ -9,4 +9,5 @@ namespace pragma
 	typedef vector3<double> Vector;
 	typedef vector2<double> Vector2;
 	typedef double    Real;
+	typedef vector3<double> Color;
 }

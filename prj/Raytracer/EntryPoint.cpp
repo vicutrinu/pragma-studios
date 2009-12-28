@@ -11,6 +11,7 @@
 #include <stdio.h>
 
 #include <pragma/system/clock.h>
+#include <pragma/graphics/Material.h>
 
 using namespace pragma;
 
@@ -21,14 +22,15 @@ int main(int argc, char* argv[])
 	// Load ASE file
 	TMillisecond lStart = GetTimeMilliseconds();
 	pragma::Mesh lMesh;
-	ParseOBJ("scenes\\reloj.OBJ", lMesh);
+	MaterialLibrary lMaterialLibrary(32);
+	ParseOBJ("scenes\\Cornell.OBJ", lMesh, lMaterialLibrary);
 	TMillisecond lEnd = GetTimeMilliseconds();
 	printf("Parsed ASE file in %d milliseconds\n", lEnd - lStart);
 
-	Vector lCameraPos(30,30,30);
+	Vector lCameraPos(0,27.5,75);
 	Camera lCamera;
 	lCamera.SetProjection(45, 1, 1.f, 300.f);
-	lCamera.SetTransform( lCameraPos, Vector(1,0,0), Vector(0,1,0) );
+	lCamera.SetTransform( lCameraPos, Vector(0,27.5,0), Vector(0,1,0) );
 
 	matrix4x4f lTransform = lCamera.GetProjection() * lCamera.GetTransform();
 	lTransform = Inverse(lTransform);
@@ -38,13 +40,13 @@ int main(int argc, char* argv[])
 	lEnd = GetTimeMilliseconds();
 	printf("Created KdTree in %d milliseconds\n", lEnd - lStart);
 
-	Point lLigth(0,100,0);
+	Point lLigth(0,54,0);
 
 	size_t lVertexCount;
 	const Point* lVertexs = lMesh.GetVertexs(lVertexCount);
 
-	char* lImage = new char[IMAGE_SIZE*IMAGE_SIZE*3];
-	char* lPtr = lImage;
+	Real* lImage = new Real[IMAGE_SIZE*IMAGE_SIZE*3];
+	Real* lPtr = lImage;
 
 	lStart = GetTimeMilliseconds();
 	lCollisionMap.ResetStats();
@@ -69,7 +71,7 @@ int main(int argc, char* argv[])
 				Vector lCollisionPoint = lResult.mPosition + Normalize<Real>(lResult.mPosition-lLigth) * (4.f * math::type_traits<Real>::epsilon);
 				if(lCollisionMap.IntersectRay( lCollisionPoint, lLigth ))
 				{
-					lPtr[0] = 0; lPtr[1] = 0; lPtr[2] = lResult.mTriangleIndex*25;
+					lPtr[0] = 0; lPtr[1] = 0; lPtr[2] = 0;
 				}
 				else
 				{
@@ -86,13 +88,17 @@ int main(int argc, char* argv[])
 					lNormal = Normalize( CrossProduct( lB - lA, lC - lA ) );
 					*/
 					Real lDiffuse = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
+					Color lColor = lMaterialLibrary.GetMaterial(lTri.mMaterial).GetdiffuseColor();
+					lColor = lColor * lDiffuse;
 					if(lDiffuse > 0)
 					{
-						lPtr[0] = 255; lPtr[1] = lDiffuse*255; lPtr[2] = lResult.mTriangleIndex*25;
+						lPtr[0] = lColor.x;
+						lPtr[1] = lColor.y;
+						lPtr[2] = lColor.z;
 					}
 					else
 					{
-						lPtr[0] = 255; lPtr[1] = 0; lPtr[2] = lResult.mTriangleIndex*25;
+						lPtr[0] = 0; lPtr[1] = 0; lPtr[2] = 0;
 					}
 				}
 			}
@@ -106,11 +112,17 @@ int main(int argc, char* argv[])
 	lEnd = GetTimeMilliseconds();
 	printf("Image rendered in %d milliseconds. Traced %d rays\n", lEnd - lStart, lCollisionMap.TracedRays());
 
+	uint8* lRAWImage = new uint8[IMAGE_SIZE*IMAGE_SIZE*3];
+	for(size_t i = 0; i < IMAGE_SIZE*IMAGE_SIZE*3; ++i)
+	{
+		lRAWImage[i] = uint8(lImage[i] * 255.f);
+	}
 	FILE* handle = fopen("out.raw","wb");
-	fwrite(lImage, IMAGE_SIZE*IMAGE_SIZE, 3, handle);
+	fwrite(lRAWImage, IMAGE_SIZE*IMAGE_SIZE, 3, handle);
 	fclose(handle);
 
 	delete[] lImage;
+	delete[] lRAWImage;
 
 	return 0;
 }

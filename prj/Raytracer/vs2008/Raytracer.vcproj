@@ -222,6 +222,14 @@
 					>
 				</File>
 				<File
+					RelativePath="..\..\..\src\pragma\graphics\Material.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\graphics\Material.h"
+					>
+				</File>
+				<File
 					RelativePath="..\..\..\src\pragma\graphics\Mesh.cpp"
 					>
 				</File>
@@ -319,6 +327,14 @@
 				</File>
 				<File
 					RelativePath="..\..\..\src\pragma\system\clock.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\system\system.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\system\system.h"
 					>
 				</File>
 			</Filter>
