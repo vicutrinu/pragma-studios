@@ -14,6 +14,9 @@ namespace pragma
 	T max(const T& aValue1, const T& aValue2) { return (aValue1 > aValue2)? aValue1 : aValue2; }
 
 	template <typename T>
+	T clamp(const T& aValue, const T& aMin, const T& aMax) { return min( max(aValue, aMin), aMax); }
+
+	template <typename T>
 	bool near(T aValue1, T aValue2) { return abs<T>(aValue1 - aValue2) < math::type_traits<T>::epsilon; }
 
 	template <typename T>

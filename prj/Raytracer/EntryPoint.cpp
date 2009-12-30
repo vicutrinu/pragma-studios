@@ -12,6 +12,8 @@
 
 #include <pragma/system/clock.h>
 #include <pragma/graphics/Material.h>
+#include <pragma/image/Image.h>
+#include <pragma/image/functions.h>
 
 using namespace pragma;
 
@@ -112,7 +114,7 @@ int main(int argc, char* argv[])
 	TMillisecond lStart = GetTimeMilliseconds();
 	pragma::Mesh lMesh;
 	MaterialLibrary lMaterialLibrary(32);
-	ParseOBJ("../../../scenes/Cornell.obj", lMesh, lMaterialLibrary);
+	ParseOBJ("scenes/Cornell.obj", lMesh, lMaterialLibrary);
 	TMillisecond lEnd = GetTimeMilliseconds();
 	printf("Parsed file in %d milliseconds\n", lEnd - lStart);
 
@@ -128,8 +130,8 @@ int main(int argc, char* argv[])
 	lEnd = GetTimeMilliseconds();
 	printf("Created KdTree in %d milliseconds\n", lEnd - lStart);
 
-	Color* lImage = new Color[IMAGE_SIZE*IMAGE_SIZE];
-	Color* lPtr = lImage;
+	Image lImage(IMAGE_SIZE, IMAGE_SIZE);
+	RGBPixel* lIter = lImage.begin();
 
 	lStart = GetTimeMilliseconds();
 
@@ -142,7 +144,7 @@ int main(int argc, char* argv[])
 	{
 		for(size_t j = 0; j < IMAGE_SIZE; ++j)
 		{
-			*lPtr = Color(0,0,0);
+			*lIter = Color(0,0,0);
 			// Multiple samples per pixel
 			for(size_t s = 0; s < lMultisample.GetSamplesPerPixel(); ++s)
 			{
@@ -154,28 +156,16 @@ int main(int argc, char* argv[])
 				Vector lDir(lRes.x, lRes.y, lRes.z);
 				lDir = Normalize(lDir);
 
-				*lPtr = *lPtr + lRaytracer.TraceCameraRay( lCameraPos, lDir, 1000 );
+				*lIter = *lIter + RGBPixel(lRaytracer.TraceCameraRay( lCameraPos, lDir, 1000 ));
 			}
-			*lPtr = *lPtr / lMultisample.GetSamplesPerPixel();
-			lPtr++;
+			*lIter = *lIter / lMultisample.GetSamplesPerPixel();
+			++lIter;
 		}
 	}
 	lEnd = GetTimeMilliseconds();
 	//printf("Image rendered in %d milliseconds. Traced %d rays\n", lEnd - lStart, lCollisionMap.TracedRays());
 
-	uint8* lRAWImage = new uint8[IMAGE_SIZE*IMAGE_SIZE*3];
-	for(size_t i = 0; i < IMAGE_SIZE*IMAGE_SIZE; ++i)
-	{
-		lRAWImage[i*3+0] = uint8(lImage[i].x * 255.f);
-		lRAWImage[i*3+1] = uint8(lImage[i].y * 255.f);
-		lRAWImage[i*3+2] = uint8(lImage[i].z * 255.f);
-	}
-	FILE* handle = fopen("out.raw","wb");
-	fwrite(lRAWImage, IMAGE_SIZE*IMAGE_SIZE, 3, handle);
-	fclose(handle);
-
-	delete[] lImage;
-	delete[] lRAWImage;
+	ExportToTGA(lImage, "out.tga");
 
 	return 0;
 }

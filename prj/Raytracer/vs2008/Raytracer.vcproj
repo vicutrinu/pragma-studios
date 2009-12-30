@@ -338,6 +338,30 @@
 					>
 				</File>
 			</Filter>
+			<Filter
+				Name="image"
+				>
+				<File
+					RelativePath="..\..\..\src\pragma\image\functions.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\image\Image.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\image\Image.h"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\image\TGA.cpp"
+					>
+				</File>
+				<File
+					RelativePath="..\..\..\src\pragma\image\types.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<File
 			RelativePath="..\EntryPoint.cpp"
