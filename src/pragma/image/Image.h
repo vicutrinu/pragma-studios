@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stddef.h>
 #include <pragma/image/types.h>
 
 namespace pragma
