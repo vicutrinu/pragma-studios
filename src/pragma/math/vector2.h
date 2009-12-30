@@ -31,7 +31,7 @@ namespace pragma
 		
 		vector2(const base_vector2<T>& aVector)
 		{
-			*(base_vector2*)this = aVector;
+			*(base_vector2<T>*)this = aVector;
 		}
 
 		vector2 (const T& aX, const T& aY)

@@ -34,7 +34,7 @@ namespace pragma
 		
 		vector3 (const base_vector3<T>& aVector)
 		{
-			*(base_vector3*)this = aVector;
+			*(base_vector3<T>*)this = aVector;
 		}
 
 		vector3 (const T& aX, const T& aY, const T& aZ)

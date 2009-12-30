@@ -1,5 +1,3 @@
-#pragma once
-
 #include <pragma/graphics/MeshCollision.h>
 #include <pragma/geometry/intersection/ray_triangle.h>
 #include <pragma/geometry/intersection/ray_box.h>
