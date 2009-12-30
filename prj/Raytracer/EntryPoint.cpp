@@ -112,9 +112,9 @@ int main(int argc, char* argv[])
 	TMillisecond lStart = GetTimeMilliseconds();
 	pragma::Mesh lMesh;
 	MaterialLibrary lMaterialLibrary(32);
-	ParseOBJ("scenes\\Cornell.OBJ", lMesh, lMaterialLibrary);
+	ParseOBJ("../../../scenes/Cornell.obj", lMesh, lMaterialLibrary);
 	TMillisecond lEnd = GetTimeMilliseconds();
-	printf("Parsed ASE file in %d milliseconds\n", lEnd - lStart);
+	printf("Parsed file in %d milliseconds\n", lEnd - lStart);
 
 	Vector lCameraPos(0,27.5,75);
 	Camera lCamera;
@@ -127,9 +127,6 @@ int main(int argc, char* argv[])
 	lStart = GetTimeMilliseconds();
 	lEnd = GetTimeMilliseconds();
 	printf("Created KdTree in %d milliseconds\n", lEnd - lStart);
-
-	size_t lVertexCount;
-	const Point* lVertexs = lMesh.GetVertexs(lVertexCount);
 
 	Color* lImage = new Color[IMAGE_SIZE*IMAGE_SIZE];
 	Color* lPtr = lImage;
