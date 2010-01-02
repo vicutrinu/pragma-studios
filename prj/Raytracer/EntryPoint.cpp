@@ -17,12 +17,62 @@
 
 using namespace pragma;
 
-#define IMAGE_SIZE 1024
+#define SAMPLES_PER_PIXEL	4
+#define IMAGE_SIZE			512
+#define INDIRECT_RAYS		100
 
 Point lLigth(0,54,0);
 
 namespace pragma
 {
+	template <typename T>
+	T Random()
+	{
+		return T(T(rand()) / RAND_MAX);
+	}
+
+	Vector RandomVector(const Vector& aNormal)
+	{
+		Vector lX;
+		if(abs(aNormal.x) > abs(aNormal.y))
+		{
+			if(abs(aNormal.y) > abs(aNormal.z))
+			{
+				lX.x = aNormal.y;
+				lX.y = aNormal.x;
+				lX.z = aNormal.z;
+			}
+			else
+			{
+				lX.x = aNormal.z;
+				lX.y = aNormal.y;
+				lX.z = aNormal.x;
+			}
+		}
+		else
+		{
+			if(abs(aNormal.x) > abs(aNormal.z))
+			{
+				lX.x = aNormal.y;
+				lX.y = aNormal.x;
+				lX.z = aNormal.z;
+			}
+			else
+			{
+				lX.x = aNormal.x;
+				lX.y = aNormal.z;
+				lX.z = aNormal.y;
+			}
+		}
+		Vector lZ = CrossProduct(aNormal, lX);
+
+		Vector lRetVal = Normalize( lX * Random<Real>() +
+									aNormal * Random<Real>() * (Random<Real>() + 1) +
+									lZ * Random<Real>() );
+
+		return lRetVal;
+	}
+
 	class Multisample
 	{
 	public:
@@ -68,34 +118,68 @@ namespace pragma
 			mCollisionMap.ResetStats();			
 		}
 
-		Color TraceCameraRay(const Point& aPosition, const Vector& aDirection, Real aLength)
+		Color Shade(const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth)
 		{
 			Color lRetVal(0,0,0);
+
+			Vector lToLigth = Normalize(lLigth - aPoint);
+			Vector lCollisionPoint = aPoint + lToLigth * (4.f * math::type_traits<Real>::epsilon);
+			bool lShadowRayCollision = mCollisionMap.IntersectRay( lCollisionPoint, lLigth );
+			if( !lShadowRayCollision ) 
+			{
+				// Direct Lighting
+				Real lDiffuse = DotProduct(aNormal, Normalize(lLigth-lCollisionPoint));
+				if(lDiffuse > 0)
+				{
+					lRetVal = lRetVal + aMaterial.GetdiffuseColor() * lDiffuse;
+				}
+			}
+
+			aDepth--;
+			if(aDepth == 0)
+				return lRetVal;
+
+			// Indirect Lighting
+			Color lIndirect(0,0,0);
+
+			for(size_t i = 0; i < INDIRECT_RAYS; ++i)
+			{
+				Vector lDir = RandomVector(aNormal);
+				Vector lPoint = aPoint + lDir * (4.f * math::type_traits<Real>::epsilon);
+				lIndirect = lIndirect + (aMaterial.GetdiffuseColor() * ( TraceRay(lPoint, lDir, 1000, aDepth) * DotProduct( aNormal, lDir)));
+			}
+			lRetVal = lRetVal + ( lIndirect / INDIRECT_RAYS );
+			
+			return lRetVal;
+		}
+
+		Color TraceCameraRay(const Point& aPosition, const Vector& aDirection, Real aLength)
+		{
+			return TraceRay(aPosition, aDirection, aLength, 2);
+		}
+
+		Color TraceRay(const Point& aPosition, const Vector& aDirection, Real aLength, size_t aDepth)
+		{
+			Color lRetVal(0,0,0);
+
+			if(aDepth == 0)
+				return lRetVal;
+
 			MeshCollision::TResult lResult;
 
 			if( mCollisionMap.IntersectRay( aPosition, aDirection, aLength, lResult ) )
 			{
-				// Collision, trace Lighting ray
+				// Collision, shade point
 				size_t lCount;
 				const Mesh::TTriangle& lTri = mMesh.GetTriangles(lCount)[lResult.mTriangleIndex];
 
-				Vector lToLigth = Normalize(lLigth - lResult.mPosition);
-				Vector lCollisionPoint = lResult.mPosition + lToLigth * (4.f * math::type_traits<Real>::epsilon);
-				bool lShadowRayCollision = mCollisionMap.IntersectRay( lCollisionPoint, lLigth );
-				if( !lShadowRayCollision ) 
-				{
-					Vector lNormal;
-					ComputeFromBarycentric( mMesh.GetVertexNormal(lTri.mVertexNormal[0])
-										  , mMesh.GetVertexNormal(lTri.mVertexNormal[1])
-										  , mMesh.GetVertexNormal(lTri.mVertexNormal[2])
-										  , lResult.mBarycentric
-										  , lNormal );
-					Real lDiffuse = DotProduct(lNormal, Normalize(lLigth-lCollisionPoint));
-					if(lDiffuse > 0)
-					{
-						lRetVal = mMaterialLibrary.GetMaterial(lTri.mMaterial).GetdiffuseColor() * lDiffuse;
-					}
-				}
+				Vector lNormal;
+				ComputeFromBarycentric( mMesh.GetVertexNormal(lTri.mVertexNormal[0])
+									  , mMesh.GetVertexNormal(lTri.mVertexNormal[1])
+									  , mMesh.GetVertexNormal(lTri.mVertexNormal[2])
+									  , lResult.mBarycentric
+									  , lNormal );
+				lRetVal = lRetVal + Shade(lResult.mPosition, lNormal, mMaterialLibrary.GetMaterial(lTri.mMaterial), aDepth);
 			}
 
 			return lRetVal;
@@ -135,9 +219,11 @@ int main(int argc, char* argv[])
 
 	lStart = GetTimeMilliseconds();
 
-	Multisample lMultisample(1);
+	Multisample lMultisample(SAMPLES_PER_PIXEL);
 
 	Raytracer lRaytracer(lMesh, lMaterialLibrary);
+
+	int lProgess = 0;
 
 	// Scanline renderer
 	for(size_t i = 0; i < IMAGE_SIZE; ++i)
@@ -160,6 +246,13 @@ int main(int argc, char* argv[])
 			}
 			*lIter = *lIter / lMultisample.GetSamplesPerPixel();
 			++lIter;
+
+			int lNewProgress = (i * IMAGE_SIZE + j) * 100 / (IMAGE_SIZE * IMAGE_SIZE);
+			if(lProgess != lNewProgress)
+			{
+				printf("%3d%%\b\b\b\b", lNewProgress);
+				lProgess = lNewProgress;
+			}
 		}
 	}
 	lEnd = GetTimeMilliseconds();

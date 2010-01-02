@@ -91,6 +91,12 @@ namespace pragma
 
 	//---[ vector3<T> ] ---//
 	template <typename T>
+	inline base_vector3<T> operator*(const base_vector3<T>& aSrc1, const base_vector3<T> aSrc2)
+	{
+		return vector3<T>( aSrc1.x * aSrc2.x, aSrc1.y * aSrc2.y, aSrc1.z * aSrc2.z );
+	}
+
+	template <typename T>
 	inline base_vector3<T> operator*(const base_vector3<T>& aSrc, T aScale)
 	{
 		return vector3<T>( aSrc.x * aScale, aSrc.y * aScale, aSrc.z * aScale);
