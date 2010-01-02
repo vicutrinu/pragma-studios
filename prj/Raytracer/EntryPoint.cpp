@@ -19,7 +19,8 @@ using namespace pragma;
 
 #define SAMPLES_PER_PIXEL	4
 #define IMAGE_SIZE			512
-#define INDIRECT_RAYS		400
+#define INDIRECT_DEPTH		2
+#define INDIRECT_RAYS		100
 
 Point lLigth(0,54,0);
 
@@ -90,16 +91,16 @@ namespace pragma
 			mValues.reserve(mSamplesPerPixel);
 			size_t lWidth = (size_t)pragma::sqrt<float>((float)mSamplesPerPixel);
 			size_t lHeigth = mSamplesPerPixel / lWidth;
-			vector2f lOffset( 1.f / (lWidth+1), 1.f / (lHeigth+1));
-			vector2f lSample(0,0);
+			vector2f lOffset( 1.f / lWidth, 1.f / lHeigth);
+			vector2f lSample = lOffset / 2;
 			for(size_t i = 0; i < lHeigth; ++i)
 			{
-				lSample.y+= lOffset.y;
 				for(size_t j = 0; j < lWidth; ++j)
 				{
-					lSample.x+= lOffset.x;
 					mValues.push_back(lSample);										
+					lSample.x+= lOffset.x;
 				}
+				lSample.y+= lOffset.y;
 			}
 		}
 
@@ -147,6 +148,7 @@ namespace pragma
 			if(aDepth == 0)
 				return lRetVal;
 
+#if defined INDIRECT_RAYS && INDIRECT_RAYS > 0
 			// Indirect Lighting
 			Color lIndirect(0,0,0);
 
@@ -157,13 +159,18 @@ namespace pragma
 				lIndirect = lIndirect + (aMaterial.GetdiffuseColor() * ( TraceRay(lPoint, lDir, 1000, aDepth) * DotProduct( aNormal, lDir)));
 			}
 			lRetVal = lRetVal + ( lIndirect / INDIRECT_RAYS );
-			
+#endif			
 			return lRetVal;
+		}
+
+		size_t TracedRays() const
+		{
+			return mCollisionMap.TracedRays();
 		}
 
 		Color TraceCameraRay(const Point& aPosition, const Vector& aDirection, Real aLength)
 		{
-			return TraceRay(aPosition, aDirection, aLength, 2);
+			return TraceRay(aPosition, aDirection, aLength, INDIRECT_DEPTH);
 		}
 
 		Color TraceRay(const Point& aPosition, const Vector& aDirection, Real aLength, size_t aDepth)
@@ -264,7 +271,7 @@ int main(int argc, char* argv[])
 		}
 	}
 	lEnd = GetTimeMilliseconds();
-	//printf("Image rendered in %d milliseconds. Traced %d rays\n", lEnd - lStart, lCollisionMap.TracedRays());
+	printf("Image rendered in %d milliseconds. Traced %d rays\n", lEnd - lStart, lRaytracer.TracedRays());
 
 	ExportToTGA(lImage, "out.tga");
 
