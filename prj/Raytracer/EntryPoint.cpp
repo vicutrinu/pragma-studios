@@ -19,56 +19,64 @@ using namespace pragma;
 
 #define SAMPLES_PER_PIXEL	4
 #define IMAGE_SIZE			512
-#define INDIRECT_RAYS		100
+#define INDIRECT_RAYS		400
 
 Point lLigth(0,54,0);
 
 namespace pragma
 {
 	template <typename T>
-	T Random()
+	inline T Random()
 	{
 		return T(T(rand()) / RAND_MAX);
+	}
+
+	template <typename T>
+	inline T Random(T aMin, T aMax)
+	{
+		T lVal = T(T(rand()) / RAND_MAX);
+		return (lVal * (aMax - aMin)) + aMin;
 	}
 
 	Vector RandomVector(const Vector& aNormal)
 	{
 		Vector lX;
+		Vector lY = Normalize(aNormal);
 		if(abs(aNormal.x) > abs(aNormal.y))
 		{
 			if(abs(aNormal.y) > abs(aNormal.z))
 			{
-				lX.x = aNormal.y;
-				lX.y = aNormal.x;
-				lX.z = aNormal.z;
+				lX.x = lY.y;
+				lX.y = lY.x;
+				lX.z = lY.z;
 			}
 			else
 			{
-				lX.x = aNormal.z;
-				lX.y = aNormal.y;
-				lX.z = aNormal.x;
+				lX.x = lY.z;
+				lX.y = lY.y;
+				lX.z = lY.x;
 			}
 		}
 		else
 		{
 			if(abs(aNormal.x) > abs(aNormal.z))
 			{
-				lX.x = aNormal.y;
-				lX.y = aNormal.x;
-				lX.z = aNormal.z;
+				lX.x = lY.y;
+				lX.y = lY.x;
+				lX.z = lY.z;
 			}
 			else
 			{
-				lX.x = aNormal.x;
-				lX.y = aNormal.z;
-				lX.z = aNormal.y;
+				lX.x = lY.x;
+				lX.y = lY.z;
+				lX.z = lY.y;
 			}
 		}
-		Vector lZ = CrossProduct(aNormal, lX);
+		Vector lZ = CrossProduct(lX, lY);
 
-		Vector lRetVal = Normalize( lX * Random<Real>() +
-									aNormal * Random<Real>() * (Random<Real>() + 1) +
-									lZ * Random<Real>() );
+		Vector lRetVal = Normalize( lX * Random<Real>(-1, 1) +
+									aNormal * Random<Real>(0, 2)+
+									lZ * Random<Real>(-1,1) );
 
 		return lRetVal;
 	}
