@@ -7,6 +7,9 @@ namespace pragma { namespace math
 	struct type_traits
 	{
 		static const T epsilon;
+		static const T Pi;
+		static const T DoublePi;
+		static const T HalfPi;
 	};
 
 } }

@@ -25,4 +25,10 @@ namespace pragma
 	template <typename T>
 	T Cot(const T& aValue);
 
+	template <typename T>
+	T Sin(const T& aValue);
+
+	template <typename T>
+	T Cos(const T& aValue);
+
 }

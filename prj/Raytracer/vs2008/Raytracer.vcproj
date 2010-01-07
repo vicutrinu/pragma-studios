@@ -367,6 +367,18 @@
 			RelativePath="..\EntryPoint.cpp"
 			>
 		</File>
+		<File
+			RelativePath="..\Raytracer.cpp"
+			>
+		</File>
+		<File
+			RelativePath="..\Raytracer.h"
+			>
+		</File>
+		<File
+			RelativePath="..\Samplers.h"
+			>
+		</File>
 	</Files>
 	<Globals>
 	</Globals>

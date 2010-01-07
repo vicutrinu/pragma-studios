@@ -21,10 +21,12 @@ namespace pragma
 						 ,    0,    0,    1, -aPosition.z
 						 ,    0,    0,    0, 1 );
 		mTransform = lRot * lTrans;
-		/*mTransform.mRow0 = vector4f(lX.x, lX.y, lX.z, DotProduct(-aPosition, lX));//vector3f(lX.x, lY.x, lZ.x)));
+		/*
+		mTransform.mRow0 = vector4f(lX.x, lX.y, lX.z, DotProduct(-aPosition, lX));//vector3f(lX.x, lY.x, lZ.x)));
 		mTransform.mRow1 = vector4f(lY.x, lY.y, lY.z, DotProduct(-aPosition, lY));//vector3f(lX.y, lY.y, lZ.y)));
 		mTransform.mRow2 = vector4f(lZ.x, lZ.y, lZ.z, DotProduct(-aPosition, lZ));//vector3f(lX.z, lY.z, lZ.z)));
-		mTransform.mRow3 = vector4f(   0,    0,    0, 1);*/
+		mTransform.mRow3 = vector4f(   0,    0,    0, 1);
+		*/
 	}
 
 	void Camera::SetProjection(Real aFOV, Real aAspectRatio, Real aNearPlane, Real aFarPlane)

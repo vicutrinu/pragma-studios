@@ -104,7 +104,7 @@ namespace pragma
 		}
 	}
 
-	bool MeshCollision::IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric)
+	inline bool MeshCollision::IntersectRayTriangleList(const Point& aOrigin, const Point& aDirection, Real aRayLength, std::vector<int> aTriangleList, int& aIndex, Vector2& aBarycentric)
 	{
 		size_t lVertexCount;
 		const Point* lVertexs = mMesh.GetVertexs(lVertexCount);

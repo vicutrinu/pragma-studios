@@ -278,6 +278,22 @@ namespace pragma
 	}
 
 	template <typename T>
+	inline base_vector3<T> TransformPoint(const matrix3x3<T>& aMatrix, const base_vector3<T>& aColumnVector)
+	{
+		return vector3<T>( DotProduct<T>(aMatrix.mRow0, aColumnVector)
+						 , DotProduct<T>(aMatrix.mRow1, aColumnVector)
+						 , DotProduct<T>(aMatrix.mRow2, aColumnVector) );
+	}
+
+	template <typename T>
+	inline base_vector3<T> TransformPoint(const base_vector3<T>& aVector, const matrix3x3<T>& aMatrix)
+	{
+		return vector3<T>( DotProduct<T>( aVector, vector3<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2] ) )
+						 , DotProduct<T>( aVector, vector3<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2] ) )
+						 , DotProduct<T>( aVector, vector3<T>(aMatrix.i[0][0], aMatrix.i[0][1], aMatrix.i[0][2] )) );
+	}
+
+	template <typename T>
 	inline base_vector4<T> TransformPoint(const matrix4x4<T>& aMatrix, const base_vector4<T>& aColumnVector)
 	{
 		return vector4<T>( DotProduct<T>(aMatrix.mRow0, aColumnVector)

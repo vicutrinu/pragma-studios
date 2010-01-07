@@ -28,4 +28,28 @@ namespace pragma
 		return double(1) / ::tan(aValue);
 	}
 
+	template <>
+	float Sin(const float& aValue)
+	{
+		return float(::sin(aValue));
+	}
+
+	template <>
+	float Cos(const float& aValue)
+	{
+		return float(::cos(aValue));
+	}
+
+	template <>
+	double Sin(const double& aValue)
+	{
+		return double(::sin(aValue));
+	}
+
+	template <>
+	double Cos(const double& aValue)
+	{
+		return double(::cos(aValue));
+	}
+
 }
