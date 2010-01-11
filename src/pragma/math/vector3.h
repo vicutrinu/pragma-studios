@@ -60,5 +60,11 @@ namespace pragma
 			base_vector3<T>::z = T(aVector.z);
 		}
 
+		vector3& operator+=(const base_vector3& aVector)
+		{
+			*this = *this + aVector;
+			return *this;
+		}
+
 	};
 };

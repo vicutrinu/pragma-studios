@@ -368,6 +368,10 @@
 			>
 		</File>
 		<File
+			RelativePath="..\functions.h"
+			>
+		</File>
+		<File
 			RelativePath="..\Raytracer.cpp"
 			>
 		</File>

@@ -3,142 +3,164 @@
 #include <pragma/geometry/functions.h>
 #include <pragma/graphics/Material.h>
 
+#include <pragma/graphics/Camera.h>
+#include <pragma/image/types.h>
+#include <pragma/image/Image.h>
+#include <pragma/image/functions.h>
+#include <pragma/system/system.h>
+#include "Samplers.h"
+#include "functions.h"
+
 #include <time.h>
+
+#include <stdlib.h>
 
 namespace pragma
 {
-	template <typename T>
-	inline T Random()
-	{
-		return T(T(rand()) / RAND_MAX);
-	}
-
-	template <typename T>
-	inline T Random(T aMin, T aMax)
-	{
-		T lVal = T(T(rand()) / RAND_MAX);
-		return (lVal * (aMax - aMin)) + aMin;
-	}
-
-	Vector SampleHemisphere(const Vector& aNormal)
-	{
-		Real u1 = Random<Real>();
-		Real u2 = Random<Real>();
-
-		const Real r = sqrt<Real>(u1);  
-		const Real theta = math::type_traits<Real>::DoublePi * u2;  
-	  
-		const Real x = r * Cos(theta);  
-		const Real z = r * Sin(theta);  
-	  
-		Vector lRetVal(x, sqrt<Real>(max<Real>(0.0f, 1 - x * x - z * z)), z);
-
-		Vector lX;
-		Vector lY = Normalize(aNormal);
-		if(abs(aNormal.x) > abs(aNormal.y))
-		{
-			if(abs(aNormal.y) > abs(aNormal.z))
-			{
-				lX.x = lY.y;
-				lX.y = lY.x;
-				lX.z = lY.z;
-			}
-			else
-			{
-				lX.x = lY.z;
-				lX.y = lY.y;
-				lX.z = lY.x;
-			}
-		}
-		else
-		{
-			if(abs(aNormal.x) > abs(aNormal.z))
-			{
-				lX.x = lY.y;
-				lX.y = lY.x;
-				lX.z = lY.z;
-			}
-			else
-			{
-				lX.x = lY.x;
-				lX.y = lY.z;
-				lX.z = lY.y;
-			}
-		}
-		Vector lZ = CrossProduct(lX, lY);
-
-		matrix3x3<Real> lMat( lX.x, lY.x, lZ.x
-							, lX.y, lY.y, lZ.y
-							, lX.z, lY.z, lZ.z );
-
-		lRetVal = TransformPoint(lMat, lRetVal);
-				
-		return lRetVal;
-	}
-
 	Raytracer::Raytracer( const Mesh& aMesh, const Point& aLight, const MaterialLibrary& aMaterialLibrary
-						, size_t aBounces, size_t aRaysPerBounce )
+						, size_t aSamplesPerPixel, size_t aBounces, size_t aRaysPerBounce )
 		: mMesh(aMesh)
 		, mCollisionMap(mMesh)
 		, mLigth(aLight)
 		, mMaterialLibrary(aMaterialLibrary)
+		, mSamplesPerPixel(aSamplesPerPixel)
 		, mBounces(aBounces)
 		, mRaysPerBounce(aRaysPerBounce)
 	{
-		srand(clock());
 		mCollisionMap.ResetStats();			
+	}
+
+	/**
+	 *	Renderiza la escena utilizando una camara
+	 *	Este es el punto de entrada del algoritmo de raytracing. Por cada pixel de la imagen, y utilizando la 
+	 *	informacion de la camara, se trazan una serie de rayos para determinar la cantidad de luz que incide sobre
+	 *	ese pixel de la imagen.
+	 */
+	void Raytracer::Render( const Camera& aCamera, Image& aOut )
+	{
+		BasicSampler lSampler(mSamplesPerPixel);
+
+		RGBPixel* lIter = aOut.begin();
+
+		size_t lImageWidth = aOut.GetWidth();
+		size_t lImageHeight = aOut.GetHeight();
+
+		Image lDebugImage(lImageWidth, lImageHeight);
+		RGBPixel* lDebugIter = lDebugImage.begin();
+
+		// Get camera inverse tranform (from 2D to 3D world)
+		Camera::Transform lTransform = Inverse( aCamera.GetProjection() * aCamera.GetView() );
+
+		int lProgess = 0;
+
+		// Scanline renderer
+		for(size_t i = 0; i < lImageHeight; ++i)
+		{
+			for(size_t j = 0; j < lImageWidth; ++j)
+			{
+				*lIter = Color(0,0,0);
+				// Multiple samples per pixel
+				for(size_t s = 0; s < lSampler.GetSamplesPerPixel(); ++s)
+				{
+					vector2f lOffset = lSampler.GetSample(s);
+					vector4<Real> lRay(-1+(((lOffset.x+j)*Real(2)) / (lImageWidth-1))
+									  , 1-(((lOffset.y+i)*Real(2)) / (lImageHeight-1))
+									  , 1, 1 );
+					vector4<Real> lRes = TransformPoint(lTransform, lRay);
+					lRes = lRes * (1.f / lRes.w);
+
+					Vector lDir(lRes.x, lRes.y, lRes.z);
+					lDir = Normalize( lDir - aCamera.GetPosition() );
+
+					CollisionInfo lInfo;
+					if( TraceRay( aCamera.GetPosition(), lDir, Length(lDir * aCamera.GetFarPlane() / lDir.z), lInfo ) )
+					{
+						*lIter = *lIter + RGBPixel( Shade(lInfo.mPoint, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), mBounces) );
+						*lDebugIter = RGBPixel(mDebug);
+					}
+				}
+				*lIter = *lIter / lSampler.GetSamplesPerPixel();
+
+				++lIter;
+				++lDebugIter;
+
+				int lNewProgress = (i * lImageHeight + j) * 100 / (lImageWidth * lImageHeight);
+				if(lProgess != lNewProgress)
+				{
+					printf("%3d%%\b\b\b\b", lNewProgress);
+					lProgess = lNewProgress;
+				}
+			}
+		}
+
+		ExportToTGA(lDebugImage, "debug.tga");
 	}
 
 	Color Raytracer::Shade(const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth)
 	{
-		Color lRetVal(0,0,0);
+		Color lDirect = DirectIllumination(aPoint, aNormal, aMaterial);
+		if(aDepth == 0)
+			return lDirect;
+		else
+			return lDirect + IndirectIllumination(aPoint, aNormal, aMaterial, aDepth - 1);
+	}
 
+	Color Raytracer::DirectIllumination(const Point& aPoint, const Vector& aNormal, const Material& aMaterial)
+	{
 		Vector lToLigth = Normalize(mLigth - aPoint);
 		Vector lCollisionPoint = aPoint + lToLigth * (4.f * math::type_traits<Real>::epsilon);
 		
-		bool lShadowRayCollision = mCollisionMap.IntersectRay( lCollisionPoint, mLigth );
-		if( !lShadowRayCollision ) 
+		if(aMaterial.GetType() == Material::eSolid)
 		{
-			// Direct Lighting
-			Real lDiffuse = DotProduct(aNormal, Normalize(mLigth-lCollisionPoint));
-			if(lDiffuse > 0)
+			bool lShadowRayCollision = mCollisionMap.IntersectRay( lCollisionPoint, mLigth );
+			if( !lShadowRayCollision ) 
 			{
-				lRetVal = lRetVal + aMaterial.GetdiffuseColor() * lDiffuse;
+				// Direct Lighting
+				Real lDiffuse = DotProduct(aNormal, Normalize(mLigth-lCollisionPoint));
+				if(lDiffuse > 0)
+					return aMaterial.GetdiffuseColor() * lDiffuse;
 			}
 		}
 
-		if(aDepth == 0)
-			return lRetVal;
-		aDepth--;
+		return Color(0,0,0);
+	}
 
+	Color Raytracer::IndirectIllumination( const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth )
+	{
+		// Indirect Lighting
+		Color lIndirect(0,0,0);
 		if(mRaysPerBounce > 0)
 		{
-			// Indirect Lighting
-			Color lIndirect(0,0,0);
+			matrix3x3<Real> lMat;
+			CreateLocalSpace(lMat, aNormal);
 
 			for(size_t i = 0; i < mRaysPerBounce; ++i)
 			{
-				Vector lDir = SampleHemisphere(aNormal);
+				Real u1 = Random<Real>();
+				Real u2 = Random<Real>();
+
+				Vector lDir = UniformSampleHemisphere(u1, u2);
+				lDir = TransformPoint(lMat, lDir);
+
 				mDebug = lDir;
 				Vector lPoint = aPoint + lDir * (4.f * math::type_traits<Real>::epsilon);
-				lIndirect = lIndirect + (aMaterial.GetdiffuseColor() * ( TraceRay(lPoint, lDir, 1000, aDepth) * DotProduct( aNormal, lDir)));
+				
+				CollisionInfo lInfo;
+				if( TraceRay(lPoint, lDir, 1000, lInfo) )
+				{
+					lIndirect+= (aMaterial.GetdiffuseColor() * Shade( lInfo.mPoint, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), aDepth ))
+							  * DotProduct( aNormal, lDir );
+				}
 			}
 			
-			lRetVal = lRetVal + ( lIndirect / mRaysPerBounce );
+			lIndirect = lIndirect / mRaysPerBounce;
 		}
 
-		return lRetVal;
+		return lIndirect;
 	}
 
-	Color Raytracer::TraceCameraRay(const Point& aPosition, const Vector& aDirection, Real aLength)
+	bool Raytracer::TraceRay(const Point& aPosition, const Vector& aDirection, Real aLength, CollisionInfo& aInfo)
 	{
-		return TraceRay(aPosition, aDirection, aLength, mBounces);
-	}
-
-	Color Raytracer::TraceRay(const Point& aPosition, const Vector& aDirection, Real aLength, size_t aDepth)
-	{
-		Color lRetVal(0,0,0);
-
 		MeshCollision::TResult lResult;
 
 		if( mCollisionMap.IntersectRay( aPosition, aDirection, aLength, lResult ) )
@@ -147,16 +169,18 @@ namespace pragma
 			size_t lCount;
 			const Mesh::TTriangle& lTri = mMesh.GetTriangles(lCount)[lResult.mTriangleIndex];
 
-			Vector lNormal;
+			aInfo.mPoint = lResult.mPosition;
 			ComputeFromBarycentric( mMesh.GetVertexNormal(lTri.mVertexNormal[0])
-				, mMesh.GetVertexNormal(lTri.mVertexNormal[1])
-				, mMesh.GetVertexNormal(lTri.mVertexNormal[2])
-				, lResult.mBarycentric
-				, lNormal );
-			lRetVal = lRetVal + Shade(lResult.mPosition, lNormal, mMaterialLibrary.GetMaterial(lTri.mMaterial), aDepth);
-		}
+								  , mMesh.GetVertexNormal(lTri.mVertexNormal[1])
+								  , mMesh.GetVertexNormal(lTri.mVertexNormal[2])
+								  , lResult.mBarycentric
+								  , aInfo.mNormal );
 
-		return lRetVal;
+			aInfo.mMaterial = lTri.mMaterial;
+			return true;
+		}
+		else
+			return false;
 	}
 
 }

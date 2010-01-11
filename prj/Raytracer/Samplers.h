@@ -25,14 +25,26 @@ public:
 		}
 
 		size_t GetSamplesPerPixel() const { return mSamplesPerPixel; }
-		const vector2f GetSampleOffset(size_t aIndex) const
-		{
-			return mValues[aIndex];
-			
-		}
+		
+		const vector2f GetSample(size_t aIndex) const { return mValues[aIndex]; }
 
 	private:
 		size_t mSamplesPerPixel;
 		std::vector<vector2f> mValues;
 	};
+
+	Vector UniformSampleHemisphere(Real u1, Real u2)
+	{
+		Real lPhi = math::type_traits<Real>::DoublePi * u1;
+		Real lR = sqrt<Real>(u2);
+		return Vector( lR * Cos<Real>(lPhi)
+					 , sqrt<Real>(1 - u2)
+					 , lR * Sin<Real>(lPhi) );
+
+		/*Real lR = sqrt<Real>(max(Real(0), Real(1) - u1 * u1));
+		Real lPhi = math::type_traits<Real>::DoublePi * u2;
+		return Vector( lR * Cos<Real>(lPhi)
+					 , u1
+					 , lR * Sin<Real>(lPhi) );*/
+	}
 }

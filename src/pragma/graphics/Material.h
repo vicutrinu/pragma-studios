@@ -10,15 +10,26 @@ namespace pragma
 	class Material
 	{
 	public:
-							Material		(const char* aName);
+		enum EType
+		{
+			eSolid = 0,
+			eReflect,
+		};
+
+	public:
+							Material		(const char* aName, EType aType);
 
 		const std::string&	GetName			() const { return mName; }
 
 		void				SetDiffuseColor	( const Color& aColor ) { mDiffuseColor = aColor; }
 		const Color			GetdiffuseColor	() const { return mDiffuseColor; }
 
+		EType				GetType			() const { return mType; }
+
 	private:
 		std::string	mName;
+		EType		mType;
+
 		Color		mDiffuseColor;
 	};
 

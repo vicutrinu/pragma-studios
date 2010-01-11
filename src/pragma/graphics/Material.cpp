@@ -2,8 +2,9 @@
 
 namespace pragma
 {
-	Material::Material(const char* aName)
+	Material::Material(const char* aName, EType aType)
 		: mName(aName)
+		, mType(aType)
 	{
 	}
 

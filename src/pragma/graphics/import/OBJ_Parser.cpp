@@ -43,7 +43,7 @@ namespace pragma
 			if(lTokens[lCount] == "newmtl")
 			{
 				std::string lName = lTokens[lCount+1];
-				Material lMaterial(lName.c_str());
+				Material lMaterial(lName.c_str(), Material::eSolid);
 				Color lDiffuse;
 				lDiffuse.i[0] = Parse<Real>(lTokens[lCount+21]);
 				lDiffuse.i[1] = Parse<Real>(lTokens[lCount+22]);
