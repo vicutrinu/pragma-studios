@@ -20,7 +20,6 @@ int main(int argc, char* argv[])
 	pragma::Mesh lMesh;
 	MaterialLibrary lMaterialLibrary(32);
 	ParseOBJ("scenes/Cornell.obj", lMesh, lMaterialLibrary);
-	TMillisecond lEnd = GetTimeMilliseconds();
 
 	// Create camera
 	Vector lCameraPos(0,27.5,95);
@@ -30,7 +29,7 @@ int main(int argc, char* argv[])
 
 	Image lImage(IMAGE_SIZE, IMAGE_SIZE);
 	
-	Raytracer lRaytracer( lMesh, Point(0,55,0), lMaterialLibrary, 1, 1, 1 );
+	Raytracer lRaytracer( lMesh, Point(0,55,0), lMaterialLibrary, 1, 5, 1000 );
 
 	lRaytracer.Render( lCamera, lImage );
 

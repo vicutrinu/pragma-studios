@@ -10,6 +10,7 @@
 #include <pragma/system/system.h>
 #include "Samplers.h"
 #include "functions.h"
+#include <pragma/math/type_traits.h>
 
 #include <time.h>
 
@@ -24,7 +25,7 @@ namespace pragma
 		, mLigth(aLight)
 		, mMaterialLibrary(aMaterialLibrary)
 		, mSamplesPerPixel(aSamplesPerPixel)
-		, mBounces(aBounces)
+		, mMaxDepth(aBounces)
 		, mRaysPerBounce(aRaysPerBounce)
 	{
 		mCollisionMap.ResetStats();			
@@ -75,7 +76,7 @@ namespace pragma
 					CollisionInfo lInfo;
 					if( TraceRay( aCamera.GetPosition(), lDir, Length(lDir * aCamera.GetFarPlane() / lDir.z), lInfo ) )
 					{
-						*lIter = *lIter + RGBPixel( Shade(lInfo.mPoint, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), mBounces) );
+						*lIter = *lIter + RGBPixel( Shade(lInfo.mPoint, -lDir, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), mRaysPerBounce, 0) );
 						*lDebugIter = RGBPixel(mDebug);
 					}
 				}
@@ -87,7 +88,7 @@ namespace pragma
 				int lNewProgress = (i * lImageHeight + j) * 100 / (lImageWidth * lImageHeight);
 				if(lProgess != lNewProgress)
 				{
-					printf("%3d%%\b\b\b\b", lNewProgress);
+					printf("%3d%%\b\b\b\b\n", lNewProgress);
 					lProgess = lNewProgress;
 				}
 			}
@@ -96,13 +97,13 @@ namespace pragma
 		ExportToTGA(lDebugImage, "debug.tga");
 	}
 
-	Color Raytracer::Shade(const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth)
+	Color Raytracer::Shade(const Point& aPoint, const Vector& aDirection, const Vector& aNormal, const Material& aMaterial, size_t aRaysPerBounce, size_t aDepth)
 	{
 		Color lDirect = DirectIllumination(aPoint, aNormal, aMaterial);
-		if(aDepth == 0)
+		if(aDepth == mMaxDepth)
 			return lDirect;
 		else
-			return lDirect + IndirectIllumination(aPoint, aNormal, aMaterial, aDepth - 1);
+			return lDirect + IndirectIllumination(aPoint, aDirection, aNormal, aMaterial, aRaysPerBounce, aDepth + 1);
 	}
 
 	Color Raytracer::DirectIllumination(const Point& aPoint, const Vector& aNormal, const Material& aMaterial)
@@ -118,29 +119,31 @@ namespace pragma
 				// Direct Lighting
 				Real lDiffuse = DotProduct(aNormal, Normalize(mLigth-lCollisionPoint));
 				if(lDiffuse > 0)
-					return aMaterial.GetdiffuseColor() * lDiffuse;
+					return aMaterial.GetdiffuseColor() * lDiffuse;// / math::type_traits<Real>::Pi;
 			}
 		}
 
 		return Color(0,0,0);
 	}
 
-	Color Raytracer::IndirectIllumination( const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth )
+	Color Raytracer::IndirectIllumination( const Point& aPoint, const Vector& aDirection, const Vector& aNormal, const Material& aMaterial, size_t aRaysPerBounce, size_t aDepth )
 	{
 		// Indirect Lighting
 		Color lIndirect(0,0,0);
-		if(mRaysPerBounce > 0)
+		Real lBRDF = Real(1) / math::type_traits<Real>::Pi;
+		Real lPDF = math::type_traits<Real>::DoublePi;
+		if(aRaysPerBounce > 0)
 		{
 			matrix3x3<Real> lMat;
 			CreateLocalSpace(lMat, aNormal);
 
-			for(size_t i = 0; i < mRaysPerBounce; ++i)
+			for(size_t i = 0; i < aRaysPerBounce; ++i)
 			{
 				Real u1 = Random<Real>();
 				Real u2 = Random<Real>();
 
-				Vector lDir = UniformSampleHemisphere(u1, u2);
-				lDir = TransformPoint(lMat, lDir);
+				Vector lDir = UniformSampleHemisphere(u1, u2, aNormal);
+				//lDir = TransformPoint(lMat, lDir);
 
 				mDebug = lDir;
 				Vector lPoint = aPoint + lDir * (4.f * math::type_traits<Real>::epsilon);
@@ -148,8 +151,11 @@ namespace pragma
 				CollisionInfo lInfo;
 				if( TraceRay(lPoint, lDir, 1000, lInfo) )
 				{
-					lIndirect+= (aMaterial.GetdiffuseColor() * Shade( lInfo.mPoint, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), aDepth ))
-							  * DotProduct( aNormal, lDir );
+					Real lCos = DotProduct( aNormal, lDir );
+					lIndirect+= ( aMaterial.GetdiffuseColor() 
+								* Shade( lInfo.mPoint, -lDir, lInfo.mNormal, mMaterialLibrary.GetMaterial(lInfo.mMaterial), 1, aDepth ))
+								//* lBRDF * lPDF
+								* lCos;
 				}
 			}
 			

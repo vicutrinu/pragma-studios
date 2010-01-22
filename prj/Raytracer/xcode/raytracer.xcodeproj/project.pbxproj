@@ -18,9 +18,10 @@
 		573CECB210EBBC69005A2851 /* type_traits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573CEC9910EBBC69005A2851 /* type_traits.cpp */; };
 		573CECB310EBBC69005A2851 /* clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573CECA010EBBC69005A2851 /* clock.cpp */; };
 		573CECB410EBBC69005A2851 /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573CECA210EBBC69005A2851 /* system.cpp */; };
-		573CECB710EBBC7D005A2851 /* EntryPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573CECB610EBBC7D005A2851 /* EntryPoint.cpp */; };
 		5761854F10EBE4A00048EE8F /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5761854A10EBE4A00048EE8F /* Image.cpp */; };
 		5761855010EBE4A00048EE8F /* TGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5761854C10EBE4A00048EE8F /* TGA.cpp */; };
+		579435F410FD38C70038176F /* Raytracer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 579435F110FD38C70038176F /* Raytracer.cpp */; };
+		5794361010FD3A080038176F /* EntryPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 573CECB610EBBC7D005A2851 /* EntryPoint.cpp */; };
 		8DD76F6A0486A84900D96B5E /* raytracer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* raytracer.1 */; };
 /* End PBXBuildFile section */
 
@@ -86,6 +87,10 @@
 		5761854C10EBE4A00048EE8F /* TGA.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TGA.cpp; sourceTree = "<group>"; };
 		5761854D10EBE4A00048EE8F /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = functions.h; sourceTree = "<group>"; };
 		5761854E10EBE4A00048EE8F /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		579435F010FD38C70038176F /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../functions.h; sourceTree = SOURCE_ROOT; };
+		579435F110FD38C70038176F /* Raytracer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raytracer.cpp; path = ../Raytracer.cpp; sourceTree = SOURCE_ROOT; };
+		579435F210FD38C70038176F /* Raytracer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raytracer.h; path = ../Raytracer.h; sourceTree = SOURCE_ROOT; };
+		579435F310FD38C70038176F /* Samplers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Samplers.h; path = ../Samplers.h; sourceTree = SOURCE_ROOT; };
 		8DD76F6C0486A84900D96B5E /* raytracer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = raytracer; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* raytracer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = raytracer.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -115,6 +120,10 @@
 			isa = PBXGroup;
 			children = (
 				573CEC7310EBBC69005A2851 /* pragma */,
+				579435F010FD38C70038176F /* functions.h */,
+				579435F110FD38C70038176F /* Raytracer.cpp */,
+				579435F210FD38C70038176F /* Raytracer.h */,
+				579435F310FD38C70038176F /* Samplers.h */,
 				573CECB610EBBC7D005A2851 /* EntryPoint.cpp */,
 			);
 			name = Source;
@@ -309,9 +318,10 @@
 				573CECB210EBBC69005A2851 /* type_traits.cpp in Sources */,
 				573CECB310EBBC69005A2851 /* clock.cpp in Sources */,
 				573CECB410EBBC69005A2851 /* system.cpp in Sources */,
-				573CECB710EBBC7D005A2851 /* EntryPoint.cpp in Sources */,
 				5761854F10EBE4A00048EE8F /* Image.cpp in Sources */,
 				5761855010EBE4A00048EE8F /* TGA.cpp in Sources */,
+				579435F410FD38C70038176F /* Raytracer.cpp in Sources */,
+				5794361010FD3A080038176F /* EntryPoint.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -367,6 +377,14 @@
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
 				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_ENABLE_CPP_EXCEPTIONS = NO;
+				GCC_ENABLE_CPP_RTTI = NO;
+				GCC_ENABLE_OBJC_EXCEPTIONS = NO;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_UNROLL_LOOPS = YES;
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				HEADER_SEARCH_PATHS = ../../../src;

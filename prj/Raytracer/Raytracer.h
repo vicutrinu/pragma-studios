@@ -30,9 +30,9 @@ namespace pragma
 			uint32		mMaterial;
 		};
 
-		Color	Shade				( const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth );
+		Color	Shade				( const Point& aPoint, const Vector& aDirection, const Vector& aNormal, const Material& aMaterial, size_t aRaysPerBounce, size_t aDepth );
 		Color	DirectIllumination	( const Point& aPoint, const Vector& aNormal, const Material& aMaterial );
-		Color	IndirectIllumination( const Point& aPoint, const Vector& aNormal, const Material& aMaterial, size_t aDepth );
+		Color	IndirectIllumination( const Point& aPoint, const Vector& aDirection, const Vector& aNormal, const Material& aMaterial, size_t aRaysPerBounce, size_t aDepth );
 		bool	TraceRay			( const Point& aPosition, const Vector& aDirection, Real aLength, CollisionInfo& aInfo );
 
 	private:
@@ -42,8 +42,8 @@ namespace pragma
 		Point					mLigth;
 
 		size_t					mSamplesPerPixel;
-		size_t					mBounces;
-		size_t					mRaysPerBounce;
+		size_t					mMaxDepth;
+		size_t					mRaysPerBounce; // First hit only
 
 		Vector					mDebug;
 	};
