@@ -47,4 +47,17 @@ public:
 					 , u1
 					 , lR * Sin<Real>(lPhi) );*/
 	}
+
+	Vector UniformSampleHemisphere(Real u1, Real u2, const Vector& aNormal)
+	{
+		Real r1 = math::type_traits<Real>::DoublePi * u1;
+		Real r2 = u2;
+		Real r2s = sqrt<Real>(r2);
+
+		Vector w = aNormal;
+		Vector u = Normalize(((abs(w.x)>.1 ? Vector(0,1,0) : CrossProduct(Vector(1,0,0),w))));
+		Vector v = CrossProduct(w,u); 
+		Vector d = Normalize((u*Cos(r1)*r2s + v*Sin(r1)*r2s + w*sqrt(1-r2))); 
+		return d; 
+	}
 }
