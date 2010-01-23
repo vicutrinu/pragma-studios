@@ -52,4 +52,28 @@ namespace pragma
 		return double(::cos(aValue));
 	}
 
+	template <>
+	float Asin(const float& aValue)
+	{
+		return float(::asin(aValue));
+	}
+
+	template <>
+	double Asin(const double& aValue)
+	{
+		return double(::asin(aValue));
+	}
+
+	template <>
+	float Acos(const float& aValue)
+	{
+		return float(::acos(aValue));
+	}
+
+	template <>
+	double Acos(const double& aValue)
+	{
+		return double(::acos(aValue));
+	}
+
 }

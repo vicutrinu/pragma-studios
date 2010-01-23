@@ -14,6 +14,7 @@ namespace pragma
 		{
 			eSolid = 0,
 			eReflect,
+			eRefract,
 		};
 
 	public:
@@ -21,8 +22,13 @@ namespace pragma
 
 		const std::string&	GetName			() const { return mName; }
 
+		bool				HasDiffuse		() const;
 		void				SetDiffuseColor	( const Color& aColor ) { mDiffuseColor = aColor; }
 		const Color			GetdiffuseColor	() const { return mDiffuseColor; }
+
+		bool				HasSpecular		() const;
+		void				SetSpecularColor( const Color& aColor ) { mSpecularColor = aColor; }
+		const Color			GetSpecularColor() const { return mSpecularColor; }
 
 		EType				GetType			() const { return mType; }
 
@@ -31,6 +37,7 @@ namespace pragma
 		EType		mType;
 
 		Color		mDiffuseColor;
+		Color		mSpecularColor;
 	};
 
 	class MaterialLibrary

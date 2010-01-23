@@ -31,4 +31,10 @@ namespace pragma
 	template <typename T>
 	T Cos(const T& aValue);
 
+	template <typename T>
+	T Asin(const T& aValue);
+
+	template <typename T>
+	T Acos(const T& aValue);
+
 }

@@ -7,39 +7,19 @@ namespace pragma
 {
 	inline void CreateLocalSpace(matrix3x3<Real>& aOut, const Vector& aNormal)
 	{
-		Vector lX;
+		Vector lZ;
 		Vector lY = Normalize(aNormal);
 		if(abs(aNormal.x) > abs(aNormal.y))
 		{
-			if(abs(aNormal.y) > abs(aNormal.z))
-			{
-				lX.x = lY.y;
-				lX.y = lY.x;
-				lX.z = lY.z;
-			}
-			else
-			{
-				lX.x = lY.z;
-				lX.y = lY.y;
-				lX.z = lY.x;
-			}
+			Real lInvLen = Real(1) / sqrt<Real>( lY.x * lY.x + lY.z * lY.z);
+			lZ = Vector( -lY.z * lInvLen, 0, lY.x * lInvLen );
 		}
 		else
 		{
-			if(abs(aNormal.x) > abs(aNormal.z))
-			{
-				lX.x = lY.y;
-				lX.y = lY.x;
-				lX.z = lY.z;
-			}
-			else
-			{
-				lX.x = lY.x;
-				lX.y = lY.z;
-				lX.z = lY.y;
-			}
+			Real lInvLen = Real(1) / sqrt<Real>( lY.y * lY.y + lY.z * lY.z);
+			lZ = Vector( 0, lY.z * lInvLen, -lY.y * lInvLen );			
 		}
-		Vector lZ = CrossProduct(lX, lY);
+		Vector lX = CrossProduct(lY, lZ);
 
 		aOut = matrix3x3<Real>( lX.x, lY.x, lZ.x
 							  , lX.y, lY.y, lZ.y

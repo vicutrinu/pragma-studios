@@ -134,8 +134,8 @@ namespace pragma
 		Real lPDF = math::type_traits<Real>::DoublePi;
 		if(aRaysPerBounce > 0)
 		{
-			matrix3x3<Real> lMat;
-			CreateLocalSpace(lMat, aNormal);
+			/*matrix3x3<Real> lMat;
+			CreateLocalSpace(lMat, aNormal);*/
 
 			for(size_t i = 0; i < aRaysPerBounce; ++i)
 			{

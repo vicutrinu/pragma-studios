@@ -12,7 +12,7 @@
 
 using namespace pragma;
 
-#define IMAGE_SIZE			512
+#define IMAGE_SIZE			1024
 
 int main(int argc, char* argv[])
 {
@@ -29,7 +29,7 @@ int main(int argc, char* argv[])
 
 	Image lImage(IMAGE_SIZE, IMAGE_SIZE);
 	
-	Raytracer lRaytracer( lMesh, Point(0,55,0), lMaterialLibrary, 1, 5, 1000 );
+	Raytracer lRaytracer( lMesh, Point(0,55,0), lMaterialLibrary, 1, 5, 10000 );
 
 	lRaytracer.Render( lCamera, lImage );
 

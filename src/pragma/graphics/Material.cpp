@@ -8,6 +8,16 @@ namespace pragma
 	{
 	}
 
+	bool Material::HasDiffuse() const
+	{
+		return mDiffuseColor.x == 0 && mDiffuseColor.y == 0 && mDiffuseColor.z == 0;
+	}
+
+	bool Material::HasSpecular() const
+	{
+		return mSpecularColor.x == 0 && mSpecularColor.y == 0 && mSpecularColor.z == 0;
+	}
+
 	// Material Library
 	MaterialLibrary::MaterialLibrary( size_t aMaxMaterials )
 		: mMaxMaterials(aMaxMaterials)

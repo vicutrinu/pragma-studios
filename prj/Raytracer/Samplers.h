@@ -40,12 +40,6 @@ public:
 		return Vector( lR * Cos<Real>(lPhi)
 					 , sqrt<Real>(1 - u2)
 					 , lR * Sin<Real>(lPhi) );
-
-		/*Real lR = sqrt<Real>(max(Real(0), Real(1) - u1 * u1));
-		Real lPhi = math::type_traits<Real>::DoublePi * u2;
-		return Vector( lR * Cos<Real>(lPhi)
-					 , u1
-					 , lR * Sin<Real>(lPhi) );*/
 	}
 
 	Vector UniformSampleHemisphere(Real u1, Real u2, const Vector& aNormal)
