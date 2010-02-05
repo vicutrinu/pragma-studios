@@ -3,8 +3,11 @@
 #include <pragma/graphics/types.h>
 #include <pragma/graphics/Mesh.h>
 
+#include "Raster.h"
+
 namespace pragma
 {
+
 	struct TVertex
 	{
 		Point	mPoint;
@@ -101,6 +104,8 @@ using namespace pragma;
 
 int main(int argc, char* argv[])
 {
+	Raster::RasterTrapezoid1(Raster::_Point(100, 234, 2), Raster::_Point(0,300, 4), Raster::_Point(300, 300, 10));
+	
 	TileBasedRenderer lRenderer(320, 240);
 	
 	Mesh lMesh("../../SimpleObject.mesh");

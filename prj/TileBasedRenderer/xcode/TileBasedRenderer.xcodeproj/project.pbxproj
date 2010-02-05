@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		57A0D911111B9F0400B1CE03 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
 		57BA6987111115FB00FFA062 /* EntryPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6986111115FB00FFA062 /* EntryPoint.cpp */; };
 		57BA69EC1111168300FFA062 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69BE1111168300FFA062 /* Camera.cpp */; };
 		57BA69ED1111168300FFA062 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69C01111168300FFA062 /* Material.cpp */; };
@@ -38,6 +39,8 @@
 /* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
+		57A0D908111B99A400B1CE03 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../Raster.h; sourceTree = SOURCE_ROOT; };
+		57A0D910111B9F0400B1CE03 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../Raster.cpp; sourceTree = SOURCE_ROOT; };
 		57BA6986111115FB00FFA062 /* EntryPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntryPoint.cpp; path = ../EntryPoint.cpp; sourceTree = SOURCE_ROOT; };
 		57BA69B31111168300FFA062 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		57BA69B51111168300FFA062 /* AABB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AABB.h; sourceTree = "<group>"; };
@@ -116,6 +119,8 @@
 			children = (
 				57BA69B11111168300FFA062 /* pragma */,
 				57BA6986111115FB00FFA062 /* EntryPoint.cpp */,
+				57A0D910111B9F0400B1CE03 /* Raster.cpp */,
+				57A0D908111B99A400B1CE03 /* Raster.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -312,6 +317,7 @@
 				57BA69F81111168300FFA062 /* type_traits.cpp in Sources */,
 				57BA69F91111168300FFA062 /* clock.cpp in Sources */,
 				57BA69FA1111168300FFA062 /* system.cpp in Sources */,
+				57A0D911111B9F0400B1CE03 /* Raster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
