@@ -104,8 +104,9 @@ using namespace pragma;
 
 int main(int argc, char* argv[])
 {
-	RasterTriangle(Point(100, 100,10), Point(30, 300,10), Point(500, 278,10));
-	Raster::RasterTrapezoid1(Raster::_Point(100, 234, 2), Raster::_Point(0,300, 4), Raster::_Point(300, 300, 10));
+	RasterTriangle(Point(21, 5,10), Point(4, 2,10), Point(12, 16,10) );
+
+	/*Raster::RasterTrapezoid1(Raster::_Point(100, 234, 2), Raster::_Point(0,300, 4), Raster::_Point(300, 300, 10));
 	
 	TileBasedRenderer lRenderer(320, 240);
 	
@@ -115,7 +116,7 @@ int main(int argc, char* argv[])
 	uint16* lIndices;
 	
 	lRenderer.DrawTriangles(lVertices, lIndices);
-	lRenderer.Render();
+	lRenderer.Render();*/
 	
 	return 0;
 }

@@ -10,6 +10,9 @@
 #include <pragma/geometry/functions.h>
 #include <pragma/math/functions.h>
 
+#include <stdio.h>
+#include <memory.h>
+
 namespace pragma
 {
 	namespace Raster
@@ -35,12 +38,10 @@ namespace pragma
 			Point lStart = aStart + (aEdge * lVal);
 			
 			Real lEndY = aStart.y + aEdge.y;
-			lY = int(lEndY + Real(0.5)) + Real(0.5);
-			lVal = (lY - lEndY) / aEdge.y; // Valor magico
-			lEndY = aStart.y + (aEdge.y * lVal);
+			lEndY = int(lEndY + Real(0.5)) + Real(0.5);
 
 			aStart = lStart;
-			return int(lEndY - lStart.y) - 1;
+			return int(lEndY - lStart.y);
 		}
 		
 		inline unsigned PreRunEdgeX(Point& aStart, const _Vector& aEdge)
@@ -50,12 +51,10 @@ namespace pragma
 			Point lStart = aStart + (aEdge * lVal);
 			
 			Real lEndX = aStart.x + aEdge.x;
-			lX = int(lEndX + Real(0.5)) + Real(0.5);
-			lVal = (lX - lEndX) / aEdge.x; // Valor magico
-			lEndX = aStart.x + (aEdge.x * lVal);
+			lEndX = int(lEndX + Real(0.5)) + Real(0.5);
 			
 			aStart = lStart;
-			return int(lEndX - lStart.x) - 1;
+			return int(lEndX - lStart.x);
 		}
 		
 		inline void RunEdges( Point* aLeftScan, _Point aLeftStart, Real aLeftIncrement
@@ -74,7 +73,7 @@ namespace pragma
 				aRightStart.y+= 1;
 				
 				unsigned lCount = PreRunEdgeX(*aLeftScan, *aRightScan-*aLeftScan);
-				unsigned char* lPtr = &sScreen[int(aLeftScan->y * 1024 + aLeftScan->x)];
+				unsigned char* lPtr = &sScreen[int(aLeftScan->y) * 1024 + int(aLeftScan->x)];
 				while(lCount--)
 				{
 					*lPtr++ = 255;
@@ -119,6 +118,7 @@ namespace pragma
 	
 	void RasterTriangle(const Point& aV0, const Point& aV1, const Point& aV2)
 	{
+		memset(Raster::sScreen, 64, Raster::sWidth * Raster::sHeight);
 		//Ordenar los vertices segun la altura, para partir el triangulo en 2 trapezoides
 		if(aV0.y < aV1.y)
 		{
@@ -160,7 +160,7 @@ namespace pragma
 			else
 			{ // 2, 0, 1
 				Vector lEdge = aV1 - aV2;
-				Real lVal = (aV0.y - aV1.y) / (lEdge.y); // Valor magico
+				Real lVal = (aV0.y - aV2.y) / (lEdge.y); // Valor magico
 				Vector lSplit = aV2 + (lEdge * lVal); 
 				if(aV0.x < aV1.x)
 				{ // 0 está a la izquierda
@@ -178,11 +178,11 @@ namespace pragma
 		{
 			if(aV1.y < aV2.y)
 			{
-				Vector lEdge = aV0 - aV1;
-				Real lVal = (aV2.y - aV1.y) / (lEdge.y); // Valor magico
-				Vector lSplit = aV1 + (lEdge * lVal); 
 				if(aV2.y < aV0.y)
 				{ // 1, 2, 0
+					Vector lEdge = aV0 - aV1;
+					Real lVal = (aV2.y - aV1.y) / (lEdge.y); // Valor magico
+					Vector lSplit = aV1 + (lEdge * lVal); 
 					if(aV2.x < aV0.x)
 					{ // 2 está a la izquierda
 						Raster::RasterTrapezoid1(aV1, aV2 - aV1, lSplit - aV1);
@@ -229,6 +229,8 @@ namespace pragma
 			}
 
 		}
-
+		FILE* handle = fopen("out.raw", "wb");
+		fwrite(Raster::sScreen, 1, Raster::sWidth * Raster::sHeight, handle);
+		fclose(handle);
 	}
 }
