@@ -185,6 +185,7 @@
 		573CEC7F10EBBC69005A2851 /* graphics */ = {
 			isa = PBXGroup;
 			children = (
+				573CEC8A10EBBC69005A2851 /* import */,
 				573CEC8010EBBC69005A2851 /* Camera.cpp */,
 				573CEC8110EBBC69005A2851 /* Camera.h */,
 				573CEC8210EBBC69005A2851 /* Material.cpp */,
@@ -195,7 +196,6 @@
 				573CEC8710EBBC69005A2851 /* MeshCollision.h */,
 				573CEC8810EBBC69005A2851 /* UnitTest.cpp */,
 				573CEC8910EBBC69005A2851 /* UnitTest.h */,
-				573CEC8A10EBBC69005A2851 /* import */,
 				573CEC9010EBBC69005A2851 /* types.h */,
 			);
 			path = graphics;
@@ -376,6 +376,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				ENABLE_OPENMP_SUPPORT = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_ENABLE_CPP_EXCEPTIONS = NO;
 				GCC_ENABLE_CPP_RTTI = NO;

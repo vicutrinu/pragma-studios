@@ -43,20 +43,22 @@ namespace pragma
 
 		RGBPixel* lIter = aOut.begin();
 
-		size_t lImageWidth = aOut.GetWidth();
-		size_t lImageHeight = aOut.GetHeight();
+		const size_t lImageWidth = aOut.GetWidth();
+		const size_t lImageHeight = aOut.GetHeight();
 
 		Image lDebugImage(lImageWidth, lImageHeight);
 		RGBPixel* lDebugIter = lDebugImage.begin();
 
 		// Get camera inverse tranform (from 2D to 3D world)
-		Camera::Transform lTransform = Inverse( aCamera.GetProjection() * aCamera.GetView() );
+		const Camera::Transform lTransform = Inverse( aCamera.GetProjection() * aCamera.GetView() );
 
 		int lProgess = 0;
 
 		// Scanline renderer
-		for(size_t i = 0; i < lImageHeight; ++i)
+#pragma omp parallel for schedule(dynamic, 1) private(lIter) shared(lSampler, lTransform)
+		for(int i = 0; i < (int)lImageHeight; ++i)
 		{
+			lIter = aOut.begin() + (lImageWidth * i);
 			for(size_t j = 0; j < lImageWidth; ++j)
 			{
 				*lIter = Color(0,0,0);

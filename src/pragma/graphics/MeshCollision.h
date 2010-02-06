@@ -1,7 +1,6 @@
 #pragma once
 
 #include <pragma/graphics/Mesh.h>
-#include <pragma/system/clock.h>
 
 namespace pragma
 {

@@ -18,30 +18,45 @@ namespace pragma
 	template <>
 	float Random()
 	{
-		return float(float(rand()) / RAND_MAX);
+		float lRetVal;
+#pragma omp critical
+		lRetVal = float(float(rand()) / RAND_MAX);
+		return lRetVal;
 	}
 
 	template <>
 	double Random()
 	{
-		return double(double(rand()) / RAND_MAX);
+		float lRetVal;
+#pragma omp critical
+		lRetVal =  double(double(rand()) / RAND_MAX);
+		return lRetVal;
 	}
 
 	template <>
 	double Random(double aMin, double aMax)
 	{
-		return aMin + (Random<double>() * (aMax - aMin) );
+		float lRetVal;
+#pragma omp critical
+		lRetVal = aMin + (Random<double>() * (aMax - aMin) );
+		return lRetVal;
 	}
 
 	template <>
 	float Random(float aMin, float aMax)
 	{
-		return aMin + (Random<float>() * (aMax - aMin) );
+		float lRetVal;
+#pragma omp critical
+		lRetVal = aMin + (Random<float>() * (aMax - aMin) );
+		return lRetVal;
 	}
 
 	template <>
 	int Random(int aMin, int aMax)
 	{
-		return aMin + (rand() * (aMax - aMin) / RAND_MAX );
+		float lRetVal;
+#pragma omp critical
+		lRetVal = aMin + (rand() * (aMax - aMin) / RAND_MAX );
+		return lRetVal;
 	}
 }
