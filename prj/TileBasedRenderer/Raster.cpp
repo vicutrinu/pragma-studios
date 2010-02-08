@@ -18,9 +18,10 @@ namespace pragma
 	namespace Raster
 	{
 
-		static const int sHeight = 768;
-		static const int sWidth = 1024;
-		static unsigned char sScreen[sHeight * sWidth];
+		static int sHeight;
+		static int sWidth;
+		static unsigned char* sScreen;
+		static unsigned char sColor;
 		
 		struct Scan
 		{
@@ -28,11 +29,13 @@ namespace pragma
 			Point End;
 		};
 		
-		Point sScanLeft[sHeight];
-		Point sScanRight[sHeight];
+		Point sScanLeft[1024];
+		Point sScanRight[1024];
 	
 		inline unsigned PreRunEdgeY(Point& aStart, const _Vector& aEdge)
 		{
+			if(aEdge.y <= 0)
+				return 0;
 			Real lY = int(aStart.y + Real(0.5)) + Real(0.5);
 			Real lVal = (lY - aStart.y) / aEdge.y; // Valor magico
 			Point lStart = aStart + (aEdge * lVal);
@@ -73,10 +76,12 @@ namespace pragma
 				aRightStart.y+= 1;
 				
 				unsigned lCount = PreRunEdgeX(*aLeftScan, *aRightScan-*aLeftScan);
-				unsigned char* lPtr = &sScreen[int(aLeftScan->y) * 1024 + int(aLeftScan->x)];
+				unsigned char* lPtr = &sScreen[(int(aLeftScan->y) * Raster::sWidth + int(aLeftScan->x))*3];
 				while(lCount--)
 				{
-					*lPtr++ = 255;
+					*lPtr++ = sColor;
+					*lPtr++ = sColor;
+					*lPtr++ = sColor;
 				}
 			}
 		}
@@ -92,6 +97,8 @@ namespace pragma
 			int lRightRowCount = PreRunEdgeY(lRightStart, aRightEdge);
 			if(lLeftRowCount != lRightRowCount)
 				return;
+			
+			sColor = 127;
 			
 			RunEdges( &sScanLeft [int(lLeftStart.y)],  lLeftStart , aLeftEdge.x  / aLeftEdge.y
 					, &sScanRight[int(lRightStart.y)], lRightStart, aRightEdge.x / aRightEdge.y
@@ -110,6 +117,11 @@ namespace pragma
 			if(lLeftRowCount != lRightRowCount)
 				return;
 			
+			if(lLeftRowCount == 0)
+				return;
+			
+			sColor = 255;
+			
 			RunEdges( &sScanLeft [int(lLeftStart.y)],  lLeftStart , aLeftEdge.x  / aLeftEdge.y
 					, &sScanRight[int(lRightStart.y)], lRightStart, aRightEdge.x / aRightEdge.y
 					, lLeftRowCount );
@@ -118,7 +130,7 @@ namespace pragma
 	
 	void RasterTriangle(const Point& aV0, const Point& aV1, const Point& aV2)
 	{
-		memset(Raster::sScreen, 64, Raster::sWidth * Raster::sHeight);
+		//memset(Raster::sScreen, 64, Raster::sWidth * Raster::sHeight);
 		//Ordenar los vertices segun la altura, para partir el triangulo en 2 trapezoides
 		if(aV0.y < aV1.y)
 		{
@@ -229,8 +241,20 @@ namespace pragma
 			}
 
 		}
-		FILE* handle = fopen("out.raw", "wb");
+		/*FILE* handle = fopen("out.raw", "wb");
 		fwrite(Raster::sScreen, 1, Raster::sWidth * Raster::sHeight, handle);
-		fclose(handle);
+		fclose(handle);*/
+	}
+	
+	void SetRenderContext(unsigned char* aBuffer, int aWidth, int aHeight)
+	{
+		Raster::sScreen = aBuffer;
+		Raster::sWidth = aWidth;
+		Raster::sHeight = aHeight;
+	}
+	
+	void Clear()
+	{
+		memset(Raster::sScreen, 32, Raster::sWidth * Raster::sHeight * 3);
 	}
 }

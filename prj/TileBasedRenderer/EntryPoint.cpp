@@ -104,8 +104,8 @@ using namespace pragma;
 
 int main(int argc, char* argv[])
 {
-	RasterTriangle(Point(21, 5,10), Point(4, 2,10), Point(12, 16,10) );
-
+	RasterTriangle(Point(210, 50,10), Point(40, 20,10), Point(120, 160,10) );
+	
 	/*Raster::RasterTrapezoid1(Raster::_Point(100, 234, 2), Raster::_Point(0,300, 4), Raster::_Point(300, 300, 10));
 	
 	TileBasedRenderer lRenderer(320, 240);

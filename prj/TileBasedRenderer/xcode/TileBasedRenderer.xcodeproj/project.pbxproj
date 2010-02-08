@@ -7,38 +7,26 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		57A0D911111B9F0400B1CE03 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
-		57BA6987111115FB00FFA062 /* EntryPoint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA6986111115FB00FFA062 /* EntryPoint.cpp */; };
-		57BA69EC1111168300FFA062 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69BE1111168300FFA062 /* Camera.cpp */; };
-		57BA69ED1111168300FFA062 /* Material.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69C01111168300FFA062 /* Material.cpp */; };
-		57BA69EE1111168300FFA062 /* Mesh.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69C21111168300FFA062 /* Mesh.cpp */; };
-		57BA69EF1111168300FFA062 /* MeshCollision.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69C41111168300FFA062 /* MeshCollision.cpp */; };
-		57BA69F11111168300FFA062 /* ASE_Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69C91111168300FFA062 /* ASE_Parser.cpp */; };
-		57BA69F21111168300FFA062 /* OBJ_Parser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69CB1111168300FFA062 /* OBJ_Parser.cpp */; };
-		57BA69F31111168300FFA062 /* Parsers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69CC1111168300FFA062 /* Parsers.cpp */; };
-		57BA69F41111168300FFA062 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D01111168300FFA062 /* Image.cpp */; };
-		57BA69F51111168300FFA062 /* TGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D21111168300FFA062 /* TGA.cpp */; };
-		57BA69F71111168300FFA062 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
-		57BA69F81111168300FFA062 /* type_traits.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69DD1111168300FFA062 /* type_traits.cpp */; };
-		57BA69F91111168300FFA062 /* clock.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69E41111168300FFA062 /* clock.cpp */; };
-		57BA69FA1111168300FFA062 /* system.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69E61111168300FFA062 /* system.cpp */; };
-		8DD76F6A0486A84900D96B5E /* TileBasedRenderer.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* TileBasedRenderer.1 */; };
+		577057D5111F975100824133 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57705765111F924800824133 /* MainMenu.xib */; };
+		577057DE111F979400824133 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
+		577057EE111F97E400824133 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 577057ED111F97E400824133 /* main.m */; };
+		57705802111F98A400824133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57705779111F94A200824133 /* Cocoa.framework */; };
+		5770580C111F990200824133 /* TBRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5770580B111F990200824133 /* TBRAppDelegate.m */; };
+		57705840111F9B3300824133 /* MainView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5770583F111F9B3300824133 /* MainView.mm */; };
+		57705A0C111FB31D00824133 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
 /* End PBXBuildFile section */
 
-/* Begin PBXCopyFilesBuildPhase section */
-		8DD76F690486A84900D96B5E /* CopyFiles */ = {
-			isa = PBXCopyFilesBuildPhase;
-			buildActionMask = 8;
-			dstPath = /usr/share/man/man1/;
-			dstSubfolderSpec = 0;
-			files = (
-				8DD76F6A0486A84900D96B5E /* TileBasedRenderer.1 in CopyFiles */,
-			);
-			runOnlyForDeploymentPostprocessing = 1;
-		};
-/* End PBXCopyFilesBuildPhase section */
-
 /* Begin PBXFileReference section */
+		57705765111F924800824133 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
+		57705779111F94A200824133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
+		5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = "TileBasedRenderer-list.strings"; sourceTree = "<group>"; };
+		577057C7111F96AD00824133 /* TileBasedRenderer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TileBasedRenderer.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		577057C9111F96AD00824133 /* TileBasedRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TileBasedRenderer-Info.plist"; sourceTree = "<group>"; };
+		577057ED111F97E400824133 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		5770580A111F990200824133 /* TBRAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBRAppDelegate.h; sourceTree = "<group>"; };
+		5770580B111F990200824133 /* TBRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRAppDelegate.m; sourceTree = "<group>"; };
+		5770583E111F9B3300824133 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
+		5770583F111F9B3300824133 /* MainView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainView.mm; sourceTree = "<group>"; };
 		57A0D908111B99A400B1CE03 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../Raster.h; sourceTree = SOURCE_ROOT; };
 		57A0D910111B9F0400B1CE03 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../Raster.cpp; sourceTree = SOURCE_ROOT; };
 		57BA6986111115FB00FFA062 /* EntryPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntryPoint.cpp; path = ../EntryPoint.cpp; sourceTree = SOURCE_ROOT; };
@@ -89,15 +77,15 @@
 		57BA69E61111168300FFA062 /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system.cpp; sourceTree = "<group>"; };
 		57BA69E71111168300FFA062 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		57BA69EA1111168300FFA062 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		8DD76F6C0486A84900D96B5E /* TileBasedRenderer */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = TileBasedRenderer; sourceTree = BUILT_PRODUCTS_DIR; };
 		C6859E8B029090EE04C91782 /* TileBasedRenderer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = TileBasedRenderer.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		8DD76F660486A84900D96B5E /* Frameworks */ = {
+		577057C5111F96AD00824133 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57705802111F98A400824133 /* Cocoa.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -108,8 +96,10 @@
 			isa = PBXGroup;
 			children = (
 				08FB7795FE84155DC02AAC07 /* Source */,
+				57705766111F925100824133 /* Resources */,
 				C6859E8C029090F304C91782 /* Documentation */,
 				1AB674ADFE9D54B511CA2CBB /* Products */,
+				57705779111F94A200824133 /* Cocoa.framework */,
 			);
 			name = TileBasedRenderer;
 			sourceTree = "<group>";
@@ -121,6 +111,11 @@
 				57BA6986111115FB00FFA062 /* EntryPoint.cpp */,
 				57A0D910111B9F0400B1CE03 /* Raster.cpp */,
 				57A0D908111B99A400B1CE03 /* Raster.h */,
+				577057ED111F97E400824133 /* main.m */,
+				5770580A111F990200824133 /* TBRAppDelegate.h */,
+				5770580B111F990200824133 /* TBRAppDelegate.m */,
+				5770583E111F9B3300824133 /* MainView.h */,
+				5770583F111F9B3300824133 /* MainView.mm */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -128,9 +123,19 @@
 		1AB674ADFE9D54B511CA2CBB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				8DD76F6C0486A84900D96B5E /* TileBasedRenderer */,
+				577057C7111F96AD00824133 /* TileBasedRenderer.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		57705766111F925100824133 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				577057C9111F96AD00824133 /* TileBasedRenderer-Info.plist */,
+				57705765111F924800824133 /* MainMenu.xib */,
+				5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		57BA69B11111168300FFA062 /* pragma */ = {
@@ -263,23 +268,22 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		8DD76F620486A84900D96B5E /* TileBasedRenderer */ = {
+		577057C6111F96AD00824133 /* TileBasedRenderer */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */;
+			buildConfigurationList = 577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */;
 			buildPhases = (
-				8DD76F640486A84900D96B5E /* Sources */,
-				8DD76F660486A84900D96B5E /* Frameworks */,
-				8DD76F690486A84900D96B5E /* CopyFiles */,
+				577057C3111F96AD00824133 /* Resources */,
+				577057C4111F96AD00824133 /* Sources */,
+				577057C5111F96AD00824133 /* Frameworks */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
 			name = TileBasedRenderer;
-			productInstallPath = "$(HOME)/bin";
 			productName = TileBasedRenderer;
-			productReference = 8DD76F6C0486A84900D96B5E /* TileBasedRenderer */;
-			productType = "com.apple.product-type.tool";
+			productReference = 577057C7111F96AD00824133 /* TileBasedRenderer.app */;
+			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
 
@@ -293,62 +297,38 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				8DD76F620486A84900D96B5E /* TileBasedRenderer */,
+				577057C6111F96AD00824133 /* TileBasedRenderer */,
 			);
 		};
 /* End PBXProject section */
 
+/* Begin PBXResourcesBuildPhase section */
+		577057C3111F96AD00824133 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				577057D5111F975100824133 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
-		8DD76F640486A84900D96B5E /* Sources */ = {
+		577057C4111F96AD00824133 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				57BA6987111115FB00FFA062 /* EntryPoint.cpp in Sources */,
-				57BA69EC1111168300FFA062 /* Camera.cpp in Sources */,
-				57BA69ED1111168300FFA062 /* Material.cpp in Sources */,
-				57BA69EE1111168300FFA062 /* Mesh.cpp in Sources */,
-				57BA69EF1111168300FFA062 /* MeshCollision.cpp in Sources */,
-				57BA69F11111168300FFA062 /* ASE_Parser.cpp in Sources */,
-				57BA69F21111168300FFA062 /* OBJ_Parser.cpp in Sources */,
-				57BA69F31111168300FFA062 /* Parsers.cpp in Sources */,
-				57BA69F41111168300FFA062 /* Image.cpp in Sources */,
-				57BA69F51111168300FFA062 /* TGA.cpp in Sources */,
-				57BA69F71111168300FFA062 /* math.cpp in Sources */,
-				57BA69F81111168300FFA062 /* type_traits.cpp in Sources */,
-				57BA69F91111168300FFA062 /* clock.cpp in Sources */,
-				57BA69FA1111168300FFA062 /* system.cpp in Sources */,
-				57A0D911111B9F0400B1CE03 /* Raster.cpp in Sources */,
+				577057DE111F979400824133 /* Raster.cpp in Sources */,
+				577057EE111F97E400824133 /* main.m in Sources */,
+				5770580C111F990200824133 /* TBRAppDelegate.m in Sources */,
+				57705840111F9B3300824133 /* MainView.mm in Sources */,
+				57705A0C111FB31D00824133 /* math.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin XCBuildConfiguration section */
-		1DEB923208733DC60010E9CD /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_ENABLE_FIX_AND_CONTINUE = YES;
-				GCC_MODEL_TUNING = G5;
-				GCC_OPTIMIZATION_LEVEL = 0;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = TileBasedRenderer;
-			};
-			name = Debug;
-		};
-		1DEB923308733DC60010E9CD /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_SEARCH_USER_PATHS = NO;
-				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
-				GCC_MODEL_TUNING = G5;
-				INSTALL_PATH = /usr/local/bin;
-				PRODUCT_NAME = TileBasedRenderer;
-			};
-			name = Release;
-		};
 		1DEB923608733DC60010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -377,23 +357,67 @@
 			};
 			name = Release;
 		};
+		577057CA111F96AD00824133 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "TileBasedRenderer-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TileBasedRenderer;
+			};
+			name = Debug;
+		};
+		577057CB111F96AD00824133 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_MODEL_TUNING = G5;
+				INFOPLIST_FILE = "TileBasedRenderer-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				OTHER_LDFLAGS = (
+					"-framework",
+					Foundation,
+					"-framework",
+					AppKit,
+				);
+				PREBINDING = NO;
+				PRODUCT_NAME = TileBasedRenderer;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				1DEB923208733DC60010E9CD /* Debug */,
-				1DEB923308733DC60010E9CD /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "TileBasedRenderer" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				1DEB923608733DC60010E9CD /* Debug */,
 				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				577057CA111F96AD00824133 /* Debug */,
+				577057CB111F96AD00824133 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

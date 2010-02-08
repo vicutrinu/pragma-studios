@@ -6,6 +6,7 @@
  */
 
 #pragma once
+
 #include <pragma/graphics/types.h>
 
 namespace pragma
@@ -21,4 +22,6 @@ namespace pragma
 	 *	El color se coge de una variable de estado
 	 */
 	void RasterTriangle(const Point& aV0, const Point& aV1, const Point& aV2);
+	void SetRenderContext(unsigned char* aBuffer, int aWidth, int aHeight);
+	void Clear();
 }
