@@ -15,13 +15,12 @@ namespace pragma
 	{
 		typedef Point  _Point;		
 		typedef _Point _Vector;
-		void RasterTrapezoid1(const _Point& aStart, const _Vector& aLeftEdge, const _Vector& aRightEdge);
+		typedef vector2<Real> _Point2;
+		typedef vector2<Real> _Vector2;
+		typedef vector3<Real> _Color;
+
+		void RasterTriangle		( const _Point2& aV0, const _Point2& aV1, const _Point2& aV2 );
+		void SetRenderContext	( unsigned char* aBuffer, int aWidth, int aHeight );
+		void ClearBackBuffer	();
 	}
-	
-	/**
-	 *	El color se coge de una variable de estado
-	 */
-	void RasterTriangle(const Point& aV0, const Point& aV1, const Point& aV2);
-	void SetRenderContext(unsigned char* aBuffer, int aWidth, int aHeight);
-	void Clear();
 }

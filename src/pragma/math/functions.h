@@ -6,6 +6,12 @@
 
 namespace pragma
 {
+	
+	template <typename T>
+	inline vector2<T> operator-(const base_vector2<T>& aVector)
+	{
+		return vector2<T>(-aVector.x, -aVector.y);
+	}
 
 	template <typename T>
 	inline vector3<T> operator-(const base_vector3<T>& aVector)

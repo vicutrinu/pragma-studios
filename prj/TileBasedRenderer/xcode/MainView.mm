@@ -37,7 +37,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		mCgDataProvider    = [self createCGDataProviderWithBitmap:mFrameBuffer forRect:windowRect ];
 		
 		mOk = true;
-		pragma::SetRenderContext(mFrameBuffer, 512, 512);
+		pragma::Raster::SetRenderContext(mFrameBuffer, 512, 512);
 		
 		mVertices[0] = pragma::Point(256, 100,10);
 		mVertices[1] = pragma::Point(100, 350,10);
@@ -161,14 +161,15 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 - (void)drawRect:(NSRect)dirtyRect {
     if(mOk)
 	{
-		pragma::Clear();
-		pragma::RasterTriangle(mVertices[0], mVertices[1], mVertices[2]);
-		mImageRef = [self createCGImageUsingDataProvider:	mCgDataProvider 
-															andColourSpace:cgColourSpaceRef
-															forRect:windowRect];
+		pragma::Raster::ClearBackBuffer();
+		pragma::Raster::RasterTriangle ( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y)
+									   , pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y)
+									   , pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
 		
-		__strong NSGraphicsContext    *    nsGraphicsContext    = [NSGraphicsContext currentContext];
-		__strong CGContextRef            zCgContextRef        = (CGContextRef) [nsGraphicsContext graphicsPort];
+		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];
+		
+		__strong NSGraphicsContext* nsGraphicsContext	= [NSGraphicsContext currentContext];
+		__strong CGContextRef       zCgContextRef		= (CGContextRef) [nsGraphicsContext graphicsPort];
 		
 		CGRect    zCgRect    = NSRectToCGRect(dirtyRect);
 		CGContextDrawImage(zCgContextRef,zCgRect,mImageRef);
