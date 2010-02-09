@@ -39,9 +39,10 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		mOk = true;
 		pragma::Raster::SetRenderContext(mFrameBuffer, 512, 512);
 		
-		mVertices[0] = pragma::Point(256, 100,10);
-		mVertices[1] = pragma::Point(100, 350,10);
-		mVertices[2] = pragma::Point(512-100, 350,10);
+		mVertices[0] = pragma::Point(256-150, 256-150,10);
+		mVertices[1] = pragma::Point(256+150, 256-150,10);
+		mVertices[2] = pragma::Point(256-150, 256+150,10);
+		mVertices[3] = pragma::Point(256+150, 256+150,10);
 		mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)((1.0 / 30.0) * 1) target:self selector:@selector(drawView:) userInfo:nil repeats:TRUE];    }
     return self;
 }
@@ -51,7 +52,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 	[self setNeedsDisplay:true];
 
 	pragma::matrix4x4<pragma::Real> lRot;
-	for(int i = 0; i < 3; ++i)
+	for(int i = 0; i < 4; ++i)
 	{
 		pragma::Point lP;
 		lP.x = ((mVertices[i].x-256) * pragma::Cos<pragma::Real>(0.01) + (mVertices[i].y-256) * pragma::Sin<pragma::Real>(0.01))+256;
@@ -162,9 +163,13 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
     if(mOk)
 	{
 		pragma::Raster::ClearBackBuffer();
-		pragma::Raster::RasterTriangle ( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y)
-									   , pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y)
-									   , pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(1,0,0) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,0) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,0) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+		pragma::Raster::Render();
 		
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];
 		

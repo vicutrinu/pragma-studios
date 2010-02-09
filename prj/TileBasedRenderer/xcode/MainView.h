@@ -20,7 +20,7 @@
 	CGDataProviderRef mCgDataProvider;
 	NSTimer*		mTimer;
 	
-	pragma::Point   mVertices[3];
+	pragma::Point   mVertices[4];
 }
 
 - (CGColorSpaceRef) obtainTheRGBColorSpace;

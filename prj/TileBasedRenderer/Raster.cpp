@@ -12,13 +12,16 @@
 
 #include <stdio.h>
 #include <memory.h>
+#include <assert.h>
 
 namespace pragma { namespace Raster
 {
 	static unsigned			sHeight;
 	static unsigned			sWidth;
 	static unsigned char*	sScreen;
-	static unsigned char	sColor;
+	
+	static _Color			sColor;
+	static unsigned			sNumPositions = 0;
 	
 	// Factores para ajustar los valores interpolables al centro del pixel
 	static Real				sAdjustX;
@@ -40,7 +43,11 @@ namespace pragma { namespace Raster
 	inline Real AdjustEdge(_Point2& aStart, const _Vector2& aEdge, unsigned& aCount)
 	{
 		if(aEdge.y <= 0)
+		{
+			// TODO: esto no deberia pasar... Investigalo!
+			aCount = 0;
 			return 0;
+		}
 		Real lY = int(aStart.y + Real(0.5)) + Real(0.5);
 		Real lVal = (lY - aStart.y) / aEdge.y; // Valor magico
 		_Point2 lStart = aStart + (aEdge * lVal);
@@ -68,7 +75,11 @@ namespace pragma { namespace Raster
 	inline Real AdjustScanline(Real& aStart, Real aLength, unsigned& aCount)
 	{
 		if(aLength <= 0)
+		{
+			// TODO: esto no deberia pasar... Investigalo!
+			aCount = 0;
 			return 0;
+		}
 		Real lX = int(aStart + Real(0.5)) + Real(0.5);
 		Real lVal = (lX - aStart) / aLength; // Valor magico
 		Real lStart = aStart + (aLength * lVal);
@@ -85,38 +96,42 @@ namespace pragma { namespace Raster
 						   , _Point2 aRightStart, Real aRightIncrement
 						   , unsigned aCount
 						   , _Color aColorLeft, _Color aLeftColorInc
-						   , _Color aColorRight, _Color aRightColorInc )
+						   , _Color aColorRight, _Color aRightColorInc
+						   , _Color aScanlineIncColor )
 	{
-		_Point2 lLeftScan;
-		_Point2 lRightScan;
+		Real lLeftScan;
+		Real lRightScan;
+		unsigned lY = unsigned(aLeftStart.y);
 		while( aCount-- )
 		{
-			lLeftScan  = aLeftStart;
-			lRightScan = aRightStart;
+			lLeftScan  = aLeftStart.x;
+			lRightScan = aRightStart.x;
 			
 			unsigned lCount;
-			sAdjustX = AdjustScanline(lLeftScan.x, lRightScan.x - lLeftScan.x, lCount);
+			sAdjustX = AdjustScanline(lLeftScan, lRightScan - lLeftScan, lCount);
 			
-			_Color lStartColor = ((aColorRight - aColorLeft) * sAdjustX) + aColorLeft;
-			_Color lIncColor = (aColorRight - aColorLeft) / lCount;
-			
-			unsigned lPosition = (int(lLeftScan.y) * Raster::sWidth + int(lLeftScan.x));
-			unsigned char* lPtr = &sScreen[(lPosition<<1) + lPosition];
-			while(lCount--)
+			if(lCount > 0)
 			{
-				*lPtr++ = lStartColor.x * 255;
-				*lPtr++ = lStartColor.y * 255;
-				*lPtr++ = lStartColor.z * 255;
-				lStartColor+= lIncColor;
+				_Color lStartColor = ((aColorRight - aColorLeft) * sAdjustX) + aColorLeft;
+				//_Color lIncColor = (aColorRight - aColorLeft) / (lRightScan.x - lLeftScan.x);
+				
+				unsigned lPosition = (lY * Raster::sWidth + unsigned(lLeftScan));
+				unsigned char* lPtr = &sScreen[(lPosition<<1) + lPosition];
+				while(lCount--)
+				{
+					*lPtr++ = lStartColor.x * 255;
+					*lPtr++ = lStartColor.y * 255;
+					*lPtr++ = lStartColor.z * 255;
+					lStartColor+= aScanlineIncColor; //lIncColor;
+				}
 			}
-			
 			aLeftStart.x+= aLeftIncrement;
-			aLeftStart.y+= 1;
 			aRightStart.x+= aRightIncrement;
-			aRightStart.y+= 1;
 			
 			aColorLeft+= aLeftColorInc;
 			aColorRight+= aRightColorInc;
+			
+			lY++;
 		}
 	}
 
@@ -134,17 +149,22 @@ namespace pragma { namespace Raster
 		sAdjustRightY = AdjustEdge(lRightStart, aRightEdge, lRightRowCount);
 		if(lLeftRowCount != lRightRowCount)
 			return;
+		
+		if(lLeftRowCount == 0)
+			return;
 
 		_Color lColorLeft = aColorStart + (aLeftColorEdge * sAdjustLeftY);
 		_Color lColorRight = aColorStart + (aRightColorEdge * sAdjustRightY);
-		_Color lLeftColorInc = aLeftColorEdge / lLeftRowCount;
-		_Color lRightColorInc = aRightColorEdge / lRightRowCount;
+		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
+		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
+		_Color lScanlineIncColor = (lColorRight - lColorLeft) / (lRightStart.x - lLeftStart.x);
 		
 		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
 				   , lRightStart, aRightEdge.x / aRightEdge.y
 				   , lLeftRowCount
 				   , lColorLeft, lLeftColorInc
-				   , lColorRight, lRightColorInc );
+				   , lColorRight, lRightColorInc
+				   , lScanlineIncColor );
 	}
 		
 	inline void RasterBottomTriangle(const _Point2& aStart, const _Vector2& aLeftEdge, const _Vector2& aRightEdge
@@ -159,6 +179,7 @@ namespace pragma { namespace Raster
 		_Point2 lRightStart = aStart + aRightEdge;
 		unsigned lRightRowCount;
 		sAdjustRightY = AdjustEdge(lRightStart, -aRightEdge, lRightRowCount);
+		
 		if(lLeftRowCount != lRightRowCount)
 			return;
 		
@@ -167,14 +188,16 @@ namespace pragma { namespace Raster
 		
 		_Color lColorLeft = (aColorStart + aLeftColorEdge) - (aLeftColorEdge * sAdjustLeftY);
 		_Color lColorRight = (aColorStart + aRightColorEdge) - (aRightColorEdge * sAdjustRightY);
-		_Color lLeftColorInc = -aLeftColorEdge / lLeftRowCount;
-		_Color lRightColorInc = -aRightColorEdge / lRightRowCount;
+		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
+		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
+		_Color lScanlineIncColor = (lColorRight - lColorLeft) / (lRightStart.x - lLeftStart.x);
 		
 		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
 				   , lRightStart, aRightEdge.x / aRightEdge.y
 				   , lLeftRowCount
 				   , lColorLeft, lLeftColorInc
-				   , lColorRight, lRightColorInc );
+				   , lColorRight, lRightColorInc
+				   , lScanlineIncColor );
 	}
 	
 	_Point2 sPositions[1024];
@@ -227,126 +250,19 @@ namespace pragma { namespace Raster
 		sPositions[0] = aV0;
 		sPositions[1] = aV1;
 		sPositions[2] = aV2;
-		sColors[0] = _Color(1,0,0);
-		sColors[1] = _Color(0,1,0);
-		sColors[2] = _Color(0,0,1);
 		RasterTriangle(0, 1, 2);
 	}
 	
-#if 0 // version antigua
+	void AddVertex(const _Point2& aPosition)
 	{
-		//Ordenar los vertices segun la altura, para partir el triangulo en dos
-		if(aV0.y < aV1.y)
-		{
-			if(aV0.y < aV2.y)
-			{
-				if(aV1.y < aV2.y)
-				{ // 0, 1, 2
-					_Vector2 lEdge = aV2 - aV0;
-					Real lVal = (aV1.y - aV0.y) / (lEdge.y); // Valor magico
-					_Vector2 lSplit = aV0 + (lEdge * lVal); 
-					if(aV1.x < aV2.x)
-					{ // 1 está a la izquierda
-						RasterTopTriangle   (aV0, aV1 - aV0, lSplit - aV0);
-						RasterBottomTriangle(aV2, aV1 - aV2, lSplit - aV2);
-					}
-					else
-					{ // 1 está a la derecha
-						RasterTopTriangle   (aV0, lSplit - aV0, aV1 - aV0);
-						RasterBottomTriangle(aV2, lSplit - aV2, aV1 - aV2);
-					}
-				}
-				else
-				{ // 0, 2, 1
-					_Vector2 lEdge = aV1 - aV0;
-					Real lVal = (aV2.y - aV0.y) / (lEdge.y); // Valor magico
-					_Vector2 lSplit = aV0 + (lEdge * lVal); 
-					if(aV2.x < aV1.x)
-					{ // 2 está a la izquierda
-						RasterTopTriangle   (aV0, aV2 - aV0, lSplit - aV0);
-						RasterBottomTriangle(aV1, aV2 - aV1, lSplit - aV2);
-					}
-					else
-					{ // 2 está a la derecha
-						RasterTopTriangle   (aV0, lSplit - aV0, aV2 - aV0);
-						RasterBottomTriangle(aV1, lSplit - aV1, aV2 - aV1);
-					}
-				}
-			}
-			else
-			{ // 2, 0, 1
-				_Vector2 lEdge = aV1 - aV2;
-				Real lVal = (aV0.y - aV2.y) / (lEdge.y); // Valor magico
-				_Vector2 lSplit = aV2 + (lEdge * lVal); 
-				if(aV0.x < aV1.x)
-				{ // 0 está a la izquierda
-					RasterTopTriangle   (aV2, aV0 - aV2, lSplit - aV2);
-					RasterBottomTriangle(aV1, aV0 - aV1, lSplit - aV1);
-				}
-				else
-				{ // 0 está a la derecha
-					RasterTopTriangle   (aV2, lSplit - aV2, aV0 - aV2);
-					RasterBottomTriangle(aV1, lSplit - aV1, aV0 - aV1);
-				}
-			}
-		}
-		else
-		{
-			if(aV1.y < aV2.y)
-			{
-				if(aV2.y < aV0.y)
-				{ // 1, 2, 0
-					_Vector2 lEdge = aV0 - aV1;
-					Real lVal = (aV2.y - aV1.y) / (lEdge.y); // Valor magico
-					_Vector2 lSplit = aV1 + (lEdge * lVal); 
-					if(aV2.x < aV0.x)
-					{ // 2 está a la izquierda
-						RasterTopTriangle   (aV1, aV2 - aV1, lSplit - aV1);
-						RasterBottomTriangle(aV0, aV2 - aV0, lSplit - aV0);
-					}
-					else
-					{ // 2 está a la derecha
-						RasterTopTriangle   (aV1, lSplit - aV1, aV2 - aV1);
-						RasterBottomTriangle(aV0, lSplit - aV0, aV2 - aV0);
-					}
-				}
-				else
-				{ // 1, 0, 2
-					_Vector2 lEdge = aV2 - aV1;
-					Real lVal = (aV0.y - aV1.y) / (lEdge.y); // Valor magico
-					_Vector2 lSplit = aV1 + (lEdge * lVal); 
-					if(aV0.x < aV2.x)
-					{ // 0 está a la izquierda
-						RasterTopTriangle   (aV1, aV0 - aV1, lSplit - aV1);
-						RasterBottomTriangle(aV2, aV0 - aV2, lSplit - aV2);
-					}
-					else
-					{ // 0 está a la derecha
-						RasterTopTriangle   (aV1, lSplit - aV1, aV0 - aV1);
-						RasterBottomTriangle(aV2, lSplit - aV2, aV0 - aV2);
-					}
-				}
-			}
-			else
-			{ // 2, 1, 0
-				_Vector2 lEdge = aV0 - aV2;
-				Real lVal = (aV1.y - aV2.y) / (lEdge.y); // Valor magico
-				_Vector2 lSplit = aV2 + (lEdge * lVal); 
-				if(aV1.x < aV0.x)
-				{ // 1 está a la izquierda
-					RasterTopTriangle   (aV2, aV1 - aV2, lSplit - aV2);
-					RasterBottomTriangle(aV0, aV1 - aV0, lSplit - aV0);
-				}
-				else
-				{ // 1 está a la derecha
-					RasterTopTriangle   (aV2, lSplit - aV2, aV1 - aV2);
-					RasterBottomTriangle(aV0, lSplit - aV0, aV1 - aV0);
-				}
-			}
-			
-		}
+		sPositions[sNumPositions] = aPosition;
+		sColors[sNumPositions++] = sColor;
 	}
-#endif
+	
+	void VertexColor(const _Color& aColor)
+	{
+		sColor = aColor;
+	}
 	
 	void SetRenderContext(unsigned char* aBuffer, int aWidth, int aHeight)
 	{
@@ -358,6 +274,13 @@ namespace pragma { namespace Raster
 	void ClearBackBuffer()
 	{
 		memset(Raster::sScreen, 32, Raster::sWidth * Raster::sHeight * 3);
+	}
+	
+	void Render()
+	{
+		for(unsigned i = 0; i < sNumPositions; i+= 3)
+			RasterTriangle(i+0, i+1, i+2);
+		sNumPositions = 0;
 	}
 
 } }
