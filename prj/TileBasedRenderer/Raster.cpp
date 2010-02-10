@@ -116,12 +116,13 @@ namespace pragma { namespace Raster
 				//_Color lIncColor = (aColorRight - aColorLeft) / (lRightScan.x - lLeftScan.x);
 				
 				unsigned lPosition = (lY * Raster::sWidth + unsigned(lLeftScan));
-				unsigned char* lPtr = &sScreen[(lPosition<<1) + lPosition];
+				unsigned char* lPtr = &sScreen[lPosition<<2];
 				while(lCount--)
 				{
 					*lPtr++ = lStartColor.x * 255;
 					*lPtr++ = lStartColor.y * 255;
 					*lPtr++ = lStartColor.z * 255;
+					*lPtr++ = 0;
 					lStartColor+= aScanlineIncColor; //lIncColor;
 				}
 			}
@@ -136,7 +137,7 @@ namespace pragma { namespace Raster
 	}
 
 	inline void RasterTopTriangle( const _Point2& aStart, const _Vector2& aLeftEdge, const _Vector2& aRightEdge
-								 , const _Color aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
+								 , const _Color& aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
 	{
 		// Interpolamos el lado izquierdo
 		_Point2 lLeftStart = aStart;
@@ -157,7 +158,7 @@ namespace pragma { namespace Raster
 		_Color lColorRight = aColorStart + (aRightColorEdge * sAdjustRightY);
 		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
 		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
-		_Color lScanlineIncColor = (lColorRight - lColorLeft) / (lRightStart.x - lLeftStart.x);
+		_Color lScanlineIncColor = (aRightColorEdge - aLeftColorEdge) / (aRightEdge.x - aLeftEdge.x);
 		
 		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
 				   , lRightStart, aRightEdge.x / aRightEdge.y
@@ -168,7 +169,7 @@ namespace pragma { namespace Raster
 	}
 		
 	inline void RasterBottomTriangle(const _Point2& aStart, const _Vector2& aLeftEdge, const _Vector2& aRightEdge
-									, const _Color aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
+									, const _Color& aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
 	{
 		// Interpolamos el lado izquierdo
 		_Point2 lLeftStart = aStart + aLeftEdge;
@@ -190,7 +191,7 @@ namespace pragma { namespace Raster
 		_Color lColorRight = (aColorStart + aRightColorEdge) - (aRightColorEdge * sAdjustRightY);
 		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
 		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
-		_Color lScanlineIncColor = (lColorRight - lColorLeft) / (lRightStart.x - lLeftStart.x);
+		_Color lScanlineIncColor = (aRightColorEdge - aLeftColorEdge) / (aRightEdge.x - aLeftEdge.x);
 		
 		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
 				   , lRightStart, aRightEdge.x / aRightEdge.y
@@ -273,7 +274,7 @@ namespace pragma { namespace Raster
 	
 	void ClearBackBuffer()
 	{
-		memset(Raster::sScreen, 32, Raster::sWidth * Raster::sHeight * 3);
+		memset(Raster::sScreen, 32, Raster::sWidth * Raster::sHeight * 4);
 	}
 	
 	void Render()

@@ -74,7 +74,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
     // 8 bits per component, bits per pixel = 24, three component colour space RGB
     
     // allocate memory for 24bit rgb image    
-    NSInteger    zIntMemorySizeInBytes    = pRect.size.width * pRect.size.height * 3;  // 3 = rgb
+    NSInteger    zIntMemorySizeInBytes    = pRect.size.width * pRect.size.height * 4;  // 3 = rgb
     zIntMemorySizeInBytes   *= sizeof(unsigned char);
     
     unsigned char * zUcharPtrToBitmapData = 
@@ -90,7 +90,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 
 - (CGDataProviderRef) createCGDataProviderWithBitmap:(unsigned char *)pBitmap forRect:(NSRect)pRect {
 	
-    size_t zImagedataSize    = pRect.size.width * pRect.size.height * 3;
+    size_t zImagedataSize    = pRect.size.width * pRect.size.height * 4;
     CGDataProviderRef zCGDataProviderRef    = CGDataProviderCreateWithData(
 																		   NULL,
 																		   pBitmap,
@@ -105,8 +105,8 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 												andColourSpace:(CGColorSpaceRef)pCgColorSpaceRefDisplay
                                                 forRect:(NSRect)pRect {
     size_t    zBitsPerComponent        = 8;
-    size_t    zBitsPerPixel            = 24;
-    size_t    zBytesPerRow            = pRect.size.width * 3;
+    size_t    zBitsPerPixel            = 32;
+    size_t    zBytesPerRow            = pRect.size.width * 4;
     bool    zBoolShouldInterpolate    = true;
     
     CGImageRef zCGImageRef    = CGImageCreate((size_t)pRect.size.width,
@@ -168,7 +168,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,0) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
-		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(1,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::Raster::Render();
 		
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];
