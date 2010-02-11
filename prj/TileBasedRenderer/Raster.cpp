@@ -28,6 +28,7 @@ namespace pragma { namespace Raster
 	static Real				sAdjustLeftY;
 	static Real				sAdjustRightY;
 	
+
 	/**
 	 *	Ajusta los extremos de un costado para centrarlo en un pixel
 	 *	El ajuste se realiza desplazando el extremo hacia el siguiente centro de pixel (hacia abajo)
@@ -92,16 +93,18 @@ namespace pragma { namespace Raster
 		return lVal;
 	}
 	
-	inline void RasterLines( _Point2 aLeftStart, Real aLeftIncrement
-						   , _Point2 aRightStart, Real aRightIncrement
+	inline void RasterLines( _Point2& aLeftStart, Real aLeftIncrement
+						   , _Point2& aRightStart, Real aRightIncrement
 						   , unsigned aCount
-						   , _Color aColorLeft, _Color aLeftColorInc
-						   , _Color aColorRight, _Color aRightColorInc
+						   , _Color& aColorLeft, _Color aLeftColorInc
+						   , _Color& aColorRight, _Color aRightColorInc
 						   , _Color aScanlineIncColor )
 	{
 		Real lLeftScan;
 		Real lRightScan;
 		unsigned lY = unsigned(aLeftStart.y);
+		aLeftStart.y+= aCount;
+		
 		while( aCount-- )
 		{
 			lLeftScan  = aLeftStart.x;
@@ -113,10 +116,10 @@ namespace pragma { namespace Raster
 			if(lCount > 0)
 			{
 				_Color lStartColor = ((aColorRight - aColorLeft) * sAdjustX) + aColorLeft;
-				//_Color lIncColor = (aColorRight - aColorLeft) / (lRightScan.x - lLeftScan.x);
 				
 				unsigned lPosition = (lY * Raster::sWidth + unsigned(lLeftScan));
 				unsigned char* lPtr = &sScreen[lPosition<<2];
+
 				while(lCount--)
 				{
 					*lPtr++ = lStartColor.x * 255;
@@ -136,71 +139,6 @@ namespace pragma { namespace Raster
 		}
 	}
 
-	inline void RasterTopTriangle( const _Point2& aStart, const _Vector2& aLeftEdge, const _Vector2& aRightEdge
-								 , const _Color& aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
-	{
-		// Interpolamos el lado izquierdo
-		_Point2 lLeftStart = aStart;
-		unsigned lLeftRowCount;
-		sAdjustLeftY = AdjustEdge(lLeftStart, aLeftEdge, lLeftRowCount);
-		
-		// Interpolamos el lado derecho
-		_Point2 lRightStart = aStart;
-		unsigned lRightRowCount;
-		sAdjustRightY = AdjustEdge(lRightStart, aRightEdge, lRightRowCount);
-		if(lLeftRowCount != lRightRowCount)
-			return;
-		
-		if(lLeftRowCount == 0)
-			return;
-
-		_Color lColorLeft = aColorStart + (aLeftColorEdge * sAdjustLeftY);
-		_Color lColorRight = aColorStart + (aRightColorEdge * sAdjustRightY);
-		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
-		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
-		_Color lScanlineIncColor = (aRightColorEdge - aLeftColorEdge) / (aRightEdge.x - aLeftEdge.x);
-		
-		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
-				   , lRightStart, aRightEdge.x / aRightEdge.y
-				   , lLeftRowCount
-				   , lColorLeft, lLeftColorInc
-				   , lColorRight, lRightColorInc
-				   , lScanlineIncColor );
-	}
-		
-	inline void RasterBottomTriangle(const _Point2& aStart, const _Vector2& aLeftEdge, const _Vector2& aRightEdge
-									, const _Color& aColorStart, const _Color& aLeftColorEdge, const _Color& aRightColorEdge )
-	{
-		// Interpolamos el lado izquierdo
-		_Point2 lLeftStart = aStart + aLeftEdge;
-		unsigned lLeftRowCount;
-		sAdjustLeftY = AdjustEdge(lLeftStart, -aLeftEdge, lLeftRowCount);
-		
-		// Interpolamos el lado derecho
-		_Point2 lRightStart = aStart + aRightEdge;
-		unsigned lRightRowCount;
-		sAdjustRightY = AdjustEdge(lRightStart, -aRightEdge, lRightRowCount);
-		
-		if(lLeftRowCount != lRightRowCount)
-			return;
-		
-		if(lLeftRowCount == 0)
-			return;
-		
-		_Color lColorLeft = (aColorStart + aLeftColorEdge) - (aLeftColorEdge * sAdjustLeftY);
-		_Color lColorRight = (aColorStart + aRightColorEdge) - (aRightColorEdge * sAdjustRightY);
-		_Color lLeftColorInc = aLeftColorEdge / aLeftEdge.y;
-		_Color lRightColorInc = aRightColorEdge / aRightEdge.y;
-		_Color lScanlineIncColor = (aRightColorEdge - aLeftColorEdge) / (aRightEdge.x - aLeftEdge.x);
-		
-		RasterLines( lLeftStart , aLeftEdge.x  / aLeftEdge.y
-				   , lRightStart, aRightEdge.x / aRightEdge.y
-				   , lLeftRowCount
-				   , lColorLeft, lLeftColorInc
-				   , lColorRight, lRightColorInc
-				   , lScanlineIncColor );
-	}
-	
 	_Point2 sPositions[1024];
 	_Color  sColors[1024];
 
@@ -226,22 +164,95 @@ namespace pragma { namespace Raster
 			i1 = lTemp;
 		}
 		
-		_Vector2 lEdge = sPositions[i2] - sPositions[i0];
-		Real lVal = (sPositions[i1].y - sPositions[i0].y) / (lEdge.y); // Valor magico
-		_Vector2 lSplit = sPositions[i0] + (lEdge * lVal); 
+		Real lVal = (sPositions[i1].y - sPositions[i0].y) / (sPositions[i2].y - sPositions[i0].y); // Valor magico que nos lleva a la "mitad" del triangulo
+		
+		_Vector2 lLongEdge				= sPositions[i2] - sPositions[i0];
+		_Vector2 lTopShortEdge			= sPositions[i1] - sPositions[i0];
+		_Vector2 lBottomShortEdge		= sPositions[i2] - sPositions[i1];
+		_Vector2 lSplit					= sPositions[i0] + (lLongEdge * lVal);
+		
+		_Color lLongColorEdge			= sColors[i2] - sColors[i0];
+		_Color lTopShortColorEdge		= sColors[i1] - sColors[i0];
+		_Color lBottomShortColorEdge	= sColors[i2] - sColors[i1];
+		_Color lSplitColor				= sColors[i0] + (lLongColorEdge * lVal);
+
 		if(sPositions[i1].x < sPositions[i2].x)
 		{ // 1 está a la izquierda
-			RasterTopTriangle   ( sPositions[i0], sPositions[i1] - sPositions[i0], lSplit - sPositions[i0]
-								, sColors[i0],    sColors[i1] - sColors[i0],       sColors[i0] + ((sColors[i2] - sColors[i0]) * lVal) - sColors[i0] );
-			RasterBottomTriangle( sPositions[i2], sPositions[i1] - sPositions[i2], lSplit - sPositions[i2]
-								, sColors[i2],    sColors[i1] - sColors[i2],       sColors[i0] + ((sColors[i2] - sColors[i0]) * lVal) - sColors[i2] );
+			Real lLeftGradient	= lTopShortEdge.x / lTopShortEdge.y;
+			Real lRightGradient = lLongEdge.x / lLongEdge.y;
+			
+			unsigned lRowCount, lTotalRowCount;
+
+			_Vector2 lLeftStart				= sPositions[i0];
+			Real lLeftScale					= AdjustEdge(lLeftStart, lTopShortEdge, lRowCount);
+			_Vector2 lRightStart			= sPositions[i0];
+			Real lRightScale				= AdjustEdge(lRightStart, lLongEdge, lTotalRowCount);
+			
+			_Color lLeftColorStart			= sColors[i0] + (lTopShortColorEdge * lLeftScale);
+			_Color lRightColorStart			= sColors[i0] + (lLongColorEdge * lRightScale);
+			_Color lLeftColorGradient		= lTopShortColorEdge / lTopShortEdge.y;
+			_Color lRightColorGradient		= lLongColorEdge / lLongEdge.y;
+			_Color lScanlineColorGradient	= (lSplitColor - sColors[i1] ) / (lSplit.x - sPositions[i1].x);
+			
+			RasterLines	( lLeftStart , lLeftGradient
+						, lRightStart, lRightGradient
+						, lRowCount
+						, lLeftColorStart, lLeftColorGradient
+						, lRightColorStart, lRightColorGradient
+						, lScanlineColorGradient );
+			
+			lLeftGradient		= lBottomShortEdge.x / lBottomShortEdge.y;
+			lLeftStart			= sPositions[i1];
+			lLeftScale			= AdjustEdge(lLeftStart, lBottomShortEdge, lRowCount);
+			
+			lLeftColorStart		= sColors[i1] + (lBottomShortColorEdge * lLeftScale);
+			lLeftColorGradient	= lBottomShortColorEdge / lBottomShortEdge.y;
+
+			RasterLines	( lLeftStart , lLeftGradient
+						, lRightStart, lRightGradient
+						, lRowCount
+						, lLeftColorStart, lLeftColorGradient
+						, lRightColorStart, lRightColorGradient
+						, lScanlineColorGradient );
 		}
 		else
 		{ // 1 está a la derecha
-			RasterTopTriangle   ( sPositions[i0], lSplit - sPositions[i0], sPositions[i1] - sPositions[i0]
-								, sColors[i0],    sColors[i0] + ((sColors[i2] - sColors[i0]) * lVal) - sColors[i0], sColors[i1] - sColors[i0] );
-			RasterBottomTriangle( sPositions[i2], lSplit - sPositions[i2], sPositions[i1] - sPositions[i2]
-								, sColors[i2],    sColors[i0] + ((sColors[i2] - sColors[i0]) * lVal) - sColors[i2], sColors[i1] - sColors[i2] );
+			Real lLeftGradient	= lLongEdge.x / lLongEdge.y;
+			Real lRightGradient = lTopShortEdge.x / lTopShortEdge.y;
+
+			unsigned lRowCount, lTotalRowCount;
+
+			_Vector2 lLeftStart				= sPositions[i0];
+			Real lLeftScale					= AdjustEdge(lLeftStart, lLongEdge, lTotalRowCount);
+			_Vector2 lRightStart			= sPositions[i0];
+			Real lRightScale				= AdjustEdge(lRightStart, lTopShortEdge, lRowCount);
+			
+			_Color lRightColorStart			= sColors[i0] + (lTopShortColorEdge * lRightScale);
+			_Color lLeftColorStart			= sColors[i0] + (lLongColorEdge * lLeftScale);
+			_Color lRightColorGradient		= lTopShortColorEdge / lTopShortEdge.y;
+			_Color lLeftColorGradient		= lLongColorEdge / lLongEdge.y;
+			_Color lScanlineColorGradient	= (sColors[i1] - lSplitColor) / (sPositions[i1].x - lSplit.x);
+			
+			RasterLines	( lLeftStart , lLeftGradient
+						, lRightStart, lRightGradient
+						, lRowCount
+						, lLeftColorStart, lLeftColorGradient
+						, lRightColorStart, lRightColorGradient
+						, lScanlineColorGradient );
+			
+			lRightGradient		= lBottomShortEdge.x / lBottomShortEdge.y;
+			lRightStart			= sPositions[i1];
+			lRightScale			= AdjustEdge(lRightStart, lBottomShortEdge, lRowCount);
+			
+			lRightColorStart	= sColors[i1] + (lBottomShortColorEdge * lRightScale);
+			lRightColorGradient = lBottomShortColorEdge / lBottomShortEdge.y;
+			
+			RasterLines	( lLeftStart , lLeftGradient
+						, lRightStart, lRightGradient
+						, lRowCount
+						, lLeftColorStart, lLeftColorGradient
+						, lRightColorStart, lRightColorGradient
+						, lScanlineColorGradient );
 		}
 	}
 	

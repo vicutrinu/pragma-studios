@@ -43,6 +43,11 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		mVertices[1] = pragma::Point(256+150, 256-150,10);
 		mVertices[2] = pragma::Point(256-150, 256+150,10);
 		mVertices[3] = pragma::Point(256+150, 256+150,10);
+		
+		/*mVertices[0] = pragma::Point(454.757019f, 330.130463f,10);
+		mVertices[1] = pragma::Point(181.869476f, 454.756897f,10);
+		mVertices[2] = pragma::Point(330.130524f, 57.2429199f,10);
+		mVertices[3] = pragma::Point(57.2429657f, 181.869293f,10);*/
 		mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)((1.0 / 30.0) * 1) target:self selector:@selector(drawView:) userInfo:nil repeats:TRUE];    }
     return self;
 }
@@ -50,6 +55,8 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 - (void)drawView:(id)sender
 {
 	[self setNeedsDisplay:true];
+	
+	//return;
 
 	pragma::matrix4x4<pragma::Real> lRot;
 	for(int i = 0; i < 4; ++i)
