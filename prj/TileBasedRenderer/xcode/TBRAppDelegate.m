@@ -15,8 +15,7 @@
 
 - (void)applicationDidFinishLaunching:(NSNotification *)aNotification 
 {
-	int i = 0;
-	i;
+
 }
 
 @end

@@ -23,6 +23,7 @@ namespace pragma { namespace Raster
 	static _Color			sColor;
 	static _Point2			sPositions[1024];
 	static _Color			sColors[1024];
+	static _Vector			sNormals[1024];
 	static unsigned			sNumPositions = 0;
 	
 	/**
@@ -86,13 +87,111 @@ namespace pragma { namespace Raster
 		aCount = unsigned(lEndX - lStart);
 		return lVal;
 	}
+
+	struct InterpolatorsBase
+	{
+		// Interpoladores de posicion, comunes para todos los sabores de raster
+		_Vector2 mLongEdge;
+		_Vector2 mTopShortEdge;
+		_Vector2 mBottomShortEdge;
+		_Vector2 mSplit;
+	};
 	
+	struct Draft
+	{
+		struct Interpolators : public InterpolatorsBase
+		{
+		};
+		struct ScanlineParameters
+		{
+			struct Edge
+			{
+			};
+			Edge mLeft;
+			Edge mRight;
+			struct Increments
+			{
+			} mIncrements;
+		};
+	};
+	
+	struct ColorVertex
+	{
+		struct Interpolators : public InterpolatorsBase
+		{
+			// Interpoladores de color
+			_Color mLongColorEdge;
+			_Color mTopShortColorEdge;
+			_Color mBottomShortColorEdge;
+			_Color mSplitColor;
+		};
+
+		struct ScanlineParameters
+		{
+			struct Edge
+			{
+				_Color mColor;
+				_Color mColorGradient;
+			};
+			Edge mLeft;
+			Edge mRight;
+			struct Increments
+			{
+				_Color mColorGradient;
+			} mIncrements;
+		};
+		
+	};
+	
+	struct ColorVertex_Normal
+	{
+		struct Interpolators 
+		{
+			// Interpoladores de color
+			_Color mLongColorEdge;
+			_Color mTopShortColorEdge;
+			_Color mBottomShortColorEdge;
+			_Color mSplitColor;
+			_Vector mLongNormal;
+			_Vector mTopNormalEdge;
+			_Vector mBottomNormaleEdge;
+			_Vector mSplitNormal;
+		};
+		
+		struct ScanlineParameters
+		{
+			struct Edge
+			{
+				_Color mColor;
+				_Color mColorGradient;
+				_Vector mNormal;
+				_Vector mNormalGradient;
+			};
+			Edge mLeft;
+			Edge mRight;
+			struct Increments
+			{
+				_Color mColorGradient;
+				_Vector mNormalGradient;
+			} mIncrements;
+		};
+	};
+	
+	template<typename T>
 	inline void RasterLines( _Point2& aLeftStart, Real aLeftIncrement
-						   , _Point2& aRightStart, Real aRightIncrement
-						   , unsigned aCount
-						   , _Color& aColorLeft, _Color aLeftColorInc
-						   , _Color& aColorRight, _Color aRightColorInc
-						   , _Color aScanlineIncColor )
+							, _Point2& aRightStart, Real aRightIncrement
+							, unsigned aCount
+							, typename T::ScanlineParameters::Increments& aIncrements
+							, typename T::ScanlineParameters::Edge& aLeftParameters
+							, typename T::ScanlineParameters::Edge& aRightParameters ) { /* Do Nothing */  }
+
+	template<>
+	inline void RasterLines<ColorVertex>( _Point2& aLeftStart, Real aLeftIncrement
+										, _Point2& aRightStart, Real aRightIncrement
+										 , unsigned aCount
+										 , ColorVertex::ScanlineParameters::Increments& aIncrements
+										 , ColorVertex::ScanlineParameters::Edge& aLeft
+										 , ColorVertex::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -109,33 +208,37 @@ namespace pragma { namespace Raster
 			
 			if(lCount > 0)
 			{
-				_Color lStartColor = ((aColorRight - aColorLeft) * lAdjustX) + aColorLeft;
+				_Color lStartColor = ((aRight.mColor - aLeft.mColor) * lAdjustX) + aLeft.mColor;
 				
 				unsigned lPosition = (lY * Raster::sWidth + unsigned(lLeftScan));
 				unsigned char* lPtr = &sScreen[lPosition<<2];
 
 				while(lCount--)
 				{
-					*lPtr++ = lStartColor.x * 255;
-					*lPtr++ = lStartColor.y * 255;
-					*lPtr++ = lStartColor.z * 255;
+					*lPtr++ = lStartColor.x;
+					*lPtr++ = lStartColor.y;
+					*lPtr++ = lStartColor.z;
 					*lPtr++ = 0;
-					lStartColor+= aScanlineIncColor; //lIncColor;
+					lStartColor+= aIncrements.mColorGradient; //lIncColor;
 				}
 			}
 			aLeftStart.x+= aLeftIncrement;
 			aRightStart.x+= aRightIncrement;
 			
-			aColorLeft+= aLeftColorInc;
-			aColorRight+= aRightColorInc;
+			aLeft.mColor+= aLeft.mColorGradient;
+			aRight.mColor+= aRight.mColorGradient;
 			
 			lY++;
 		}
 	}
 	
-	inline void RasterLines( _Point2& aLeftStart, Real aLeftIncrement
-							, _Point2& aRightStart, Real aRightIncrement
-							, unsigned aCount )
+	template<>
+	inline void RasterLines<Draft>( _Point2& aLeftStart, Real aLeftIncrement
+								  , _Point2& aRightStart, Real aRightIncrement
+								  , unsigned aCount
+								  , Draft::ScanlineParameters::Increments& aIncrements
+								  , Draft::ScanlineParameters::Edge& aLeft
+								  , Draft::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -171,159 +274,126 @@ namespace pragma { namespace Raster
 	}
 
 	template<typename T>
-	void _RasterTriangle(int i0, int i1, int i2, typename T::Interpolators& aTable);
-
-	struct InterpolatorsBase
+	inline void AdjustScanlineColors( int i0, int i1, int i2, Real aScale1, Real aScale2
+									, typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
 	{
-		// Interpoladores de posicion, comunes para todos los sabores de raster
-		_Vector2 mLongEdge;
-		_Vector2 mTopShortEdge;
-		_Vector2 mBottomShortEdge;
-		_Vector2 mSplit;
-	};
-	
-	struct Draft
-	{
-		struct Interpolators : public InterpolatorsBase
-		{
-		};
-	};
-	
-	struct ColorVertex
-	{
-		struct Interpolators : public InterpolatorsBase
-		{
-			// Interpoladores de color
-			_Color mLongColorEdge;
-			_Color mTopShortColorEdge;
-			_Color mBottomShortColorEdge;
-			_Color mSplitColor;
-		};
-	};
+		aParameters.mLeft.mColor			= sColors[i0] + (aTable.mTopShortColorEdge * aScale1);
+		aParameters.mRight.mColor			= sColors[i0] + (aTable.mLongColorEdge * aScale2);
+		aParameters.mLeft.mColorGradient	= aTable.mTopShortColorEdge / aTable.mTopShortEdge.y;
+		aParameters.mRight.mColorGradient	= aTable.mLongColorEdge / aTable.mLongEdge.y;
+		aParameters.mIncrements.mColorGradient = ( aTable.mSplitColor - sColors[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
+	}
 
 	template<>
-	inline void _RasterTriangle<Draft>(int i0, int i1, int i2, Draft::Interpolators& aTable)
+	inline void AdjustScanlineColors<Draft>( int i0, int i1, int i2, Real aScale1, Real aScale2
+										   , Draft::Interpolators& aTable, Draft::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<typename T>
+	inline void AdjustScanlineColors( int i0, int i1, int i2, Real aScale
+									, typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
 	{
-		if(sPositions[i1].x < sPositions[i2].x)
-		{ // 1 está a la izquierda
-			Real lLeftGradient	= aTable.mTopShortEdge.x / aTable.mTopShortEdge.y;
-			Real lRightGradient = aTable.mLongEdge.x / aTable.mLongEdge.y;
-			
-			unsigned lRowCount, lTotalRowCount;
-			
-			_Vector2 lLeftStart		= sPositions[i0];
-			Real lLeftScale			= AdjustEdge(lLeftStart, aTable.mTopShortEdge, lRowCount);
-			_Vector2 lRightStart	= sPositions[i0];
-			AdjustEdge(lRightStart, aTable.mLongEdge, lTotalRowCount);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount );
-			
-			lLeftGradient	= aTable.mBottomShortEdge.x / aTable.mBottomShortEdge.y;
-			lLeftStart		= sPositions[i1];
-			lLeftScale		= AdjustEdge(lLeftStart, aTable.mBottomShortEdge, lRowCount);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount );
-		}
-		else
-		{ // 1 está a la derecha
-			Real lLeftGradient	= aTable.mLongEdge.x / aTable.mLongEdge.y;
-			Real lRightGradient = aTable.mTopShortEdge.x / aTable.mTopShortEdge.y;
-			
-			unsigned lRowCount, lTotalRowCount;
-			
-			_Vector2 lLeftStart		= sPositions[i0];
-			AdjustEdge(lLeftStart, aTable.mLongEdge, lTotalRowCount);
-			_Vector2 lRightStart	= sPositions[i0];
-			Real lRightScale		= AdjustEdge(lRightStart, aTable.mTopShortEdge, lRowCount);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount );
-			
-			lRightGradient	= aTable.mBottomShortEdge.x / aTable.mBottomShortEdge.y;
-			lRightStart		= sPositions[i1];
-			lRightScale		= AdjustEdge(lRightStart, aTable.mBottomShortEdge, lRowCount);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount );
-		}
+		aParameters.mLeft.mColor			= sColors[i1] + (aTable.mBottomShortColorEdge * aScale);
+		aParameters.mLeft.mColorGradient	= aTable.mBottomShortColorEdge / aTable.mBottomShortEdge.y;
+	}
+
+	template<>
+	inline void AdjustScanlineColors<Draft>( int i0, int i1, int i2, Real aScale
+										   , Draft::Interpolators& aTable, Draft::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<typename T>
+	inline void AdjustScanlineNormals( int i0, int i1, int i2, Real aScale1, Real aScale2
+									 , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mNormal			= sNormals[i0] + (aTable.mTopShortColorEdge * aScale1);
+		aParameters.mRight.mNormal			= sNormals[i0] + (aTable.mLongColorEdge * aScale2);
+		aParameters.mLeft.mColorGradient	= aTable.mTopNormalEdge / aTable.mTopShortEdge.y;
+		aParameters.mRight.mColorGradient	= aTable.mLongNormalEdge / aTable.mLongEdge.y;
+		aParameters.mIncrements.mNormalGradient = ( aTable.mSplitNormal - sNormals[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
 	}
 	
 	template<>
-	inline void _RasterTriangle<ColorVertex>(int i0, int i1, int i2, ColorVertex::Interpolators& aTable)
+	inline void AdjustScanlineNormals<Draft>( int i0, int i1, int i2, Real aScale1, Real aScale2
+											, Draft::Interpolators& aTable, Draft::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<>
+	inline void AdjustScanlineNormals<ColorVertex>( int i0, int i1, int i2, Real aScale1, Real aScale2
+												  , ColorVertex::Interpolators& aTable, ColorVertex::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<typename T>
+	inline void AdjustScanlineNormals( int i0, int i1, int i2, Real aScale
+									 , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
 	{
+		aParameters.mLeft.mNormal			= sColors[i1] + (aTable.mBottomNormalEdge * aScale);
+		aParameters.mLeft.mNormalGradient	= aTable.mBottomNormalEdge / aTable.mBottomShortEdge.y;
+	}
+	
+	template<>
+	inline void AdjustScanlineNormals<Draft>( int i0, int i1, int i2, Real aScale
+									  , Draft::Interpolators& aTable, Draft::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<>
+	inline void AdjustScanlineNormals<ColorVertex>( int i0, int i1, int i2, Real aScale
+											 , ColorVertex::Interpolators& aTable, ColorVertex::ScanlineParameters& aParameters) { /* Do Nothing */ }
+	
+	template<typename T>
+	inline void _RasterTriangle(int i0, int i1, int i2, typename T::Interpolators& aTable)
+	{
+		typename T::ScanlineParameters aParameters;
+		
+		Real lShortGradient	= aTable.mTopShortEdge.x / aTable.mTopShortEdge.y;
+		Real lLongGradient	= aTable.mLongEdge.x / aTable.mLongEdge.y;
+		
+		unsigned lRowCount, lTotalRowCount;
+		
+		_Vector2 lShortStart	= sPositions[i0];
+		Real lShortScale		= AdjustEdge(lShortStart, aTable.mTopShortEdge, lRowCount);
+		_Vector2 lLongStart		= sPositions[i0];
+		Real lLongScale			= AdjustEdge(lLongStart, aTable.mLongEdge, lTotalRowCount);
+		
+		AdjustScanlineColors<T>(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
+		AdjustScanlineNormals<T>(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
+
 		if(sPositions[i1].x < sPositions[i2].x)
 		{ // 1 está a la izquierda
-			Real lLeftGradient	= aTable.mTopShortEdge.x / aTable.mTopShortEdge.y;
-			Real lRightGradient = aTable.mLongEdge.x / aTable.mLongEdge.y;
-			
-			unsigned lRowCount, lTotalRowCount;
-
-			_Vector2 lLeftStart		= sPositions[i0];
-			Real lLeftScale			= AdjustEdge(lLeftStart, aTable.mTopShortEdge, lRowCount);
-			_Vector2 lRightStart	= sPositions[i0];
-			Real lRightScale		= AdjustEdge(lRightStart, aTable.mLongEdge, lTotalRowCount);
-			
-			_Color lLeftColorStart			= sColors[i0] + (aTable.mTopShortColorEdge * lLeftScale);
-			_Color lRightColorStart			= sColors[i0] + (aTable.mLongColorEdge * lRightScale);
-			_Color lLeftColorGradient		= aTable.mTopShortColorEdge / aTable.mTopShortEdge.y;
-			_Color lRightColorGradient		= aTable.mLongColorEdge / aTable.mLongEdge.y;
-			_Color lScanlineColorGradient	= (aTable.mSplitColor - sColors[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount
-						, lLeftColorStart, lLeftColorGradient, lRightColorStart, lRightColorGradient, lScanlineColorGradient );
-			
-			lLeftGradient	= aTable.mBottomShortEdge.x / aTable.mBottomShortEdge.y;
-			lLeftStart		= sPositions[i1];
-			lLeftScale		= AdjustEdge(lLeftStart, aTable.mBottomShortEdge, lRowCount);
-			
-			lLeftColorStart		= sColors[i1] + (aTable.mBottomShortColorEdge * lLeftScale);
-			lLeftColorGradient	= aTable.mBottomShortColorEdge / aTable.mBottomShortEdge.y;
-
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount
-						, lLeftColorStart, lLeftColorGradient, lRightColorStart, lRightColorGradient, lScanlineColorGradient );
+			RasterLines<T>( lShortStart , lShortGradient, lLongStart, lLongGradient, lRowCount
+						  , aParameters.mIncrements, aParameters.mLeft, aParameters.mRight );
 		}
 		else
+		{
+			RasterLines<T>( lLongStart, lLongGradient, lShortStart, lShortGradient, lRowCount
+						  , aParameters.mIncrements, aParameters.mRight, aParameters.mLeft );
+		}
+
+		lShortGradient	= aTable.mBottomShortEdge.x / aTable.mBottomShortEdge.y;
+		lShortStart		= sPositions[i1];
+		lShortScale		= AdjustEdge(lShortStart, aTable.mBottomShortEdge, lRowCount);
+
+		AdjustScanlineColors<T>(i0, i1, i2, lShortScale, aTable, aParameters);
+		AdjustScanlineNormals<T>(i0, i1, i2, lShortScale, aTable, aParameters);
+		
+		if(sPositions[i1].x < sPositions[i2].x)
 		{ // 1 está a la derecha
-			Real lLeftGradient	= aTable.mLongEdge.x / aTable.mLongEdge.y;
-			Real lRightGradient = aTable.mTopShortEdge.x / aTable.mTopShortEdge.y;
-
-			unsigned lRowCount, lTotalRowCount;
-
-			_Vector2 lLeftStart		= sPositions[i0];
-			Real lLeftScale			= AdjustEdge(lLeftStart, aTable.mLongEdge, lTotalRowCount);
-			_Vector2 lRightStart	= sPositions[i0];
-			Real lRightScale		= AdjustEdge(lRightStart, aTable.mTopShortEdge, lRowCount);
-			
-			_Color lRightColorStart			= sColors[i0] + (aTable.mTopShortColorEdge * lRightScale);
-			_Color lLeftColorStart			= sColors[i0] + (aTable.mLongColorEdge * lLeftScale);
-			_Color lRightColorGradient		= aTable.mTopShortColorEdge / aTable.mTopShortEdge.y;
-			_Color lLeftColorGradient		= aTable.mLongColorEdge / aTable.mLongEdge.y;
-			_Color lScanlineColorGradient	= (sColors[i1] - aTable.mSplitColor) / (sPositions[i1].x - aTable.mSplit.x);
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount
-						, lLeftColorStart, lLeftColorGradient, lRightColorStart, lRightColorGradient, lScanlineColorGradient );
-			
-			lRightGradient	= aTable.mBottomShortEdge.x / aTable.mBottomShortEdge.y;
-			lRightStart		= sPositions[i1];
-			lRightScale		= AdjustEdge(lRightStart, aTable.mBottomShortEdge, lRowCount);
-			
-			lRightColorStart	= sColors[i1] + (aTable.mBottomShortColorEdge * lRightScale);
-			lRightColorGradient = aTable.mBottomShortColorEdge / aTable.mBottomShortEdge.y;
-			
-			RasterLines	( lLeftStart , lLeftGradient, lRightStart, lRightGradient, lRowCount
-						, lLeftColorStart, lLeftColorGradient, lRightColorStart, lRightColorGradient, lScanlineColorGradient );
+			RasterLines<T>( lShortStart , lShortGradient, lLongStart, lLongGradient, lRowCount
+						  , aParameters.mIncrements, aParameters.mLeft, aParameters.mRight );
+		}
+		else
+		{
+			RasterLines<T>( lLongStart, lLongGradient, lShortStart , lShortGradient, lRowCount
+						  , aParameters.mIncrements, aParameters.mRight, aParameters.mLeft );
 		}
 	}
 	
 	template<typename T>
-	inline void InterpolateColors(int i0, int i1, int i2, Real aVal, typename T::Interpolators& aTable) { }
-	
-	template<>
-	inline void InterpolateColors<ColorVertex>(int i0, int i1, int i2, Real aVal, ColorVertex::Interpolators& aTable)
+	inline void InterpolateColors(int i0, int i1, int i2, Real aVal, typename T::Interpolators& aTable)
 	{
 		aTable.mLongColorEdge			= sColors[i2] - sColors[i0];
 		aTable.mTopShortColorEdge		= sColors[i1] - sColors[i0];
 		aTable.mBottomShortColorEdge	= sColors[i2] - sColors[i1];
 		aTable.mSplitColor				= sColors[i0] + (aTable.mLongColorEdge * aVal);
 	}
+	
+	template<>
+	inline void InterpolateColors<Draft>(int i0, int i1, int i2, Real aVal, Draft::Interpolators& aTable) { /* Do Nothing */ }
 
 	template<typename T>
 	inline void RasterTriangle(int i0, int i1, int i2)
@@ -370,7 +440,7 @@ namespace pragma { namespace Raster
 	
 	void VertexColor(const _Color& aColor)
 	{
-		sColor = aColor;
+		sColor = aColor * Real(255);
 	}
 	
 	void SetRenderContext(unsigned char* aBuffer, int aWidth, int aHeight)
@@ -391,11 +461,11 @@ namespace pragma { namespace Raster
 		{
 			RasterTriangle<ColorVertex>(i+0, i+1, i+2);
 		}
-		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<Draft>(i+0, i+1, i+2);
 			break;
-		}
+		}*/
 		sNumPositions = 0;
 	}
 

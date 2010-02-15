@@ -18,7 +18,7 @@ namespace pragma
 		typedef vector2<Real> _Point2;
 		typedef vector2<Real> _Vector2;
 		typedef vector3<Real> _Color;
-
+		
 		void AddVertex			( const _Point2& aPosition );
 		void VertexColor		( const _Color& aColor );
 		void SetRenderContext	( unsigned char* aBuffer, int aWidth, int aHeight );
