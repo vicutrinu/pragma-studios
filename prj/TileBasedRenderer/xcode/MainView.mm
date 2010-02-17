@@ -175,7 +175,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,1,0) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
 		pragma::Raster::VertexColor( pragma::Raster::_Color(0,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
-		pragma::Raster::VertexColor( pragma::Raster::_Color(1,0,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+		pragma::Raster::VertexColor( pragma::Raster::_Color(1,1,1) ); pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::Raster::Render();
 		
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];

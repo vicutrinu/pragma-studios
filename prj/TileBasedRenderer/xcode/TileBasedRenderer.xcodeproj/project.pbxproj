@@ -14,6 +14,17 @@
 		5770580C111F990200824133 /* TBRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5770580B111F990200824133 /* TBRAppDelegate.m */; };
 		57705840111F9B3300824133 /* MainView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5770583F111F9B3300824133 /* MainView.mm */; };
 		57705A0C111FB31D00824133 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
+		57E221F5112B604E00BBDCB9 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
+		57E221F6112B605600BBDCB9 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
+		57E221F7112B607100BBDCB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E221E2112B5FD700BBDCB9 /* main.m */; };
+		57E221F8112B607200BBDCB9 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E221E3112B5FD700BBDCB9 /* MainWindow.xib */; };
+		57E221F9112B607600BBDCB9 /* EAGLView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57E221DC112B5FD700BBDCB9 /* EAGLView.mm */; };
+		57E221FA112B607700BBDCB9 /* ES1Renderer.mm in Sources */ = {isa = PBXBuildFile; fileRef = 57E221DE112B5FD700BBDCB9 /* ES1Renderer.mm */; };
+		57E221FB112B607800BBDCB9 /* UntitledAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E221E1112B5FD700BBDCB9 /* UntitledAppDelegate.m */; };
+		57E22378112B638700BBDCB9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E22377112B638700BBDCB9 /* OpenGLES.framework */; };
+		57E22381112B63A200BBDCB9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E22380112B63A200BBDCB9 /* QuartzCore.framework */; };
+		57E22385112B63AC00BBDCB9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E22384112B63AC00BBDCB9 /* UIKit.framework */; };
+		57E22388112B63B700BBDCB9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E22387112B63B700BBDCB9 /* Foundation.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -77,6 +88,21 @@
 		57BA69E61111168300FFA062 /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system.cpp; sourceTree = "<group>"; };
 		57BA69E71111168300FFA062 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		57BA69EA1111168300FFA062 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		57E221DB112B5FD700BBDCB9 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
+		57E221DC112B5FD700BBDCB9 /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
+		57E221DD112B5FD700BBDCB9 /* ES1Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ES1Renderer.h; sourceTree = "<group>"; };
+		57E221DE112B5FD700BBDCB9 /* ES1Renderer.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = ES1Renderer.mm; sourceTree = "<group>"; };
+		57E221DF112B5FD700BBDCB9 /* ESRenderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ESRenderer.h; sourceTree = "<group>"; };
+		57E221E0112B5FD700BBDCB9 /* UntitledAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UntitledAppDelegate.h; sourceTree = "<group>"; };
+		57E221E1112B5FD700BBDCB9 /* UntitledAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UntitledAppDelegate.m; sourceTree = "<group>"; };
+		57E221E2112B5FD700BBDCB9 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = iPhone/main.m; sourceTree = "<group>"; };
+		57E221E3112B5FD700BBDCB9 /* MainWindow.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = MainWindow.xib; path = iPhone/MainWindow.xib; sourceTree = "<group>"; };
+		57E221E4112B5FD700BBDCB9 /* iPhone-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = "iPhone-Info.plist"; path = "iPhone/iPhone-Info.plist"; sourceTree = "<group>"; };
+		57E221EF112B600A00BBDCB9 /* iPhone.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iPhone.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		57E22377112B638700BBDCB9 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		57E22380112B63A200BBDCB9 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		57E22384112B63AC00BBDCB9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		57E22387112B63B700BBDCB9 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		C6859E8B029090EE04C91782 /* TileBasedRenderer.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = TileBasedRenderer.1; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -89,12 +115,24 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
+		57E221ED112B600A00BBDCB9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57E22378112B638700BBDCB9 /* OpenGLES.framework in Frameworks */,
+				57E22381112B63A200BBDCB9 /* QuartzCore.framework in Frameworks */,
+				57E22385112B63AC00BBDCB9 /* UIKit.framework in Frameworks */,
+				57E22388112B63B700BBDCB9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
 		08FB7794FE84155DC02AAC07 /* TileBasedRenderer */ = {
 			isa = PBXGroup;
 			children = (
+				57E221D9112B5FBC00BBDCB9 /* iPhone */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				57705766111F925100824133 /* Resources */,
 				C6859E8C029090F304C91782 /* Documentation */,
@@ -124,6 +162,7 @@
 			isa = PBXGroup;
 			children = (
 				577057C7111F96AD00824133 /* TileBasedRenderer.app */,
+				57E221EF112B600A00BBDCB9 /* iPhone.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -257,6 +296,44 @@
 			path = system;
 			sourceTree = "<group>";
 		};
+		57E221D9112B5FBC00BBDCB9 /* iPhone */ = {
+			isa = PBXGroup;
+			children = (
+				57E222BA112B60BF00BBDCB9 /* Frameworks */,
+				57E221DA112B5FD700BBDCB9 /* Classes */,
+				57E221E2112B5FD700BBDCB9 /* main.m */,
+				57E221E3112B5FD700BBDCB9 /* MainWindow.xib */,
+				57E221E4112B5FD700BBDCB9 /* iPhone-Info.plist */,
+			);
+			name = iPhone;
+			sourceTree = "<group>";
+		};
+		57E221DA112B5FD700BBDCB9 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				57E221DB112B5FD700BBDCB9 /* EAGLView.h */,
+				57E221DC112B5FD700BBDCB9 /* EAGLView.mm */,
+				57E221DD112B5FD700BBDCB9 /* ES1Renderer.h */,
+				57E221DE112B5FD700BBDCB9 /* ES1Renderer.mm */,
+				57E221DF112B5FD700BBDCB9 /* ESRenderer.h */,
+				57E221E0112B5FD700BBDCB9 /* UntitledAppDelegate.h */,
+				57E221E1112B5FD700BBDCB9 /* UntitledAppDelegate.m */,
+			);
+			name = Classes;
+			path = iPhone/Classes;
+			sourceTree = "<group>";
+		};
+		57E222BA112B60BF00BBDCB9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				57E22377112B638700BBDCB9 /* OpenGLES.framework */,
+				57E22380112B63A200BBDCB9 /* QuartzCore.framework */,
+				57E22384112B63AC00BBDCB9 /* UIKit.framework */,
+				57E22387112B63B700BBDCB9 /* Foundation.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		C6859E8C029090F304C91782 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -285,6 +362,23 @@
 			productReference = 577057C7111F96AD00824133 /* TileBasedRenderer.app */;
 			productType = "com.apple.product-type.application";
 		};
+		57E221EE112B600A00BBDCB9 /* iPhone */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 57E221F4112B600B00BBDCB9 /* Build configuration list for PBXNativeTarget "iPhone" */;
+			buildPhases = (
+				57E221EB112B600A00BBDCB9 /* Resources */,
+				57E221EC112B600A00BBDCB9 /* Sources */,
+				57E221ED112B600A00BBDCB9 /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = iPhone;
+			productName = iPhone;
+			productReference = 57E221EF112B600A00BBDCB9 /* iPhone.app */;
+			productType = "com.apple.product-type.application";
+		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -298,6 +392,7 @@
 			projectRoot = "";
 			targets = (
 				577057C6111F96AD00824133 /* TileBasedRenderer */,
+				57E221EE112B600A00BBDCB9 /* iPhone */,
 			);
 		};
 /* End PBXProject section */
@@ -308,6 +403,14 @@
 			buildActionMask = 2147483647;
 			files = (
 				577057D5111F975100824133 /* MainMenu.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		57E221EB112B600A00BBDCB9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57E221F8112B607200BBDCB9 /* MainWindow.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -323,6 +426,19 @@
 				5770580C111F990200824133 /* TBRAppDelegate.m in Sources */,
 				57705840111F9B3300824133 /* MainView.mm in Sources */,
 				57705A0C111FB31D00824133 /* math.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		57E221EC112B600A00BBDCB9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57E221F6112B605600BBDCB9 /* math.cpp in Sources */,
+				57E221F5112B604E00BBDCB9 /* Raster.cpp in Sources */,
+				57E221F7112B607100BBDCB9 /* main.m in Sources */,
+				57E221F9112B607600BBDCB9 /* EAGLView.mm in Sources */,
+				57E221FA112B607700BBDCB9 /* ES1Renderer.mm in Sources */,
+				57E221FB112B607800BBDCB9 /* UntitledAppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +528,49 @@
 			};
 			name = Release;
 		};
+		57E221F2112B600B00BBDCB9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INFOPLIST_FILE = "iPhone/iPhone-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_LDFLAGS = "";
+				PREBINDING = NO;
+				PRODUCT_NAME = iPhone;
+				SDKROOT = iphoneos3.1.2;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		57E221F3112B600B00BBDCB9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEAD_CODE_STRIPPING = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_THUMB_SUPPORT = NO;
+				INFOPLIST_FILE = "iPhone/iPhone-Info.plist";
+				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				PRODUCT_NAME = iPhone;
+				SDKROOT = iphoneos3.1.2;
+				ZERO_LINK = NO;
+			};
+			name = Release;
+		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -429,6 +588,15 @@
 			buildConfigurations = (
 				577057CA111F96AD00824133 /* Debug */,
 				577057CB111F96AD00824133 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		57E221F4112B600B00BBDCB9 /* Build configuration list for PBXNativeTarget "iPhone" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				57E221F2112B600B00BBDCB9 /* Debug */,
+				57E221F3112B600B00BBDCB9 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
