@@ -39,6 +39,12 @@ namespace pragma
 			base_vector2<T>::x = aX;
 			base_vector2<T>::y = aY;
 		}
+		
+		vector2& operator+=(const base_vector2<T>& aVector)
+		{
+			*this = *this + aVector;
+			return *this;
+		}
 	};
 
 };

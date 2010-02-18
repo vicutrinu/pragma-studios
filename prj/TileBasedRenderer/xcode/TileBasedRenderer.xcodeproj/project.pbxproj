@@ -7,14 +7,14 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		570D7DA7112C84D4004C4260 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570D7DA5112C84D4004C4260 /* Raster.cpp */; };
+		570D7DA8112C84D4004C4260 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570D7DA5112C84D4004C4260 /* Raster.cpp */; };
 		577057D5111F975100824133 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57705765111F924800824133 /* MainMenu.xib */; };
-		577057DE111F979400824133 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
 		577057EE111F97E400824133 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 577057ED111F97E400824133 /* main.m */; };
 		57705802111F98A400824133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57705779111F94A200824133 /* Cocoa.framework */; };
 		5770580C111F990200824133 /* TBRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5770580B111F990200824133 /* TBRAppDelegate.m */; };
 		57705840111F9B3300824133 /* MainView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5770583F111F9B3300824133 /* MainView.mm */; };
 		57705A0C111FB31D00824133 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
-		57E221F5112B604E00BBDCB9 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57A0D910111B9F0400B1CE03 /* Raster.cpp */; };
 		57E221F6112B605600BBDCB9 /* math.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57BA69D91111168300FFA062 /* math.cpp */; };
 		57E221F7112B607100BBDCB9 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 57E221E2112B5FD700BBDCB9 /* main.m */; };
 		57E221F8112B607200BBDCB9 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57E221E3112B5FD700BBDCB9 /* MainWindow.xib */; };
@@ -28,6 +28,13 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		570D7DA5112C84D4004C4260 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../SoftRaster/Raster.cpp; sourceTree = SOURCE_ROOT; };
+		570D7DA6112C84D4004C4260 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../SoftRaster/Raster.h; sourceTree = SOURCE_ROOT; };
+		570D7DAD112C8641004C4260 /* internal_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal_types.h; path = ../SoftRaster/internal_types.h; sourceTree = SOURCE_ROOT; };
+		570D7DD2112C890E004C4260 /* ColorVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorVertex.h; path = ../SoftRaster/ColorVertex.h; sourceTree = SOURCE_ROOT; };
+		570D7DEC112C8DD3004C4260 /* Draft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Draft.h; path = ../SoftRaster/Draft.h; sourceTree = SOURCE_ROOT; };
+		570D7E12112C930B004C4260 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../SoftRaster/functions.h; sourceTree = SOURCE_ROOT; };
+		571FB9C1112DE754001D9DEB /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../SoftRaster/Texture.h; sourceTree = SOURCE_ROOT; };
 		57705765111F924800824133 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		57705779111F94A200824133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = "TileBasedRenderer-list.strings"; sourceTree = "<group>"; };
@@ -38,8 +45,6 @@
 		5770580B111F990200824133 /* TBRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRAppDelegate.m; sourceTree = "<group>"; };
 		5770583E111F9B3300824133 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
 		5770583F111F9B3300824133 /* MainView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = MainView.mm; sourceTree = "<group>"; };
-		57A0D908111B99A400B1CE03 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../Raster.h; sourceTree = SOURCE_ROOT; };
-		57A0D910111B9F0400B1CE03 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../Raster.cpp; sourceTree = SOURCE_ROOT; };
 		57BA6986111115FB00FFA062 /* EntryPoint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = EntryPoint.cpp; path = ../EntryPoint.cpp; sourceTree = SOURCE_ROOT; };
 		57BA69B31111168300FFA062 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		57BA69B51111168300FFA062 /* AABB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AABB.h; sourceTree = "<group>"; };
@@ -145,10 +150,9 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				570D7DA3112C844D004C4260 /* SoftRaster */,
 				57BA69B11111168300FFA062 /* pragma */,
 				57BA6986111115FB00FFA062 /* EntryPoint.cpp */,
-				57A0D910111B9F0400B1CE03 /* Raster.cpp */,
-				57A0D908111B99A400B1CE03 /* Raster.h */,
 				577057ED111F97E400824133 /* main.m */,
 				5770580A111F990200824133 /* TBRAppDelegate.h */,
 				5770580B111F990200824133 /* TBRAppDelegate.m */,
@@ -165,6 +169,20 @@
 				57E221EF112B600A00BBDCB9 /* iPhone.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		570D7DA3112C844D004C4260 /* SoftRaster */ = {
+			isa = PBXGroup;
+			children = (
+				570D7DA5112C84D4004C4260 /* Raster.cpp */,
+				570D7DA6112C84D4004C4260 /* Raster.h */,
+				570D7DAD112C8641004C4260 /* internal_types.h */,
+				570D7DD2112C890E004C4260 /* ColorVertex.h */,
+				571FB9C1112DE754001D9DEB /* Texture.h */,
+				570D7DEC112C8DD3004C4260 /* Draft.h */,
+				570D7E12112C930B004C4260 /* functions.h */,
+			);
+			name = SoftRaster;
 			sourceTree = "<group>";
 		};
 		57705766111F925100824133 /* Resources */ = {
@@ -421,11 +439,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				577057DE111F979400824133 /* Raster.cpp in Sources */,
 				577057EE111F97E400824133 /* main.m in Sources */,
 				5770580C111F990200824133 /* TBRAppDelegate.m in Sources */,
 				57705840111F9B3300824133 /* MainView.mm in Sources */,
 				57705A0C111FB31D00824133 /* math.cpp in Sources */,
+				570D7DA7112C84D4004C4260 /* Raster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -434,11 +452,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				57E221F6112B605600BBDCB9 /* math.cpp in Sources */,
-				57E221F5112B604E00BBDCB9 /* Raster.cpp in Sources */,
 				57E221F7112B607100BBDCB9 /* main.m in Sources */,
 				57E221F9112B607600BBDCB9 /* EAGLView.mm in Sources */,
 				57E221FA112B607700BBDCB9 /* ES1Renderer.mm in Sources */,
 				57E221FB112B607800BBDCB9 /* UntitledAppDelegate.m in Sources */,
+				570D7DA8112C84D4004C4260 /* Raster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
