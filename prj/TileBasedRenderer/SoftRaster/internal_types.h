@@ -121,12 +121,87 @@ namespace pragma { namespace Raster
 	};
 
 	// Raster function
-	template<typename T>
+	template<typename T, typename RASTERTYPE>
 	inline void RasterLines	( Real& aLeft, Real& aRight, unsigned& aY
 							, Real aLeftIncrement, Real aRightIncrement, unsigned aCount
 							, typename T::ScanlineParameters::Increments& aIncrements
 							, typename T::ScanlineParameters::Edge& aLeftParameters
 							, typename T::ScanlineParameters::Edge& aRightParameters ) { /* Do Nothing */  }
+	
+	template<typename T>
+	inline void InterpolateColors(int i0, int i1, int i2, Real aVal, typename T::Interpolators& aTable)
+	{
+		aTable.mLongColorEdge			= sColors[i2] - sColors[i0];
+		aTable.mTopShortColorEdge		= sColors[i1] - sColors[i0];
+		aTable.mBottomShortColorEdge	= sColors[i2] - sColors[i1];
+		aTable.mSplitColor				= sColors[i0] + (aTable.mLongColorEdge * aVal);
+	}
+	
+	template<typename T>
+	inline void InterpolateUVs(int i0, int i1, int i2, Real aVal, typename T::Interpolators& aTable)
+	{
+		aTable.mLongUVEdge		= sUVs[i2] - sUVs[i0];
+		aTable.mTopUVEdge		= sUVs[i1] - sUVs[i0];
+		aTable.mBottomUVEdge	= sUVs[i2] - sUVs[i1];
+		aTable.mSplitUV			= sUVs[i0] + (aTable.mLongUVEdge * aVal);
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineColors( int i0, int i1, int i2, Real aScale1, Real aScale2
+									 , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mColor			= sColors[i0] + (aTable.mTopShortColorEdge * aScale1);
+		aParameters.mRight.mColor			= sColors[i0] + (aTable.mLongColorEdge * aScale2);
+		aParameters.mLeft.mColorGradient	= aTable.mTopShortColorEdge / aTable.mTopShortEdge.y;
+		aParameters.mRight.mColorGradient	= aTable.mLongColorEdge / aTable.mLongEdge.y;
+		aParameters.mIncrements.mColorGradient = ( aTable.mSplitColor - sColors[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineColors( int i0, int i1, int i2, Real aScale
+									 , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mColor			= sColors[i1] + (aTable.mBottomShortColorEdge * aScale);
+		aParameters.mLeft.mColorGradient	= aTable.mBottomShortColorEdge / aTable.mBottomShortEdge.y;
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineNormals( int i0, int i1, int i2, Real aScale1, Real aScale2
+									  , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mNormal			= sNormals[i0] + (aTable.mTopShortColorEdge * aScale1);
+		aParameters.mRight.mNormal			= sNormals[i0] + (aTable.mLongColorEdge * aScale2);
+		aParameters.mLeft.mColorGradient	= aTable.mTopNormalEdge / aTable.mTopShortEdge.y;
+		aParameters.mRight.mColorGradient	= aTable.mLongNormalEdge / aTable.mLongEdge.y;
+		aParameters.mIncrements.mNormalGradient = ( aTable.mSplitNormal - sNormals[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineNormals( int i0, int i1, int i2, Real aScale
+									  , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mNormal			= sColors[i1] + (aTable.mBottomNormalEdge * aScale);
+		aParameters.mLeft.mNormalGradient	= aTable.mBottomNormalEdge / aTable.mBottomShortEdge.y;
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineUVs( int i0, int i1, int i2, Real aScale1, Real aScale2
+								  , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mUV				= sUVs[i0] + (aTable.mTopUVEdge * aScale1);
+		aParameters.mRight.mUV				= sUVs[i0] + (aTable.mLongUVEdge * aScale2);
+		aParameters.mLeft.mUVGradient		= aTable.mTopUVEdge / aTable.mTopShortEdge.y;
+		aParameters.mRight.mUVGradient		= aTable.mLongUVEdge / aTable.mLongEdge.y;
+		aParameters.mIncrements.mUVGradient = ( aTable.mSplitUV - sUVs[i1] ) / (aTable.mSplit.x - sPositions[i1].x);
+	}
+	
+	template<typename T>
+	inline void AdjustScanlineUVs( int i0, int i1, int i2, Real aScale
+								  , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
+	{
+		aParameters.mLeft.mUV			= sUVs[i1] + (aTable.mBottomUVEdge * aScale);
+		aParameters.mLeft.mUVGradient	= aTable.mBottomUVEdge / aTable.mBottomShortEdge.y;
+	}
 
 #define NULL_INTERPOLATOR(aName, aFormat) \
 	template<>\
@@ -139,6 +214,20 @@ namespace pragma { namespace Raster
 	template<>\
 	inline void aName<aFormat>	( int i0, int i1, int i2, Real aScale\
 								, aFormat::Interpolators& aTable, aFormat::ScanlineParameters& aParameters) { /* Do Nothing */ }
+
+	struct DraftRaster
+	{
+		typedef Draft InterpolatorType;
+	};
 	
+	struct VertexColorRaster
+	{
+		typedef ColorVertex InterpolatorType;
+	};
+	
+	struct TextureRaster
+	{
+		typedef Texture InterpolatorType;
+	};
 												 
 } }
