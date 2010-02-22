@@ -5,22 +5,12 @@
 namespace pragma { namespace Raster
 {
 
-	static inline RGBA SampleTexture(const UV& aUV)
-	{
-		UV lUV( min<Real>(1, max<Real>(aUV.x, 0))
-			  , min<Real>(1, max<Real>(aUV.y, 0)) ); // Clampeo 0..1
-		if( (unsigned(lUV.x * 511) % 64 >= 32 ) == (unsigned(lUV.y * 511) % 64 >= 32 ) )
-			return RGBA(255,255,255,255);
-		else
-			return RGBA(0,0,0,255);
-	}
-	
 	template<>
-	inline void RasterLines<Texture,TextureRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+	inline void RasterLines<Color_Texture,TextureModulateRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
 									 , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
-									 , Texture::ScanlineParameters::Increments& aIncrements
-									 , Texture::ScanlineParameters::Edge& aLeft
-									 , Texture::ScanlineParameters::Edge& aRight )
+									 , Color_Texture::ScanlineParameters::Increments& aIncrements
+									 , Color_Texture::ScanlineParameters::Edge& aLeft
+									 , Color_Texture::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -36,18 +26,20 @@ namespace pragma { namespace Raster
 			if(lCount > 0)
 			{
 				UV lStartUV = ((aRight.mUV - aLeft.mUV) * lAdjustX) + aLeft.mUV;
+				_Color lColorVal = ((aRight.mColor - aLeft.mColor) * lAdjustX) + aLeft.mColor;
 				
 				unsigned lPosition = (aY * Raster::sWidth + unsigned(lLeftScan));
 				unsigned char* lPtr = &sScreen[lPosition<<2];
-				
+
 				while(lCount--)
 				{
 					RGBA lVal = SampleTexture(lStartUV);
-					*lPtr++ = lVal.x;
-					*lPtr++ = lVal.y;
-					*lPtr++ = lVal.z;
+					*lPtr++ = unsigned((float)lVal.x * (float)lColorVal.x / 255.f);
+					*lPtr++ = unsigned((float)lVal.y * (float)lColorVal.y / 255.f);
+					*lPtr++ = unsigned((float)lVal.z * (float)lColorVal.z / 255.f);
 					*lPtr++ = 0;
 					lStartUV+= aIncrements.mUVGradient;
+					lColorVal+= aIncrements.mColorGradient;
 				}
 			}
 			aLeftStart+= aLeftIncrement;
@@ -56,11 +48,11 @@ namespace pragma { namespace Raster
 			aLeft.mUV+= aLeft.mUVGradient;
 			aRight.mUV+= aRight.mUVGradient;
 			
+			aLeft.mColor+= aLeft.mColorGradient;
+			aRight.mColor+= aRight.mColorGradient;
+			
 			aY++;
 		}
 	}
-	
-	NULL_INTERPOLATOR(InterpolateColors, Texture)
-	NULL_ADJUST(AdjustScanlineColors, Texture)
 	
 } }

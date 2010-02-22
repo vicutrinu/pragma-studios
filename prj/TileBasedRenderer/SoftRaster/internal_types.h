@@ -86,19 +86,18 @@ namespace pragma { namespace Raster
 		};
 	};
 	
-	struct ColorVertex_Normal
+	struct Color_Texture
 	{
-		struct Interpolators 
+		struct Interpolators : public InterpolatorsBase
 		{
-			// Interpoladores de color
 			_Color mLongColorEdge;
 			_Color mTopShortColorEdge;
 			_Color mBottomShortColorEdge;
 			_Color mSplitColor;
-			_Vector mLongNormal;
-			_Vector mTopNormalEdge;
-			_Vector mBottomNormaleEdge;
-			_Vector mSplitNormal;
+			UV mLongUVEdge;
+			UV mTopUVEdge;
+			UV mBottomUVEdge;
+			UV mSplitUV;
 		};
 		
 		struct ScanlineParameters
@@ -107,15 +106,15 @@ namespace pragma { namespace Raster
 			{
 				_Color mColor;
 				_Color mColorGradient;
-				_Vector mNormal;
-				_Vector mNormalGradient;
+				UV mUV;
+				UV mUVGradient;
 			};
 			Edge mLeft;
 			Edge mRight;
 			struct Increments
 			{
 				_Color mColorGradient;
-				_Vector mNormalGradient;
+				UV mUVGradient;
 			} mIncrements;
 		};
 	};
@@ -165,6 +164,8 @@ namespace pragma { namespace Raster
 		aParameters.mLeft.mColorGradient	= aTable.mBottomShortColorEdge / aTable.mBottomShortEdge.y;
 	}
 	
+
+	/*
 	template<typename T>
 	inline void AdjustScanlineNormals( int i0, int i1, int i2, Real aScale1, Real aScale2
 									  , typename T::Interpolators& aTable, typename T::ScanlineParameters& aParameters)
@@ -183,6 +184,7 @@ namespace pragma { namespace Raster
 		aParameters.mLeft.mNormal			= sColors[i1] + (aTable.mBottomNormalEdge * aScale);
 		aParameters.mLeft.mNormalGradient	= aTable.mBottomNormalEdge / aTable.mBottomShortEdge.y;
 	}
+	*/
 	
 	template<typename T>
 	inline void AdjustScanlineUVs( int i0, int i1, int i2, Real aScale1, Real aScale2
@@ -229,5 +231,9 @@ namespace pragma { namespace Raster
 	{
 		typedef Texture InterpolatorType;
 	};
-												 
+	
+	struct TextureModulateRaster
+	{
+		typedef Color_Texture InterpolatorType;
+	};											 
 } }

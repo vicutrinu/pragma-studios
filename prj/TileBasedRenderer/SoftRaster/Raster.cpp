@@ -34,6 +34,7 @@ namespace pragma { namespace Raster
 #include "ColorVertex.h"
 #include "Texture.h"
 #include "Draft.h"
+#include "TextureModulate.h"
 
 namespace pragma { namespace Raster
 {
@@ -55,7 +56,7 @@ namespace pragma { namespace Raster
 		Real lLongScale			= AdjustEdge(lLongStart, aTable.mLongEdge, lTotalRowCount);
 		
 		AdjustScanlineColors<typename RASTERTYPE::InterpolatorType>	(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
-		AdjustScanlineNormals<typename RASTERTYPE::InterpolatorType>(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
+		//AdjustScanlineNormals<typename RASTERTYPE::InterpolatorType>(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
 		AdjustScanlineUVs<typename RASTERTYPE::InterpolatorType>	(i0, i1, i2, lShortScale, lLongScale, aTable, aParameters);
 		
 		unsigned lY = lShortStart.y;
@@ -76,7 +77,7 @@ namespace pragma { namespace Raster
 		lShortScale		= AdjustEdge(lShortStart, aTable.mBottomShortEdge, lRowCount);
 
 		AdjustScanlineColors<typename RASTERTYPE::InterpolatorType>	(i0, i1, i2, lShortScale, aTable, aParameters);
-		AdjustScanlineNormals<typename RASTERTYPE::InterpolatorType>(i0, i1, i2, lShortScale, aTable, aParameters);
+		//AdjustScanlineNormals<typename RASTERTYPE::InterpolatorType>(i0, i1, i2, lShortScale, aTable, aParameters);
 		AdjustScanlineUVs<typename RASTERTYPE::InterpolatorType>	(i0, i1, i2, lShortScale, aTable, aParameters);
 		
 		if(sPositions[i1].x < sPositions[i2].x)
@@ -161,18 +162,22 @@ namespace pragma { namespace Raster
 	
 	void Render()
 	{
-		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<VertexColorRaster>(i+0, i+1, i+2);
-		}
-		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		}*/
+		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<TextureRaster>(i+0, i+1, i+2);
-		}
-		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		}*/
+		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<DraftRaster>(i+0, i+1, i+2);
 			break;
+		}*/
+		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		{
+			RasterTriangle<TextureModulateRaster>(i+0, i+1, i+2);
 		}
 		sNumPositions = 0;
 	}

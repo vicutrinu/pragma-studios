@@ -4,7 +4,7 @@ namespace pragma { namespace Raster
 {
 		
 	template<>
-	inline void RasterLines<Draft,void>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+	inline void RasterLines<Draft,DraftRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
 									, Real aLeftIncrement, Real aRightIncrement, unsigned aCount
 									, Draft::ScanlineParameters::Increments& aIncrements
 									, Draft::ScanlineParameters::Edge& aLeft
@@ -44,7 +44,6 @@ namespace pragma { namespace Raster
 	NULL_INTERPOLATOR(InterpolateColors, Draft)
 	NULL_INTERPOLATOR(InterpolateUVs, Draft)
 	NULL_ADJUST(AdjustScanlineColors, Draft)
-	NULL_ADJUST(AdjustScanlineNormals, Draft)
 	NULL_ADJUST(AdjustScanlineUVs, Draft)
 	
 } }

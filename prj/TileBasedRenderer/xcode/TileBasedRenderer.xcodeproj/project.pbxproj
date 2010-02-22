@@ -93,6 +93,7 @@
 		57BA69E61111168300FFA062 /* system.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = system.cpp; sourceTree = "<group>"; };
 		57BA69E71111168300FFA062 /* system.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = system.h; sourceTree = "<group>"; };
 		57BA69EA1111168300FFA062 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
+		57C7BB6911334B6E00F1256C /* TextureModulate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextureModulate.h; path = ../SoftRaster/TextureModulate.h; sourceTree = SOURCE_ROOT; };
 		57E221DB112B5FD700BBDCB9 /* EAGLView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EAGLView.h; sourceTree = "<group>"; };
 		57E221DC112B5FD700BBDCB9 /* EAGLView.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = EAGLView.mm; sourceTree = "<group>"; };
 		57E221DD112B5FD700BBDCB9 /* ES1Renderer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ES1Renderer.h; sourceTree = "<group>"; };
@@ -178,6 +179,7 @@
 				570D7DA6112C84D4004C4260 /* Raster.h */,
 				570D7DAD112C8641004C4260 /* internal_types.h */,
 				570D7DD2112C890E004C4260 /* ColorVertex.h */,
+				57C7BB6911334B6E00F1256C /* TextureModulate.h */,
 				571FB9C1112DE754001D9DEB /* Texture.h */,
 				570D7DEC112C8DD3004C4260 /* Draft.h */,
 				570D7E12112C930B004C4260 /* functions.h */,
