@@ -1,5 +1,7 @@
 #pragma once
 
+#include "internal_types.h"
+
 namespace pragma { namespace Raster
 {
 

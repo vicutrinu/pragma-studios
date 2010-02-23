@@ -31,10 +31,11 @@
 		570D7DA5112C84D4004C4260 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../SoftRaster/Raster.cpp; sourceTree = SOURCE_ROOT; };
 		570D7DA6112C84D4004C4260 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../SoftRaster/Raster.h; sourceTree = SOURCE_ROOT; };
 		570D7DAD112C8641004C4260 /* internal_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal_types.h; path = ../SoftRaster/internal_types.h; sourceTree = SOURCE_ROOT; };
-		570D7DD2112C890E004C4260 /* ColorVertex.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ColorVertex.h; path = ../SoftRaster/ColorVertex.h; sourceTree = SOURCE_ROOT; };
-		570D7DEC112C8DD3004C4260 /* Draft.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Draft.h; path = ../SoftRaster/Draft.h; sourceTree = SOURCE_ROOT; };
 		570D7E12112C930B004C4260 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../SoftRaster/functions.h; sourceTree = SOURCE_ROOT; };
 		571FB9C1112DE754001D9DEB /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../SoftRaster/Texture.h; sourceTree = SOURCE_ROOT; };
+		574C7AB811335455008FD34B /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Color.h; path = ../SoftRaster/Color.h; sourceTree = SOURCE_ROOT; };
+		574C7AB911335455008FD34B /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Position.h; path = ../SoftRaster/Position.h; sourceTree = SOURCE_ROOT; };
+		574C7AFE1133566F008FD34B /* TextureSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextureSampler.h; path = ../SoftRaster/TextureSampler.h; sourceTree = SOURCE_ROOT; };
 		57705765111F924800824133 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		57705779111F94A200824133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = "TileBasedRenderer-list.strings"; sourceTree = "<group>"; };
@@ -178,11 +179,12 @@
 				570D7DA5112C84D4004C4260 /* Raster.cpp */,
 				570D7DA6112C84D4004C4260 /* Raster.h */,
 				570D7DAD112C8641004C4260 /* internal_types.h */,
-				570D7DD2112C890E004C4260 /* ColorVertex.h */,
-				57C7BB6911334B6E00F1256C /* TextureModulate.h */,
+				574C7AB911335455008FD34B /* Position.h */,
+				574C7AB811335455008FD34B /* Color.h */,
 				571FB9C1112DE754001D9DEB /* Texture.h */,
-				570D7DEC112C8DD3004C4260 /* Draft.h */,
+				57C7BB6911334B6E00F1256C /* TextureModulate.h */,
 				570D7E12112C930B004C4260 /* functions.h */,
+				574C7AFE1133566F008FD34B /* TextureSampler.h */,
 			);
 			name = SoftRaster;
 			sourceTree = "<group>";

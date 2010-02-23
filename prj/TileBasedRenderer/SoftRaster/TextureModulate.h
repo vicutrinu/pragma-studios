@@ -1,16 +1,18 @@
 #pragma once
 
+#include "internal_types.h"
 #include <pragma/math/math.h>
+#include "TextureSampler.h"
 
 namespace pragma { namespace Raster
 {
 
 	template<>
-	inline void RasterLines<Color_Texture,TextureModulateRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
-									 , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
-									 , Color_Texture::ScanlineParameters::Increments& aIncrements
-									 , Color_Texture::ScanlineParameters::Edge& aLeft
-									 , Color_Texture::ScanlineParameters::Edge& aRight )
+	inline void RasterLines<VertexFormat::Color_Texture,TextureModulateRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+																			  , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
+																			  , VertexFormat::Color_Texture::ScanlineParameters::Increments& aIncrements
+																			  , VertexFormat::Color_Texture::ScanlineParameters::Edge& aLeft
+																			  , VertexFormat::Color_Texture::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -33,7 +35,7 @@ namespace pragma { namespace Raster
 
 				while(lCount--)
 				{
-					RGBA lVal = SampleTexture(lStartUV);
+					RGBA lVal = TextureSampler<TextureSampler_Debug>::Sample(lStartUV);
 					*lPtr++ = unsigned((float)lVal.x * (float)lColorVal.x / 255.f);
 					*lPtr++ = unsigned((float)lVal.y * (float)lColorVal.y / 255.f);
 					*lPtr++ = unsigned((float)lVal.z * (float)lColorVal.z / 255.f);

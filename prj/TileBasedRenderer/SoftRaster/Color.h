@@ -6,11 +6,11 @@ namespace pragma { namespace Raster
 {
 
 	template<>
-	inline void RasterLines<ColorVertex,VertexColorRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
-										 , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
-										 , ColorVertex::ScanlineParameters::Increments& aIncrements
-										 , ColorVertex::ScanlineParameters::Edge& aLeft
-										 , ColorVertex::ScanlineParameters::Edge& aRight )
+	inline void RasterLines<VertexFormat::Color,VertexColorRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+																  , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
+																  , VertexFormat::Color::ScanlineParameters::Increments& aIncrements
+																  , VertexFormat::Color::ScanlineParameters::Edge& aLeft
+																  , VertexFormat::Color::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -49,7 +49,7 @@ namespace pragma { namespace Raster
 		}
 	}
 	
-	NULL_INTERPOLATOR(InterpolateUVs, ColorVertex)
-	NULL_ADJUST(AdjustScanlineUVs, ColorVertex)
+	NULL_INTERPOLATOR(InterpolateUVs,	VertexFormat::Color)
+	NULL_ADJUST(AdjustScanlineUVs,		VertexFormat::Color)
 	
 } }

@@ -12,112 +12,117 @@ namespace pragma { namespace Raster
 		_Vector2 mSplit;
 	};
 	
-	// Interpolation params
-	struct Draft
+	namespace VertexFormat
 	{
-		struct Interpolators : public InterpolatorsBase
+
+		// Interpolation params
+		struct Position
 		{
-		};
-		struct ScanlineParameters
-		{
-			struct Edge
+			struct Interpolators : public InterpolatorsBase
 			{
 			};
-			Edge mLeft;
-			Edge mRight;
-			struct Increments
+			struct ScanlineParameters
 			{
-			} mIncrements;
-		};
-	};
-	
-	struct ColorVertex
-	{
-		struct Interpolators : public InterpolatorsBase
-		{
-			// Interpoladores de color
-			_Color mLongColorEdge;
-			_Color mTopShortColorEdge;
-			_Color mBottomShortColorEdge;
-			_Color mSplitColor;
-		};
-		
-		struct ScanlineParameters
-		{
-			struct Edge
-			{
-				_Color mColor;
-				_Color mColorGradient;
+				struct Edge
+				{
+				};
+				Edge mLeft;
+				Edge mRight;
+				struct Increments
+				{
+				} mIncrements;
 			};
-			Edge mLeft;
-			Edge mRight;
-			struct Increments
-			{
-				_Color mColorGradient;
-			} mIncrements;
 		};
 		
-	};
-	
-	struct Texture
-	{
-		struct Interpolators : public InterpolatorsBase
+		struct Color
 		{
-			// Interpoladores de color
-			UV mLongUVEdge;
-			UV mTopUVEdge;
-			UV mBottomUVEdge;
-			UV mSplitUV;
-		};
-		
-		struct ScanlineParameters
-		{
-			struct Edge
+			struct Interpolators : public InterpolatorsBase
 			{
-				UV mUV;
-				UV mUVGradient;
+				// Interpoladores de color
+				_Color mLongColorEdge;
+				_Color mTopShortColorEdge;
+				_Color mBottomShortColorEdge;
+				_Color mSplitColor;
 			};
-			Edge mLeft;
-			Edge mRight;
-			struct Increments
+			
+			struct ScanlineParameters
 			{
-				UV mUVGradient;
-			} mIncrements;
-		};
-	};
-	
-	struct Color_Texture
-	{
-		struct Interpolators : public InterpolatorsBase
-		{
-			_Color mLongColorEdge;
-			_Color mTopShortColorEdge;
-			_Color mBottomShortColorEdge;
-			_Color mSplitColor;
-			UV mLongUVEdge;
-			UV mTopUVEdge;
-			UV mBottomUVEdge;
-			UV mSplitUV;
+				struct Edge
+				{
+					_Color mColor;
+					_Color mColorGradient;
+				};
+				Edge mLeft;
+				Edge mRight;
+				struct Increments
+				{
+					_Color mColorGradient;
+				} mIncrements;
+			};
+			
 		};
 		
-		struct ScanlineParameters
+		struct Texture
 		{
-			struct Edge
+			struct Interpolators : public InterpolatorsBase
 			{
-				_Color mColor;
-				_Color mColorGradient;
-				UV mUV;
-				UV mUVGradient;
+				// Interpoladores de color
+				UV mLongUVEdge;
+				UV mTopUVEdge;
+				UV mBottomUVEdge;
+				UV mSplitUV;
 			};
-			Edge mLeft;
-			Edge mRight;
-			struct Increments
+			
+			struct ScanlineParameters
 			{
-				_Color mColorGradient;
-				UV mUVGradient;
-			} mIncrements;
+				struct Edge
+				{
+					UV mUV;
+					UV mUVGradient;
+				};
+				Edge mLeft;
+				Edge mRight;
+				struct Increments
+				{
+					UV mUVGradient;
+				} mIncrements;
+			};
 		};
-	};
+		
+		struct Color_Texture
+		{
+			struct Interpolators : public InterpolatorsBase
+			{
+				_Color mLongColorEdge;
+				_Color mTopShortColorEdge;
+				_Color mBottomShortColorEdge;
+				_Color mSplitColor;
+				UV mLongUVEdge;
+				UV mTopUVEdge;
+				UV mBottomUVEdge;
+				UV mSplitUV;
+			};
+			
+			struct ScanlineParameters
+			{
+				struct Edge
+				{
+					_Color mColor;
+					_Color mColorGradient;
+					UV mUV;
+					UV mUVGradient;
+				};
+				Edge mLeft;
+				Edge mRight;
+				struct Increments
+				{
+					_Color mColorGradient;
+					UV mUVGradient;
+				} mIncrements;
+			};
+		};
+		
+	}
 
 	// Raster function
 	template<typename T, typename RASTERTYPE>
@@ -217,23 +222,17 @@ namespace pragma { namespace Raster
 	inline void aName<aFormat>	( int i0, int i1, int i2, Real aScale\
 								, aFormat::Interpolators& aTable, aFormat::ScanlineParameters& aParameters) { /* Do Nothing */ }
 
-	struct DraftRaster
-	{
-		typedef Draft InterpolatorType;
-	};
-	
-	struct VertexColorRaster
-	{
-		typedef ColorVertex InterpolatorType;
-	};
-	
-	struct TextureRaster
-	{
-		typedef Texture InterpolatorType;
-	};
-	
-	struct TextureModulateRaster
-	{
-		typedef Color_Texture InterpolatorType;
-	};											 
+#define RASTER(aRasterName, aVertexFormat) \
+	struct aRasterName \
+	{ \
+		typedef VertexFormat::aVertexFormat InterpolatorType; \
+	}; \
+
+
+	// Rasters	Raster Name					Vertex Format
+	RASTER	(	SimpleRaster				, Position)
+	RASTER	(	VertexColorRaster			, Color)
+	RASTER	(	TextureRaster				, Texture)
+	RASTER	(	TextureModulateRaster		, Color_Texture)
+										 
 } }

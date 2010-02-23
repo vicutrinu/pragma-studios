@@ -9,7 +9,6 @@
 #include <pragma/graphics/types.h>
 #include <pragma/geometry/functions.h>
 #include <pragma/math/functions.h>
-#include "functions.h"		// Generic functions
 
 #include <stdio.h>
 #include <memory.h>
@@ -30,10 +29,11 @@ namespace pragma { namespace Raster
 		static unsigned			sNumPositions = 0;
 } }
 
+#include "functions.h"		// Generic functions
 #include "internal_types.h"
-#include "ColorVertex.h"
+#include "Color.h"
 #include "Texture.h"
-#include "Draft.h"
+#include "Position.h"
 #include "TextureModulate.h"
 
 namespace pragma { namespace Raster
@@ -162,19 +162,19 @@ namespace pragma { namespace Raster
 	
 	void Render()
 	{
-		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
+		for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<VertexColorRaster>(i+0, i+1, i+2);
-		}*/
-		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
+		}
+		for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<TextureRaster>(i+0, i+1, i+2);
-		}*/
-		/*for(unsigned i = 0; i < sNumPositions; i+= 3)
+		}
+		for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
-			RasterTriangle<DraftRaster>(i+0, i+1, i+2);
+			RasterTriangle<SimpleRaster>(i+0, i+1, i+2);
 			break;
-		}*/
+		}
 		for(unsigned i = 0; i < sNumPositions; i+= 3)
 		{
 			RasterTriangle<TextureModulateRaster>(i+0, i+1, i+2);

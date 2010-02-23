@@ -1,26 +1,18 @@
 #pragma once
 
+#include "internal_types.h"
 #include <pragma/math/math.h>
+#include "TextureSampler.h"
 
 namespace pragma { namespace Raster
 {
 
-	static inline RGBA SampleTexture(const UV& aUV)
-	{
-		UV lUV( min<Real>(1, max<Real>(aUV.x, 0))
-			  , min<Real>(1, max<Real>(aUV.y, 0)) ); // Clampeo 0..1
-		if( (unsigned(lUV.x * 511) % 64 >= 32 ) == (unsigned(lUV.y * 511) % 64 >= 32 ) )
-			return RGBA(255,255,255,255);
-		else
-			return RGBA(0,0,0,255);
-	}
-	
 	template<>
-	inline void RasterLines<Texture,TextureRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
-									 , Real aLeftIncrement, Real aRightIncrement, unsigned aCount
-									 , Texture::ScanlineParameters::Increments& aIncrements
-									 , Texture::ScanlineParameters::Edge& aLeft
-									 , Texture::ScanlineParameters::Edge& aRight )
+	inline void RasterLines<VertexFormat::Texture,TextureRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+																, Real aLeftIncrement, Real aRightIncrement, unsigned aCount
+																, VertexFormat::Texture::ScanlineParameters::Increments& aIncrements
+																, VertexFormat::Texture::ScanlineParameters::Edge& aLeft
+																, VertexFormat::Texture::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -42,7 +34,7 @@ namespace pragma { namespace Raster
 				
 				while(lCount--)
 				{
-					RGBA lVal = SampleTexture(lStartUV);
+					RGBA lVal = TextureSampler<TextureSampler_Debug>::Sample(lStartUV);
 					*lPtr++ = lVal.x;
 					*lPtr++ = lVal.y;
 					*lPtr++ = lVal.z;
@@ -60,7 +52,7 @@ namespace pragma { namespace Raster
 		}
 	}
 	
-	NULL_INTERPOLATOR(InterpolateColors, Texture)
-	NULL_ADJUST(AdjustScanlineColors, Texture)
+	NULL_INTERPOLATOR(InterpolateColors, VertexFormat::Texture)
+	NULL_ADJUST(AdjustScanlineColors, VertexFormat::Texture)
 	
 } }
