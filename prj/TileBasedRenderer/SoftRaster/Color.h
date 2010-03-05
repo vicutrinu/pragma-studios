@@ -48,8 +48,5 @@ namespace pragma { namespace Raster
 			aY++;
 		}
 	}
-	
-	NULL_INTERPOLATOR(InterpolateUVs,	VertexFormat::Color)
-	NULL_ADJUST(AdjustScanlineUVs,		VertexFormat::Color)
-	
+
 } }

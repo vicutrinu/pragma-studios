@@ -12,6 +12,7 @@
 
 #import "MainView.h"
 #include "Raster.h"
+#include "TileRaster.h"
 #include <pragma/math/math.h> 
 #include <pragma/math/functions.h>
 
@@ -38,6 +39,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		
 		mOk = true;
 		pragma::Raster::SetRenderContext(mFrameBuffer, 512, 512);
+		pragma::TileRaster::SetRenderContext(mFrameBuffer, 512, 512);
 		
 		mVertices[0] = pragma::Point(256-150, 256-150,10);
 		mVertices[1] = pragma::Point(256+150, 256-150,10);
@@ -189,8 +191,17 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexColor( pragma::Raster::_Color(1,1,1) );
 		pragma::Raster::VertexUV( pragma::Raster::UV(1,1) );
 		pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+		pragma::Raster::SetRasterMode(pragma::Raster::eVertexColor);
 		pragma::Raster::Render();
 		
+		pragma::TileRaster::ClearBackBuffer();
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+		pragma::TileRaster::Render();		
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];
 		
 		__strong NSGraphicsContext* nsGraphicsContext	= [NSGraphicsContext currentContext];

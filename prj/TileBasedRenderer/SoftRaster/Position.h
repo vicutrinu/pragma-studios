@@ -37,15 +37,10 @@ namespace pragma { namespace Raster
 				}
 			}
 			aLeftStart+= aLeftIncrement;
-			aRightStart= aRightIncrement;
+			aRightStart+= aRightIncrement;
 			
 			aY++;
 		}
 	}
-	
-	NULL_INTERPOLATOR(InterpolateColors,	VertexFormat::Position)
-	NULL_INTERPOLATOR(InterpolateUVs,		VertexFormat::Position)
-	NULL_ADJUST(AdjustScanlineColors,		VertexFormat::Position)
-	NULL_ADJUST(AdjustScanlineUVs,			VertexFormat::Position)
 	
 } }

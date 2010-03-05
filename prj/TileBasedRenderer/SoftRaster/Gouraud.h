@@ -2,17 +2,16 @@
 
 #include "internal_types.h"
 #include <pragma/math/math.h>
-#include "TextureSampler.h"
 
 namespace pragma { namespace Raster
 {
 
 	template<>
-	inline void RasterLines<VertexFormat::Texture,TextureRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
+	inline void RasterLines<VertexFormat::Normal, GouraudRaster>( Real& aLeftStart, Real& aRightStart, unsigned& aY
 																, Real aLeftIncrement, Real aRightIncrement, unsigned aCount
-																, VertexFormat::Texture::ScanlineParameters::Increments& aIncrements
-																, VertexFormat::Texture::ScanlineParameters::Edge& aLeft
-																, VertexFormat::Texture::ScanlineParameters::Edge& aRight )
+																, VertexFormat::Normal::ScanlineParameters::Increments& aIncrements
+																, VertexFormat::Normal::ScanlineParameters::Edge& aLeft
+																, VertexFormat::Normal::ScanlineParameters::Edge& aRight )
 	{
 		Real lLeftScan;
 		Real lRightScan;
@@ -27,26 +26,26 @@ namespace pragma { namespace Raster
 			
 			if(lCount > 0)
 			{
-				UV lStartUV = ((aRight.mUV - aLeft.mUV) * lAdjustX) + aLeft.mUV;
+				_Vector lStartNormal = ((aRight.mNormal - aLeft.mNormal) * lAdjustX) + aLeft.mNormal;
 				
 				unsigned lPosition = (aY * Raster::sWidth + unsigned(lLeftScan));
 				unsigned char* lPtr = &sScreen[lPosition<<2];
 				
 				while(lCount--)
 				{
-					RGBA lVal = TextureSampler<TextureSampler_Debug>::Sample(lStartUV);
-					*lPtr++ = lVal.x;
-					*lPtr++ = lVal.y;
-					*lPtr++ = lVal.z;
+					_Vector lVector = Normalize(lStartNormal);
+					*lPtr++ = lVector.x;
+					*lPtr++ = lVector.y;
+					*lPtr++ = lVector.z;
 					*lPtr++ = 0;
-					lStartUV+= aIncrements.mUVGradient;
+					lStartNormal+= aIncrements.mNormalGradient;
 				}
 			}
 			aLeftStart+= aLeftIncrement;
 			aRightStart+= aRightIncrement;
 			
-			aLeft.mUV+= aLeft.mUVGradient;
-			aRight.mUV+= aRight.mUVGradient;
+			aLeft.mNormal+= aLeft.mNormalGradient;
+			aRight.mNormal+= aRight.mNormalGradient;
 			
 			aY++;
 		}

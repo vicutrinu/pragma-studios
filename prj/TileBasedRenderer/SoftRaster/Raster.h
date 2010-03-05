@@ -21,11 +21,21 @@ namespace pragma
 		typedef vector2<Real>			UV;
 		typedef vector4<unsigned char>	RGBA;
 		
+		enum EMode
+		{
+			eSimple = 0,
+			eVertexColor,
+			eTexture,
+			eTextureModulate,
+			eGouraud
+		};
+		
 		void AddVertex			( const _Point2& aPosition );
 		void VertexColor		( const _Color& aColor );
 		void VertexUV			( const UV& aUV );
 		void SetRenderContext	( unsigned char* aBuffer, int aWidth, int aHeight );
 		void ClearBackBuffer	();
+		void SetRasterMode		(EMode aMode);
 		void Render				();
 		
 		

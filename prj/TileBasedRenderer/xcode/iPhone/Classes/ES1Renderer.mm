@@ -9,6 +9,7 @@
 #import "ES1Renderer.h"
 
 #include "Raster.h"
+#include "TileRaster.h"
 #include <pragma/math/math.h> 
 #include <pragma/math/functions.h>
 
@@ -121,7 +122,6 @@
 	}
 	pragma::Raster::SetRenderContext(mBuffer, 512, 512);
 	pragma::Raster::ClearBackBuffer();
-	pragma::Raster::ClearBackBuffer();
 	pragma::Raster::VertexColor( pragma::Raster::_Color(1,0,0) );
 	pragma::Raster::VertexUV( pragma::Raster::UV(0,0) );
 	pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
@@ -141,8 +141,19 @@
 	pragma::Raster::VertexColor( pragma::Raster::_Color(1,1,1) );
 	pragma::Raster::VertexUV( pragma::Raster::UV(1,1) );
 	pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+	pragma::Raster::SetRasterMode(pragma::Raster::eTextureModulate);
 	pragma::Raster::Render();
-	pragma::Raster::Render();
+	
+	pragma::TileRaster::SetRenderContext(mBuffer, 512, 512);
+	pragma::TileRaster::ClearBackBuffer();
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+	pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
+	pragma::TileRaster::Render();	
+
 	glBindTexture(GL_TEXTURE_2D, mTexture);
 	//glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, 512, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, mBuffer);
 	glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 512, 480, GL_RGBA, GL_UNSIGNED_BYTE, mBuffer);

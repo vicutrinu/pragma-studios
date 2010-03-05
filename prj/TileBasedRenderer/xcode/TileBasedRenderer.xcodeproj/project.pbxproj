@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		570960D2113AE41C0086E773 /* TileRaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570960D1113AE41C0086E773 /* TileRaster.cpp */; };
+		570960D3113AE41C0086E773 /* TileRaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570960D1113AE41C0086E773 /* TileRaster.cpp */; };
 		570D7DA7112C84D4004C4260 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570D7DA5112C84D4004C4260 /* Raster.cpp */; };
 		570D7DA8112C84D4004C4260 /* Raster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 570D7DA5112C84D4004C4260 /* Raster.cpp */; };
 		577057D5111F975100824133 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57705765111F924800824133 /* MainMenu.xib */; };
@@ -28,6 +30,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		570960D0113AE41C0086E773 /* TileRaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TileRaster.h; path = ../TileRaster/TileRaster.h; sourceTree = SOURCE_ROOT; };
+		570960D1113AE41C0086E773 /* TileRaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = TileRaster.cpp; path = ../TileRaster/TileRaster.cpp; sourceTree = SOURCE_ROOT; };
 		570D7DA5112C84D4004C4260 /* Raster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = Raster.cpp; path = ../SoftRaster/Raster.cpp; sourceTree = SOURCE_ROOT; };
 		570D7DA6112C84D4004C4260 /* Raster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Raster.h; path = ../SoftRaster/Raster.h; sourceTree = SOURCE_ROOT; };
 		570D7DAD112C8641004C4260 /* internal_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal_types.h; path = ../SoftRaster/internal_types.h; sourceTree = SOURCE_ROOT; };
@@ -36,6 +40,7 @@
 		574C7AB811335455008FD34B /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Color.h; path = ../SoftRaster/Color.h; sourceTree = SOURCE_ROOT; };
 		574C7AB911335455008FD34B /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Position.h; path = ../SoftRaster/Position.h; sourceTree = SOURCE_ROOT; };
 		574C7AFE1133566F008FD34B /* TextureSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextureSampler.h; path = ../SoftRaster/TextureSampler.h; sourceTree = SOURCE_ROOT; };
+		576381FD1134B1B20057CCF9 /* Gouraud.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Gouraud.h; path = ../SoftRaster/Gouraud.h; sourceTree = SOURCE_ROOT; };
 		57705765111F924800824133 /* MainMenu.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = MainMenu.xib; sourceTree = "<group>"; };
 		57705779111F94A200824133 /* Cocoa.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Cocoa.framework; path = System/Library/Frameworks/Cocoa.framework; sourceTree = SDKROOT; };
 		5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = "TileBasedRenderer-list.strings"; sourceTree = "<group>"; };
@@ -139,7 +144,7 @@
 		08FB7794FE84155DC02AAC07 /* TileBasedRenderer */ = {
 			isa = PBXGroup;
 			children = (
-				57E221D9112B5FBC00BBDCB9 /* iPhone */,
+				57C33F1811397AC400563A4D /* Platform */,
 				08FB7795FE84155DC02AAC07 /* Source */,
 				57705766111F925100824133 /* Resources */,
 				C6859E8C029090F304C91782 /* Documentation */,
@@ -152,14 +157,10 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				570960CF113AE1B20086E773 /* TileRaster */,
 				570D7DA3112C844D004C4260 /* SoftRaster */,
 				57BA69B11111168300FFA062 /* pragma */,
 				57BA6986111115FB00FFA062 /* EntryPoint.cpp */,
-				577057ED111F97E400824133 /* main.m */,
-				5770580A111F990200824133 /* TBRAppDelegate.h */,
-				5770580B111F990200824133 /* TBRAppDelegate.m */,
-				5770583E111F9B3300824133 /* MainView.h */,
-				5770583F111F9B3300824133 /* MainView.mm */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -173,6 +174,15 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		570960CF113AE1B20086E773 /* TileRaster */ = {
+			isa = PBXGroup;
+			children = (
+				570960D0113AE41C0086E773 /* TileRaster.h */,
+				570960D1113AE41C0086E773 /* TileRaster.cpp */,
+			);
+			name = TileRaster;
+			sourceTree = "<group>";
+		};
 		570D7DA3112C844D004C4260 /* SoftRaster */ = {
 			isa = PBXGroup;
 			children = (
@@ -183,6 +193,7 @@
 				574C7AB811335455008FD34B /* Color.h */,
 				571FB9C1112DE754001D9DEB /* Texture.h */,
 				57C7BB6911334B6E00F1256C /* TextureModulate.h */,
+				576381FD1134B1B20057CCF9 /* Gouraud.h */,
 				570D7E12112C930B004C4260 /* functions.h */,
 				574C7AFE1133566F008FD34B /* TextureSampler.h */,
 			);
@@ -318,6 +329,15 @@
 			path = system;
 			sourceTree = "<group>";
 		};
+		57C33F1811397AC400563A4D /* Platform */ = {
+			isa = PBXGroup;
+			children = (
+				57E221D9112B5FBC00BBDCB9 /* iPhone */,
+				57E326941138BB6F008721D5 /* OSX */,
+			);
+			name = Platform;
+			sourceTree = "<group>";
+		};
 		57E221D9112B5FBC00BBDCB9 /* iPhone */ = {
 			isa = PBXGroup;
 			children = (
@@ -356,6 +376,18 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		57E326941138BB6F008721D5 /* OSX */ = {
+			isa = PBXGroup;
+			children = (
+				577057ED111F97E400824133 /* main.m */,
+				5770580A111F990200824133 /* TBRAppDelegate.h */,
+				5770580B111F990200824133 /* TBRAppDelegate.m */,
+				5770583E111F9B3300824133 /* MainView.h */,
+				5770583F111F9B3300824133 /* MainView.mm */,
+			);
+			name = OSX;
+			sourceTree = "<group>";
+		};
 		C6859E8C029090F304C91782 /* Documentation */ = {
 			isa = PBXGroup;
 			children = (
@@ -367,9 +399,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		577057C6111F96AD00824133 /* TileBasedRenderer */ = {
+		577057C6111F96AD00824133 /* OSX */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */;
+			buildConfigurationList = 577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "OSX" */;
 			buildPhases = (
 				577057C3111F96AD00824133 /* Resources */,
 				577057C4111F96AD00824133 /* Sources */,
@@ -379,7 +411,7 @@
 			);
 			dependencies = (
 			);
-			name = TileBasedRenderer;
+			name = OSX;
 			productName = TileBasedRenderer;
 			productReference = 577057C7111F96AD00824133 /* TileBasedRenderer.app */;
 			productType = "com.apple.product-type.application";
@@ -413,7 +445,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				577057C6111F96AD00824133 /* TileBasedRenderer */,
+				577057C6111F96AD00824133 /* OSX */,
 				57E221EE112B600A00BBDCB9 /* iPhone */,
 			);
 		};
@@ -448,6 +480,7 @@
 				57705840111F9B3300824133 /* MainView.mm in Sources */,
 				57705A0C111FB31D00824133 /* math.cpp in Sources */,
 				570D7DA7112C84D4004C4260 /* Raster.cpp in Sources */,
+				570960D3113AE41C0086E773 /* TileRaster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,6 +494,7 @@
 				57E221FA112B607700BBDCB9 /* ES1Renderer.mm in Sources */,
 				57E221FB112B607800BBDCB9 /* UntitledAppDelegate.m in Sources */,
 				570D7DA8112C84D4004C4260 /* Raster.cpp in Sources */,
+				570960D2113AE41C0086E773 /* TileRaster.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -535,6 +569,10 @@
 				COPY_PHASE_STRIP = YES;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_ENABLE_SSE3_EXTENSIONS = YES;
+				GCC_ENABLE_SSE41_EXTENSIONS = YES;
+				GCC_ENABLE_SSE42_EXTENSIONS = YES;
+				GCC_ENABLE_SUPPLEMENTAL_SSE3_INSTRUCTIONS = YES;
 				GCC_MODEL_TUNING = G5;
 				INFOPLIST_FILE = "TileBasedRenderer-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
@@ -557,8 +595,13 @@
 				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
-				GCC_DYNAMIC_NO_PIC = NO;
-				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_AUTO_VECTORIZATION = YES;
+				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_DYNAMIC_NO_PIC = YES;
+				GCC_FAST_MATH = YES;
+				GCC_STRICT_ALIASING = YES;
+				GCC_THUMB_SUPPORT = NO;
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = "iPhone/iPhone-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
 				ONLY_ACTIVE_ARCH = NO;
@@ -580,12 +623,15 @@
 				DEAD_CODE_STRIPPING = NO;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				GCC_DEBUGGING_SYMBOLS = full;
+				GCC_DYNAMIC_NO_PIC = YES;
 				GCC_ENABLE_FIX_AND_CONTINUE = NO;
+				GCC_FAST_MATH = YES;
 				GCC_INLINES_ARE_PRIVATE_EXTERN = NO;
+				GCC_STRICT_ALIASING = YES;
 				GCC_THUMB_SUPPORT = NO;
+				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = "iPhone/iPhone-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
-				ONLY_ACTIVE_ARCH = YES;
 				PREBINDING = NO;
 				PRODUCT_NAME = iPhone;
 				SDKROOT = iphoneos3.1.2;
@@ -605,7 +651,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "TileBasedRenderer" */ = {
+		577057CC111F96AD00824133 /* Build configuration list for PBXNativeTarget "OSX" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				577057CA111F96AD00824133 /* Debug */,
