@@ -15,6 +15,7 @@
 #include "TileRaster.h"
 #include <pragma/math/math.h> 
 #include <pragma/math/functions.h>
+#include <pragma/math/types.h>
 
 @implementation MainView
 
@@ -192,14 +193,20 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexUV( pragma::Raster::UV(1,1) );
 		pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::Raster::SetRasterMode(pragma::Raster::eVertexColor);
-		pragma::Raster::Render();
+		//pragma::Raster::Render();
 		
 		pragma::TileRaster::ClearBackBuffer();
+		pragma::TileRaster::AddColor( pragma::vector3f(1,0,0) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
+		pragma::TileRaster::AddColor( pragma::vector3f(0,1,0) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::TileRaster::AddColor( pragma::vector3f(0,0,1) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::TileRaster::AddColor( pragma::vector3f(0,1,0) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[1].x, mVertices[1].y) );
+		pragma::TileRaster::AddColor( pragma::vector3f(0,0,1) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
+		pragma::TileRaster::AddColor( pragma::vector3f(1,1,1) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::TileRaster::Render();		
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];

@@ -17,5 +17,6 @@ namespace pragma { namespace TileRaster
 	void ClearBackBuffer	();
 	void Render				();
 	void AddVertex			( const vector2f& aPosition );
+	void AddColor			( const vector3f& aColor );
 	
 } }
