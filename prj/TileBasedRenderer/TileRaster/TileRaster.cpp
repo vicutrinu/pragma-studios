@@ -21,10 +21,12 @@ namespace pragma { namespace TileRaster
 	typedef vector2f Position2;
 	typedef vector3f Position;
 	typedef vector3f Color;
+	typedef vector3f UV;
 	
-	Position sPositions[1024];
-	static int sNumPositions = 0;
-	Color    sColors[1024];
+	Position		sPositions[1024];
+	static int		sNumPositions = 0;
+	static Color	sColors[1024];
+	static UV		sUVs[1024];
 	
 	static unsigned char* sScreen = 0;
 	static uint32 sWidth;
@@ -123,7 +125,16 @@ namespace pragma { namespace TileRaster
 	
 	namespace Raster
 	{
-		struct Simple
+		struct Present { };
+		struct NotPresent { };
+		
+		struct Base
+		{
+			typedef NotPresent Color;
+			typedef NotPresent UV;
+		};
+		
+		struct Simple : public Base
 		{
 			struct Start
 			{
@@ -133,8 +144,9 @@ namespace pragma { namespace TileRaster
 			};
 		};
 		
-		struct Color
+		struct VertexColor : public Base
 		{
+			typedef Present Color;
 			struct Start
 			{
 				TileRaster::Color mColor;
@@ -145,6 +157,21 @@ namespace pragma { namespace TileRaster
 				TileRaster::Color mColorY;
 			};
 		};
+		
+		struct Texture : public Base
+		{
+			typedef Present UV;
+			struct Start
+			{
+				TileRaster::UV mUV;
+			};
+			struct Gradients
+			{
+				TileRaster::UV mUVX;
+				TileRaster::UV mUVY;
+			};
+		};
+		
 	}
 
 	template<typename T>
@@ -178,16 +205,16 @@ namespace pragma { namespace TileRaster
 		const uint8* lMask = aMask;
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
 		{
-			if(lMask[ 0] != 0) aData[0] = lColor;
-			if(lMask[ 1] != 0) aData[1] = lColor;
-			if(lMask[ 2] != 0) aData[2] = lColor;
-			if(lMask[ 3] != 0) aData[3] = lColor;
-			if(lMask[ 4] != 0) aData[4] = lColor;
-			if(lMask[ 5] != 0) aData[5] = lColor;
-			if(lMask[ 6] != 0) aData[6] = lColor;
-			if(lMask[ 7] != 0) aData[7] = lColor;
-			if(lMask[ 8] != 0) aData[8] = lColor;
-			if(lMask[ 9] != 0) aData[9] = lColor;
+			if(lMask[ 0] != 0) aData[ 0] = lColor;
+			if(lMask[ 1] != 0) aData[ 1] = lColor;
+			if(lMask[ 2] != 0) aData[ 2] = lColor;
+			if(lMask[ 3] != 0) aData[ 3] = lColor;
+			if(lMask[ 4] != 0) aData[ 4] = lColor;
+			if(lMask[ 5] != 0) aData[ 5] = lColor;
+			if(lMask[ 6] != 0) aData[ 6] = lColor;
+			if(lMask[ 7] != 0) aData[ 7] = lColor;
+			if(lMask[ 8] != 0) aData[ 8] = lColor;
+			if(lMask[ 9] != 0) aData[ 9] = lColor;
 			if(lMask[10] != 0) aData[10] = lColor;
 			if(lMask[11] != 0) aData[11] = lColor;
 			if(lMask[12] != 0) aData[12] = lColor;
@@ -200,7 +227,7 @@ namespace pragma { namespace TileRaster
 	}
 	
 	template<>
-	void RasterTile<Raster::Color>(uint32* aData, const Raster::Color::Start* aStartValue, const Raster::Color::Gradients* aGradients)
+	void RasterTile<Raster::VertexColor>(uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
 	{
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
 		{
@@ -208,6 +235,7 @@ namespace pragma { namespace TileRaster
 			for(uint32 j = 0; j < TILE_SIZE; j++)
 			{
 				aData[j] = ConvertColor(lColor);
+				
 				lColor = lColor + aGradients->mColorX;
 			}
 			aData+= sWidth;
@@ -215,7 +243,7 @@ namespace pragma { namespace TileRaster
 	}
 	
 	template<>
-	void RasterTile<Raster::Color>(const uint8* aMask, uint32* aData, const Raster::Color::Start* aStartValue, const Raster::Color::Gradients* aGradients)
+	void RasterTile<Raster::VertexColor>(const uint8* aMask, uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
 	{
 		const uint8* lMask = aMask;
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
@@ -239,19 +267,40 @@ namespace pragma { namespace TileRaster
 		}
 	}
 	
-	template<typename T>
-	void GetGradient( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY);
+	template<typename T2>
+	class Gradient
+	{
+	public:
+		template<typename T>
+		static inline void GetColor( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
+		
+		template<typename T>
+		static inline void GetUV( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
+	};
 	
 	template<>
-	inline void GetGradient<Raster::Color>( Raster::Color::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY )
+	class Gradient<Raster::Present>
 	{
-		aGradients->mColorX = (Interpolate(aValY, sColors[Y0], sColors[Y2]) - sColors[Y1]) / aLengthY;
-		aGradients->mColorY = (Interpolate(aValX, sColors[X0], sColors[X2]) - sColors[X1]) / aLengthX;
-	}
+	public:
+		template<typename T>
+		static inline void GetColor( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY)
+		{
+			aGradients->mColorX = (Interpolate(aValY, sColors[Y0], sColors[Y2]) - sColors[Y1]) / aLengthY;
+			aGradients->mColorY = (Interpolate(aValX, sColors[X0], sColors[X2]) - sColors[X1]) / aLengthX;
+		}
+		
+		template<typename T>
+		static inline void GetUV( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY)
+		{
+			aGradients->mUVX = (Interpolate(aValY, sUVs[Y0], sUVs[Y2]) - sUVs[Y1]) / aLengthY;
+			aGradients->mUVY = (Interpolate(aValX, sUVs[X0], sUVs[X2]) - sUVs[X1]) / aLengthX;
+		}
+	};
 	
 	//--[ Triangle Setup ]--//
 	
-	inline void GetGradients(int i0, int i1, int i2, Raster::Color::Gradients& aGradients)
+	template<typename T>
+	inline void GetGradients(int i0, int i1, int i2, typename T::Gradients& aGradients)
 	{
 		int X0, X1, X2;
 		int Y0, Y1, Y2;
@@ -271,11 +320,17 @@ namespace pragma { namespace TileRaster
 		float lSplitX = ((1-lValX) * sPositions[X0].y) + (lValX * sPositions[X2].y);
 		float lSplitY = ((1-lValY) * sPositions[Y0].x) + (lValY * sPositions[Y2].x);
 
-		GetGradient<Raster::Color>( &aGradients, lValX, lValY
-								  , X0, X1, X2
-								  , Y0, Y1, Y2
-								  , lSplitX - sPositions[X1].y
-								  , lSplitY - sPositions[Y1].x );
+		Gradient<typename T::Color>::template GetColor<T>( &aGradients, lValX, lValY
+														 , X0, X1, X2
+														 , Y0, Y1, Y2
+														 , lSplitX - sPositions[X1].y
+														 , lSplitY - sPositions[Y1].x );
+		
+		Gradient<typename T::UV>::template GetUV<T>( &aGradients, lValX, lValY
+												   , X0, X1, X2
+												   , Y0, Y1, Y2
+												   , lSplitX - sPositions[X1].y
+												   , lSplitY - sPositions[Y1].x );
 	}
 	
 	void GenerateMask(uint8* aMask, const Position2& aTilePosition, const Position2& a0, const Position2& a1, const Position2& a2)
@@ -290,64 +345,54 @@ namespace pragma { namespace TileRaster
 		}
 	}
 	
-	
-	
+	template <typename T>
 	void RasterTriangle(int i0, int i1, int i2)
 	{
-		Raster::Color::Gradients lGradients;
-		GetGradients(i0, i1, i2, lGradients);
 		uint32* lPtr = (uint32*)sScreen;
-		Color lStart = sColors[i0];//Color(1,0,0);
-		lStart = lStart - (lGradients.mColorX * sPositions[i0].x);
-		lStart = lStart - (lGradients.mColorY * sPositions[i0].y);
-		/*for(int i = 0; i < sHeight; ++i)
-		{
-			Color lValue = lStart; lStart+= lGradients.mColorY;
-			for(int j = 0; j < sWidth; ++j)
-			{
-				*lPtr++ = ConvertColor(lValue);
-				lValue+= lGradients.mColorX;
-			}
-		}
-		return;*/
-		
+
+		typename T::Gradients lGradients;
+		GetGradients<T>(i0, i1, i2, lGradients);
+
+		// TODO: crear un GetStartPoints, del mismo modo que el GetGradients
+		typename T::Start lStart;
+		Color lColorStart = sColors[i0];
+		lColorStart = lColorStart - (lGradients.mColorX * sPositions[i0].x);
+		lColorStart = lColorStart - (lGradients.mColorY * sPositions[i0].y);
+
 		Position2 lA(sPositions[i0].x, sPositions[i0].y);
 		Position2 lB(sPositions[i1].x, sPositions[i1].y);
 		Position2 lC(sPositions[i2].x, sPositions[i2].y);
 		Position2 lTemp;
-		if(PointInsideEdge(lC, lA, lB))
-		{
-			
-		}
-		else
-		{
+		if(!PointInsideEdge(lC, lA, lB))
+		{	// Ordeno los vertices para que A-B-C vaya en el sentido de las agujas del reloj
 			lTemp = lA;
 			lA = lB;
 			lB = lTemp;
 		}
 		
-		Raster::Color::Start lPollas;
-		
 		for(uint32 i = 0; i < sTilesHeight ; i++)
 		{
-			lPollas.mColor = lStart + (lGradients.mColorY * float(TILE_SIZE*i));
+			// TODO: 
+			lStart.mColor = lColorStart + (lGradients.mColorY * float(TILE_SIZE*i));
+
 			lPtr = (uint32*)sScreen + ((i*TILE_SIZE) * sWidth);
 			for(uint32 j = 0; j < sTilesWidth; j++)
 			{
 				if(!TileOutsideTriangle(i * (sTilesWidth + 1) + j, lA, lB, lC))
 				{
 					if(TileInsideTriangle(i * (sTilesWidth + 1) + j , lA, lB, lC))
-						RasterTile<Raster::Color>(lPtr, &lPollas, &lGradients);
+						RasterTile<T>(lPtr, &lStart, &lGradients);
 					else
 					{
 						// Partially inside
 						uint8 lMask[TILE_SIZE * TILE_SIZE];
 						GenerateMask(lMask, Position2(j*TILE_SIZE, i * TILE_SIZE), lA, lB, lC);
-						RasterTile<Raster::Color>(lMask, lPtr, &lPollas, &lGradients);
+						RasterTile<T>(lMask, lPtr, &lStart, &lGradients);
 					}
 				}
 
-				lPollas.mColor = lPollas.mColor + (lGradients.mColorX * float(TILE_SIZE));
+				// TODO
+				lStart.mColor = lStart.mColor + (lGradients.mColorX * float(TILE_SIZE));
 				lPtr+= TILE_SIZE;
 			}
 		}
@@ -388,15 +433,8 @@ namespace pragma { namespace TileRaster
 	
 	void Render()
 	{
-		/*sPositions[1] = Position( 256+50, 50, 0);
-		sColors[0]	  = Color(1,0,0);
-		sPositions[2] = Position( 100, 300, 0);
-		sColors[1]    = Color(0,1,0);
-		sPositions[0] = Position( 10, 10, 0);
-		sColors[2]    = Color(0,0,1);
-		RasterTriangle(0,1,2);*/
 		for(unsigned i = 0; i < sNumPositions; i+= 3)
-			RasterTriangle(i+0,i+1,i+2);
+			RasterTriangle<Raster::VertexColor>(i+0,i+1,i+2);
 	}
 	
 	void AddVertex(const vector2f& aPosition)

@@ -193,7 +193,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexUV( pragma::Raster::UV(1,1) );
 		pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::Raster::SetRasterMode(pragma::Raster::eVertexColor);
-		//pragma::Raster::Render();
+		pragma::Raster::Render();
 		
 		pragma::TileRaster::ClearBackBuffer();
 		pragma::TileRaster::AddColor( pragma::vector3f(1,0,0) );
