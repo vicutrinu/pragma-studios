@@ -386,7 +386,7 @@ namespace pragma { namespace TileRaster
 					{
 						// Partially inside
 						uint8 lMask[TILE_SIZE * TILE_SIZE];
-						GenerateMask(lMask, Position2(j*TILE_SIZE, i * TILE_SIZE), lA, lB, lC);
+						GenerateMask(lMask, Position2(float(j*TILE_SIZE), float(i * TILE_SIZE)), lA, lB, lC);
 						RasterTile<T>(lMask, lPtr, &lStart, &lGradients);
 					}
 				}
@@ -413,8 +413,8 @@ namespace pragma { namespace TileRaster
 		{
 			for(uint32 j = 0; j < sTilesWidth+1; ++j)
 			{
-				lPtr->x = TILE_SIZE * j;
-				lPtr->y = TILE_SIZE * i;
+				lPtr->x = float(TILE_SIZE * j);
+				lPtr->y = float(TILE_SIZE * i);
 				lPtr++;
 			}
 		}
@@ -433,7 +433,7 @@ namespace pragma { namespace TileRaster
 	
 	void Render()
 	{
-		for(unsigned i = 0; i < sNumPositions; i+= 3)
+		for(int i = 0; i < sNumPositions; i+= 3)
 			RasterTriangle<Raster::VertexColor>(i+0,i+1,i+2);
 	}
 	

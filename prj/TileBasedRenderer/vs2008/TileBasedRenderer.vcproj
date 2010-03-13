@@ -367,16 +367,20 @@
 				</File>
 			</Filter>
 		</Filter>
+		<Filter
+			Name="TileRaster"
+			>
+			<File
+				RelativePath="..\TileRaster\TileRaster.cpp"
+				>
+			</File>
+			<File
+				RelativePath="..\TileRaster\TileRaster.h"
+				>
+			</File>
+		</Filter>
 		<File
 			RelativePath="..\EntryPoint.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\Raster.cpp"
-			>
-		</File>
-		<File
-			RelativePath="..\Raster.h"
 			>
 		</File>
 	</Files>
