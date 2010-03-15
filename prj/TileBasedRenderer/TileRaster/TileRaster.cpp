@@ -18,39 +18,48 @@
 
 namespace pragma { namespace TileRaster
 {
+	// Types
+	typedef float	 Real;
 	typedef vector2f Position2;
 	typedef vector3f Position;
 	typedef vector3f Color;
 	typedef vector3f UV;
-	
-	Position		sPositions[1024];
-	static int		sNumPositions = 0;
-	static Color	sColors[1024];
-	static UV		sUVs[1024];
-	
-	static unsigned char* sScreen = 0;
-	static uint32 sWidth;
-	static uint32 sHeight;
-	static uint32 sTilesWidth;
-	static uint32 sTilesHeight;
-	
-	Position2* sTileCorners = 0;
-	char*		sTileStats = 0;
-	
+
+	// Internal Engine Data
+	//	Geometry
+	Position				sPositions[1024];
+	static int				sNumPositions = 0;
+	static Color			sColors[1024];
+	static UV				sUVs[1024];
+	//	Screen & other internal buffers
+	static unsigned char*	sScreen = 0;
+	static uint32			sWidth;
+	static uint32			sHeight;
+	static uint32			sTilesWidth;
+	static uint32			sTilesHeight;
+	Position2*				sTileCorners = 0;
+	char*					sTileStats = 0;
+
+	/**
+	 *	Interpolacion lineal entre aSrc y aDest
+	 */
 	template <typename T>
-	T Interpolate(float aVal, const T& aSrc, const T& aDest)
+	static inline T Interpolate(Real aVal, const T& aSrc, const T& aDest)
 	{
-		return ((1.f - aVal) * aSrc) + (aVal * aDest);
+		return ((Real(1) - aVal) * aSrc) + (aVal * aDest);
+	}
+
+	/**
+	 *	Convierte un color del tipo Color a un entero de 32 bits
+	 */
+	static inline uint32 ConvertColor(const Color& aColor)
+	{
+		return	((int(clamp<Real>(aColor.x, 0, 1) * 255) <<  0) & (255 <<  0)) |
+				((int(clamp<Real>(aColor.y, 0, 1) * 255) <<  8) & (255 <<  8)) | 
+				((int(clamp<Real>(aColor.z, 0, 1) * 255) << 16) & (255 << 16));
 	}
 	
-	uint32 ConvertColor(const Color& aColor)
-	{
-		return	((int(aColor.x * 255)<<0)&255) +
-				((int(aColor.y * 255)<<8)&(255<<8)) + 
-				((int(aColor.z * 255)<<16)&(255<<16));
-	}
-	
-	Position2 TrivialAcceptCorner(uint32 aTile, const Position2 aEdgeDir)
+	static inline Position2 TrivialAcceptCorner(uint32 aTile, const Position2& aEdgeDir)
 	{
 		if(aEdgeDir.x < 0)
 		{
@@ -68,7 +77,7 @@ namespace pragma { namespace TileRaster
 		}
 	}
 	
-	Position2 TrivialRejectCorner(uint32 aTile, const Position2 aEdgeDir)
+	static inline Position2 TrivialRejectCorner(uint32 aTile, const Position2& aEdgeDir)
 	{
 		if(aEdgeDir.x < 0)
 		{
@@ -85,15 +94,24 @@ namespace pragma { namespace TileRaster
 				return sTileCorners[aTile + sTilesWidth+1 + 0];
 		}
 	}
-	
-	bool PointInsideEdge(const Position2& aPoint, const Position2& aStart, const Position2& aEnd)
+
+	/**
+	 *	Determina la posicion de un punto respecto a una linea
+	 *	Dada la direccion de avance del segmento, de aStart hacia aEnd, se dice que el punto aPoing está "dentro" 
+	 *	si que en el lado izquierdo, y fuera en caso contrario.
+	 *	Si el punto forma parte de la linea entonces tambien se considera que está dentro
+	 */
+	static inline bool PointInsideEdge(const Position2& aPoint, const Position2& aStart, const Position2& aEnd)
 	{
 		Position2 lA = aPoint - aStart;
 		Position2 lB = aEnd - aStart;
 		return (lA.x * lB.y - lA.y * lB.x) < 0;
 	}
 
-	bool TileInsideTriangle(uint32 aTile, const Position2& aA, const Position2& aB, const Position2& aC)
+	/**
+	 *	Determina si un Tile está completamente dentro de un triangulo
+	 */
+	static inline bool TileInsideTriangle(uint32 aTile, const Position2& aA, const Position2& aB, const Position2& aC)
     {
 		// aA -> aB -> aC tiene que girar en el sentido de las agujas del reloj
 		bool lInside;
@@ -103,7 +121,10 @@ namespace pragma { namespace TileRaster
 		return lInside;
 	}
 	
-	bool PointInsideTriangle(const Position2& aPoint, const Position2& aA, const Position2& aB, const Position2& aC)
+	/**
+	 *	Determina si un punto está completamente dentro de un triangulo
+	 */
+	static inline bool PointInsideTriangle(const Position2& aPoint, const Position2& aA, const Position2& aB, const Position2& aC)
     {
 		// aA -> aB -> aC tiene que girar en el sentido de las agujas del reloj
 		bool lInside;
@@ -112,8 +133,11 @@ namespace pragma { namespace TileRaster
 		lInside = lInside && PointInsideEdge( aPoint, aC, aA);
 		return lInside;
 	}
-	
-	bool TileOutsideTriangle(uint32 aTile, const Position2& aA, const Position2& aB, const Position2& aC)
+
+	/**
+	 *	Determina si un Tile está fuera de un triangulo
+	 */
+	static inline bool TileOutsideTriangle(uint32 aTile, const Position2& aA, const Position2& aB, const Position2& aC)
     {
 		// aA -> aB -> aC tiene que girar en el sentido de las agujas del reloj
 		bool lOutside;
@@ -122,9 +146,19 @@ namespace pragma { namespace TileRaster
 					( !PointInsideEdge( TrivialRejectCorner(aTile, aA - aC), aC, aA));
 		return lOutside;
 	}
+
+#define RASTER(aName)	struct aName : public Base 
+#define COMPONENTS		struct Start
+#define GRADIENTS		struct Gradients
+#define COLOR_COMPONENT TileRaster::Color	mColor;
+#define COLOR_GRADIENTS TileRaster::Color	mColorX; TileRaster::Color mColorY;
+#define UV_COMPONENT	TileRaster::UV		mUV;
+#define UV_GRADIENTS	TileRaster::UV		mUVX; TileRaster::UV mUVY;
+#define COLOR_PRESENT	typedef Present Color
+#define UV_PRESENT		typedef Present UV
 	
 	namespace Raster
-	{
+	{		
 		struct Present { };
 		struct NotPresent { };
 		
@@ -133,59 +167,96 @@ namespace pragma { namespace TileRaster
 			typedef NotPresent Color;
 			typedef NotPresent UV;
 		};
+
+		/**
+		 *	Definiciones de Rasters
+		 *	Cada nuevo Raster debe heredar de la clase 'Base'. Por cada Iterador que utilice deberá
+		 *	declarar los componentes y gradientes
+		 *	Con esto indicaremos a los templates que deben incluir el codigo para iterar los valores
+		 *	de color de vertice
+		 */
 		
-		struct Simple : public Base
+		// Pinta un color solido configurado en el motor. No necesita iterar nada
+		RASTER(Simple)
 		{
-			struct Start
-			{
-			};
-			struct Gradients
-			{
-			};
+			COMPONENTS	{ };
+			GRADIENTS	{ };
 		};
-		
-		struct VertexColor : public Base
+
+		// Pinta iterando los vertex colors
+		RASTER(VertexColor)
 		{
-			typedef Present Color;
-			struct Start
-			{
-				TileRaster::Color mColor;
-			};
-			struct Gradients
-			{
-				TileRaster::Color mColorX;
-				TileRaster::Color mColorY;
-			};
+			COLOR_PRESENT;
+			COMPONENTS	{ COLOR_COMPONENT };
+			GRADIENTS	{ COLOR_GRADIENTS };
 		};
-		
-		struct Texture : public Base
+
+		// Solo pinta la textura
+		RASTER(Texture)
 		{
 			typedef Present UV;
-			struct Start
-			{
-				TileRaster::UV mUV;
-			};
-			struct Gradients
-			{
-				TileRaster::UV mUVX;
-				TileRaster::UV mUVY;
-			};
+			COMPONENTS	{ UV_COMPONENT };
+			GRADIENTS	{ UV_GRADIENTS };
+		};
+
+		// Multiplica el ColorVertex por la textura
+		RASTER(TextureModulate)
+		{
+			COLOR_PRESENT;
+			UV_PRESENT;
+			COMPONENTS	{ COLOR_COMPONENT UV_COMPONENT };
+			GRADIENTS	{ COLOR_GRADIENTS UV_GRADIENTS };
 		};
 		
 	}
 
 	template<typename T>
-	void RasterTile(uint32* aData, const typename T::Start* aStartValue, const typename T::Gradients* aGradients)
-	{
-	}
+	void RasterTile							( uint32* aData, const typename T::Start* aStartValue, const typename T::Gradients* aGradients ) { }
 	
 	template<typename T>
-	void RasterTile(const uint8* aMask, uint32* aData, const typename T::Start* aStartValue, const typename T::Gradients* aGradients)
+	void RasterTile							( const uint8* aMask, uint32* aData, const typename T::Start* aStartValue, const typename T::Gradients* aGradients ) { }
+	
+	template<typename COMPONENT_PRESENT>
+	class Gradient
 	{
-	}
+	public:
+		template<typename T>
+		static inline void GetColor			( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
+		
+		template<typename T>
+		static inline void GetUV			( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
+	};
+	
+	template<typename COMPONENT_PRESENT>
+	class Start
+	{
+	public:
+		template<typename T>
+		static inline void GetColor			( int i0, typename T::Gradients& aGradients, typename T::Start& aStarts) { }
+		
+		template<typename T>
+		static inline void GetUV			( int i0, typename T::Gradients& aGradients, typename T::Start& aStarts) { }
+	};
+
+	template<typename COMPONENT_PRESENT>
+	class TileSetup
+	{
+	public:
+		template<typename T>
+		static inline void MoveColor_Right	( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients ) { }
+		template<typename T>
+		static inline void MoveColor_Down	( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients ) { }
+		template<typename T>
+		static inline void MoveUV_Right		( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients ) { }
+		template<typename T>
+		static inline void MoveUV_Down		( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients ) { }
+	};
+	
+	
+	// ---- //
 
 	template<>
-	void RasterTile<Raster::Simple>(uint32* aData, const Raster::Simple::Start* /*aStartValue*/, const Raster::Simple::Gradients* /*aGradients*/)
+	static inline void RasterTile<Raster::Simple>(uint32* aData, const Raster::Simple::Start* /*aStartValue*/, const Raster::Simple::Gradients* /*aGradients*/)
 	{
 		const uint32 lColor = 0xFFFFFFFF;
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
@@ -199,35 +270,21 @@ namespace pragma { namespace TileRaster
 	}
 	
 	template<>
-	void RasterTile<Raster::Simple>(const uint8* aMask, uint32* aData, const Raster::Simple::Start* /*aStartValue*/, const Raster::Simple::Gradients* /*aGradients*/)
+	static inline void RasterTile<Raster::Simple>(const uint8* aMask, uint32* aData, const Raster::Simple::Start* /*aStartValue*/, const Raster::Simple::Gradients* /*aGradients*/)
 	{
 		const uint32 lColor = 0xFFFFFFFF;
 		const uint8* lMask = aMask;
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
 		{
-			if(lMask[ 0] != 0) aData[ 0] = lColor;
-			if(lMask[ 1] != 0) aData[ 1] = lColor;
-			if(lMask[ 2] != 0) aData[ 2] = lColor;
-			if(lMask[ 3] != 0) aData[ 3] = lColor;
-			if(lMask[ 4] != 0) aData[ 4] = lColor;
-			if(lMask[ 5] != 0) aData[ 5] = lColor;
-			if(lMask[ 6] != 0) aData[ 6] = lColor;
-			if(lMask[ 7] != 0) aData[ 7] = lColor;
-			if(lMask[ 8] != 0) aData[ 8] = lColor;
-			if(lMask[ 9] != 0) aData[ 9] = lColor;
-			if(lMask[10] != 0) aData[10] = lColor;
-			if(lMask[11] != 0) aData[11] = lColor;
-			if(lMask[12] != 0) aData[12] = lColor;
-			if(lMask[13] != 0) aData[13] = lColor;
-			if(lMask[14] != 0) aData[14] = lColor;
-			if(lMask[15] != 0) aData[15] = lColor;
-			lMask+= 16;
+			for(uint32 j = 0; j < TILE_SIZE; j++)
+				if(lMask[ j] != 0) aData[ j] = lColor;
+			lMask+= TILE_SIZE;
 			aData+= sWidth;
 		}
 	}
 	
 	template<>
-	void RasterTile<Raster::VertexColor>(uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
+	static inline void RasterTile<Raster::VertexColor>(uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
 	{
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
 		{
@@ -243,7 +300,7 @@ namespace pragma { namespace TileRaster
 	}
 	
 	template<>
-	void RasterTile<Raster::VertexColor>(const uint8* aMask, uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
+	static inline void RasterTile<Raster::VertexColor>(const uint8* aMask, uint32* aData, const Raster::VertexColor::Start* aStartValue, const Raster::VertexColor::Gradients* aGradients)
 	{
 		const uint8* lMask = aMask;
 		for(uint32 i = 0; i < TILE_SIZE; ++i)
@@ -266,18 +323,7 @@ namespace pragma { namespace TileRaster
 			aData+= sWidth;
 		}
 	}
-	
-	template<typename T2>
-	class Gradient
-	{
-	public:
-		template<typename T>
-		static inline void GetColor( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
-		
-		template<typename T>
-		static inline void GetUV( typename T::Gradients* aGradients, float aValX, float aValY, int X0, int X1, int X2, int Y0, int Y1, int Y2, float aLengthX, float aLengthY) { }
-	};
-	
+
 	template<>
 	class Gradient<Raster::Present>
 	{
@@ -297,10 +343,55 @@ namespace pragma { namespace TileRaster
 		}
 	};
 	
+	template<>
+	class Start<Raster::Present>
+	{
+	public:
+		template<typename T>
+		static inline void GetColor( int i0, typename T::Gradients& aGradients, typename T::Start& aStarts)
+		{
+			aStarts.mColor = sColors[i0];
+			aStarts.mColor = aStarts.mColor - (aGradients.mColorX * sPositions[i0].x);
+			aStarts.mColor = aStarts.mColor - (aGradients.mColorY * sPositions[i0].y);
+		}
+		
+		template<typename T>
+		static inline void GetUV( int i0, typename T::Gradients& aGradients, typename T::Start& aStarts)
+		{
+			//Not implemented yet!
+		}
+	};
+
+	template<>
+	class TileSetup<Raster::Present>
+	{
+	public:
+		template<typename T>
+		static inline void MoveColor_Right( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients )
+		{
+			aPos.mColor = aPos.mColor + (aGradients.mColorX * Real(TILE_SIZE * aCount));
+		}
+		template<typename T>
+		static inline void MoveColor_Down ( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients )
+		{
+			aPos.mColor = aPos.mColor + (aGradients.mColorY * Real(TILE_SIZE * aCount));
+		}
+		template<typename T>
+		static inline void MoveUV_Right   ( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients )
+		{
+			//Not implemented yet!
+		}
+		template<typename T>
+		static inline void MoveUV_Down    ( int aCount, typename T::Start& aPos, const typename T::Gradients& aGradients )
+		{
+			//Not implemented yet!
+		}
+	};
+
 	//--[ Triangle Setup ]--//
 	
 	template<typename T>
-	inline void GetGradients(int i0, int i1, int i2, typename T::Gradients& aGradients)
+	static inline void GetGradients(int i0, int i1, int i2, typename T::Gradients& aGradients)
 	{
 		int X0, X1, X2;
 		int Y0, Y1, Y2;
@@ -333,7 +424,28 @@ namespace pragma { namespace TileRaster
 												   , lSplitY - sPositions[Y1].x );
 	}
 	
-	void GenerateMask(uint8* aMask, const Position2& aTilePosition, const Position2& a0, const Position2& a1, const Position2& a2)
+	template<typename T>
+	static inline void GetStartPoints(int i0, typename T::Gradients& aGradients, typename T::Start& aStarts)
+	{
+		Start<typename T::Color>::template GetColor<T>	(i0, aGradients, aStarts);
+		Start<typename T::UV>::	  template GetUV<T>		(i0, aGradients, aStarts);
+	}
+	
+	template<typename T>
+	static inline void MoveTile_Right(int aCount, typename T::Start& aTilePosition, const typename T::Gradients& aGradients)
+	{
+		TileSetup<typename T::Color>::template MoveColor_Right<T>(aCount, aTilePosition, aGradients);
+		TileSetup<typename T::UV>::   template MoveUV_Right<T>	(aCount, aTilePosition, aGradients);
+	}
+
+	template<typename T>
+	static inline void MoveTile_Down(int aCount, typename T::Start& aTilePosition, const typename T::Gradients& aGradients)
+	{
+		TileSetup<typename T::Color>::template MoveColor_Down<T>	(aCount, aTilePosition, aGradients);
+		TileSetup<typename T::UV>::   template MoveUV_Down<T>	(aCount, aTilePosition, aGradients);
+	}
+	
+	static inline void GenerateMask(uint8* aMask, const Position2& aTilePosition, const Position2& a0, const Position2& a1, const Position2& a2)
 	{
 		uint8* lPtr = aMask;
 		for(uint32 i = 0; i < TILE_SIZE; i++)
@@ -353,11 +465,8 @@ namespace pragma { namespace TileRaster
 		typename T::Gradients lGradients;
 		GetGradients<T>(i0, i1, i2, lGradients);
 
-		// TODO: crear un GetStartPoints, del mismo modo que el GetGradients
 		typename T::Start lStart;
-		Color lColorStart = sColors[i0];
-		lColorStart = lColorStart - (lGradients.mColorX * sPositions[i0].x);
-		lColorStart = lColorStart - (lGradients.mColorY * sPositions[i0].y);
+		GetStartPoints<T>(i0, lGradients, lStart);
 
 		Position2 lA(sPositions[i0].x, sPositions[i0].y);
 		Position2 lB(sPositions[i1].x, sPositions[i1].y);
@@ -372,8 +481,8 @@ namespace pragma { namespace TileRaster
 		
 		for(uint32 i = 0; i < sTilesHeight ; i++)
 		{
-			// TODO: 
-			lStart.mColor = lColorStart + (lGradients.mColorY * float(TILE_SIZE*i));
+			typename T::Start lStart2 = lStart;
+			MoveTile_Down<T>(i, lStart2, lGradients);
 
 			lPtr = (uint32*)sScreen + ((i*TILE_SIZE) * sWidth);
 			for(uint32 j = 0; j < sTilesWidth; j++)
@@ -381,18 +490,16 @@ namespace pragma { namespace TileRaster
 				if(!TileOutsideTriangle(i * (sTilesWidth + 1) + j, lA, lB, lC))
 				{
 					if(TileInsideTriangle(i * (sTilesWidth + 1) + j , lA, lB, lC))
-						RasterTile<T>(lPtr, &lStart, &lGradients);
+						RasterTile<T>(lPtr, &lStart2, &lGradients);
 					else
 					{
 						// Partially inside
 						uint8 lMask[TILE_SIZE * TILE_SIZE];
 						GenerateMask(lMask, Position2(float(j*TILE_SIZE), float(i * TILE_SIZE)), lA, lB, lC);
-						RasterTile<T>(lMask, lPtr, &lStart, &lGradients);
+						RasterTile<T>(lMask, lPtr, &lStart2, &lGradients);
 					}
 				}
-
-				// TODO
-				lStart.mColor = lStart.mColor + (lGradients.mColorX * float(TILE_SIZE));
+				MoveTile_Right<T>(1, lStart2, lGradients);
 				lPtr+= TILE_SIZE;
 			}
 		}
