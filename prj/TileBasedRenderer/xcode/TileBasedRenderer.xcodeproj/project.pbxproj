@@ -37,6 +37,9 @@
 		570D7DAD112C8641004C4260 /* internal_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal_types.h; path = ../SoftRaster/internal_types.h; sourceTree = SOURCE_ROOT; };
 		570D7E12112C930B004C4260 /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../SoftRaster/functions.h; sourceTree = SOURCE_ROOT; };
 		571FB9C1112DE754001D9DEB /* Texture.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Texture.h; path = ../SoftRaster/Texture.h; sourceTree = SOURCE_ROOT; };
+		5737D4581151B89400C4131E /* functions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = functions.h; path = ../TileRaster/functions.h; sourceTree = SOURCE_ROOT; };
+		5737D45D1151B90700C4131E /* internal_types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = internal_types.h; path = ../TileRaster/internal_types.h; sourceTree = SOURCE_ROOT; };
+		5737D4661151B9C800C4131E /* Rasters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Rasters.h; path = ../TileRaster/Rasters.h; sourceTree = SOURCE_ROOT; };
 		574C7AB811335455008FD34B /* Color.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Color.h; path = ../SoftRaster/Color.h; sourceTree = SOURCE_ROOT; };
 		574C7AB911335455008FD34B /* Position.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Position.h; path = ../SoftRaster/Position.h; sourceTree = SOURCE_ROOT; };
 		574C7AFE1133566F008FD34B /* TextureSampler.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = TextureSampler.h; path = ../SoftRaster/TextureSampler.h; sourceTree = SOURCE_ROOT; };
@@ -179,6 +182,9 @@
 			children = (
 				570960D0113AE41C0086E773 /* TileRaster.h */,
 				570960D1113AE41C0086E773 /* TileRaster.cpp */,
+				5737D4581151B89400C4131E /* functions.h */,
+				5737D45D1151B90700C4131E /* internal_types.h */,
+				5737D4661151B9C800C4131E /* Rasters.h */,
 			);
 			name = TileRaster;
 			sourceTree = "<group>";

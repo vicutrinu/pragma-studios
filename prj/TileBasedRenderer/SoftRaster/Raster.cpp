@@ -19,13 +19,14 @@ namespace pragma { namespace Raster
 	static unsigned			sHeight;
 	static unsigned			sWidth;
 	static unsigned char*	sScreen;
-		
+
+	static const int		sMaxPositions = 1024;
 	static _Color			sColor;
 	static UV               sUV;
-	static _Point2			sPositions[1024];
-	static _Color			sColors[1024];
-	static _Vector			sNormals[1024];
-	static UV				sUVs[1024];
+	static _Point2			sPositions[sMaxPositions];
+	static _Color			sColors[sMaxPositions];
+	static _Vector			sNormals[sMaxPositions];
+	static UV				sUVs[sMaxPositions];
 	static unsigned			sNumPositions = 0;
 	static EMode			sRasterMode = eSimple;	
 } }
@@ -135,6 +136,8 @@ namespace pragma { namespace Raster
 	
 	void AddVertex(const _Point2& aPosition)
 	{
+		if(sNumPositions >= sMaxPositions)
+			return;
 		sPositions[sNumPositions] = aPosition;
 		sColors[sNumPositions] = sColor;
 		sUVs[sNumPositions] = sUV;

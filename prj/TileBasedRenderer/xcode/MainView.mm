@@ -47,10 +47,10 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		mVertices[2] = pragma::Point(256-150, 256+150,10);
 		mVertices[3] = pragma::Point(256+150, 256+150,10);
 		
-		/*mVertices[0] = pragma::Point(454.757019f, 330.130463f,10);
-		mVertices[1] = pragma::Point(181.869476f, 454.756897f,10);
-		mVertices[2] = pragma::Point(330.130524f, 57.2429199f,10);
-		mVertices[3] = pragma::Point(57.2429657f, 181.869293f,10);*/
+		/*mVertices[0] = pragma::Point(0.5f, 0.f,10);
+		mVertices[1] = pragma::Point(512.f, 0.f,10);
+		mVertices[2] = pragma::Point(0.5f, 512.f,10);
+		mVertices[3] = pragma::Point(512.f, 512.f,10);*/
 		mTimer = [NSTimer scheduledTimerWithTimeInterval:(NSTimeInterval)((1.0 / 30.0) * 1) target:self selector:@selector(drawView:) userInfo:nil repeats:TRUE];    }
     return self;
 }
@@ -172,7 +172,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 - (void)drawRect:(NSRect)dirtyRect {
     if(mOk)
 	{
-		pragma::Raster::ClearBackBuffer();
+		/*pragma::Raster::ClearBackBuffer();
 		pragma::Raster::VertexColor( pragma::Raster::_Color(1,0,0) );
 		pragma::Raster::VertexUV( pragma::Raster::UV(0,0) );
 		pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[0].x, mVertices[0].y) );
@@ -193,7 +193,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::Raster::VertexUV( pragma::Raster::UV(1,1) );
 		pragma::Raster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
 		pragma::Raster::SetRasterMode(pragma::Raster::eVertexColor);
-		pragma::Raster::Render();
+		pragma::Raster::Render();*/
 		
 		pragma::TileRaster::ClearBackBuffer();
 		pragma::TileRaster::AddColor( pragma::vector3f(1,0,0) );
@@ -208,7 +208,7 @@ static void rgbReleaseRGBDataProvider(void *info, const void *data, size_t size)
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[2].x, mVertices[2].y) );
 		pragma::TileRaster::AddColor( pragma::vector3f(1,1,1) );
 		pragma::TileRaster::AddVertex( pragma::Raster::_Point2(mVertices[3].x, mVertices[3].y) );
-		pragma::TileRaster::Render();		
+		pragma::TileRaster::Render();	
 		mImageRef = [self createCGImageUsingDataProvider: mCgDataProvider andColourSpace:cgColourSpaceRef forRect:windowRect];
 		
 		__strong NSGraphicsContext* nsGraphicsContext	= [NSGraphicsContext currentContext];
