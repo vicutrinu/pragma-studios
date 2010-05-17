@@ -63,7 +63,7 @@
 		57BA69BA1111168300FFA062 /* ray_box.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray_box.h; sourceTree = "<group>"; };
 		57BA69BB1111168300FFA062 /* ray_triangle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ray_triangle.h; sourceTree = "<group>"; };
 		57BA69BC1111168300FFA062 /* types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = types.h; sourceTree = "<group>"; };
-		57BA69BE1111168300FFA062 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; };
+		57BA69BE1111168300FFA062 /* Camera.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Camera.cpp; sourceTree = "<group>"; wrapsLines = 0; };
 		57BA69BF1111168300FFA062 /* Camera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Camera.h; sourceTree = "<group>"; };
 		57BA69C01111168300FFA062 /* Material.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Material.cpp; sourceTree = "<group>"; };
 		57BA69C11111168300FFA062 /* Material.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Material.h; sourceTree = "<group>"; };
@@ -638,6 +638,7 @@
 				GCC_UNROLL_LOOPS = YES;
 				INFOPLIST_FILE = "iPhone/iPhone-Info.plist";
 				INSTALL_PATH = "$(HOME)/Applications";
+				ONLY_ACTIVE_ARCH = NO;
 				PREBINDING = NO;
 				PRODUCT_NAME = iPhone;
 				SDKROOT = iphoneos3.1.2;

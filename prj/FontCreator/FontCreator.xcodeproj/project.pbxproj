@@ -1,0 +1,316 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 45;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		57E33B80119F6F4E007D48DE /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E33B7F119F6F4E007D48DE /* libfreetype.a */; };
+		57F1BE4711A0DC4E00230F28 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F1BE4611A0DC4E00230F28 /* Font.cpp */; };
+		57FC89D211A07113005DED42 /* libpragma-OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FC89C611A070C2005DED42 /* libpragma-OSX.a */; };
+		57FC8ACD11A0AEE2005DED42 /* FontGenerator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC8ACC11A0AEE2005DED42 /* FontGenerator.cpp */; };
+		8DD76F650486A84900D96B5E /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 08FB7796FE84155DC02AAC07 /* main.cpp */; settings = {ATTRIBUTES = (); }; };
+		8DD76F6A0486A84900D96B5E /* FontCreator.1 in CopyFiles */ = {isa = PBXBuildFile; fileRef = C6859E8B029090EE04C91782 /* FontCreator.1 */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		57FC898111A06E28005DED42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FC897A11A06E28005DED42 /* pragma.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = D2AAC046055464E500DB518D;
+			remoteInfo = "pragma-iPhoneOS";
+		};
+		57FC89C511A070C2005DED42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FC897A11A06E28005DED42 /* pragma.xcodeproj */;
+			proxyType = 2;
+			remoteGlobalIDString = 57FC89C111A070C1005DED42;
+			remoteInfo = "pragma-OSX";
+		};
+		57FC89D511A07135005DED42 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 57FC897A11A06E28005DED42 /* pragma.xcodeproj */;
+			proxyType = 1;
+			remoteGlobalIDString = 57FC89C011A070C1005DED42;
+			remoteInfo = "pragma-OSX";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8DD76F690486A84900D96B5E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 8;
+			dstPath = /usr/share/man/man1/;
+			dstSubfolderSpec = 0;
+			files = (
+				8DD76F6A0486A84900D96B5E /* FontCreator.1 in CopyFiles */,
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		57E33B7F119F6F4E007D48DE /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /opt/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
+		57F1BE4511A0DC4E00230F28 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
+		57F1BE4611A0DC4E00230F28 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
+		57FC897A11A06E28005DED42 /* pragma.xcodeproj */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.pb-project"; name = pragma.xcodeproj; path = ../pragma.xcodeproj; sourceTree = SOURCE_ROOT; };
+		57FC8ACB11A0AEE2005DED42 /* FontGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FontGenerator.h; sourceTree = "<group>"; };
+		57FC8ACC11A0AEE2005DED42 /* FontGenerator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FontGenerator.cpp; sourceTree = "<group>"; };
+		8DD76F6C0486A84900D96B5E /* FontCreator */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = FontCreator; sourceTree = BUILT_PRODUCTS_DIR; };
+		C6859E8B029090EE04C91782 /* FontCreator.1 */ = {isa = PBXFileReference; lastKnownFileType = text.man; path = FontCreator.1; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		8DD76F660486A84900D96B5E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				57E33B80119F6F4E007D48DE /* libfreetype.a in Frameworks */,
+				57FC89D211A07113005DED42 /* libpragma-OSX.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		08FB7794FE84155DC02AAC07 /* FontCreator */ = {
+			isa = PBXGroup;
+			children = (
+				57FC897A11A06E28005DED42 /* pragma.xcodeproj */,
+				08FB7795FE84155DC02AAC07 /* Source */,
+				57E33B83119F6FC3007D48DE /* Libs */,
+				C6859E8C029090F304C91782 /* Documentation */,
+				1AB674ADFE9D54B511CA2CBB /* Products */,
+			);
+			name = FontCreator;
+			sourceTree = "<group>";
+		};
+		08FB7795FE84155DC02AAC07 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				08FB7796FE84155DC02AAC07 /* main.cpp */,
+				57FC8ACB11A0AEE2005DED42 /* FontGenerator.h */,
+				57FC8ACC11A0AEE2005DED42 /* FontGenerator.cpp */,
+				57F1BE4511A0DC4E00230F28 /* Font.h */,
+				57F1BE4611A0DC4E00230F28 /* Font.cpp */,
+			);
+			name = Source;
+			sourceTree = "<group>";
+		};
+		1AB674ADFE9D54B511CA2CBB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8DD76F6C0486A84900D96B5E /* FontCreator */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		57E33B83119F6FC3007D48DE /* Libs */ = {
+			isa = PBXGroup;
+			children = (
+				57E33B7F119F6F4E007D48DE /* libfreetype.a */,
+			);
+			name = Libs;
+			sourceTree = "<group>";
+		};
+		57FC897B11A06E28005DED42 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				57FC898211A06E28005DED42 /* libpragma-iPhoneOS.a */,
+				57FC89C611A070C2005DED42 /* libpragma-OSX.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		C6859E8C029090F304C91782 /* Documentation */ = {
+			isa = PBXGroup;
+			children = (
+				C6859E8B029090EE04C91782 /* FontCreator.1 */,
+			);
+			name = Documentation;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		8DD76F620486A84900D96B5E /* FontCreator */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "FontCreator" */;
+			buildPhases = (
+				8DD76F640486A84900D96B5E /* Sources */,
+				8DD76F660486A84900D96B5E /* Frameworks */,
+				8DD76F690486A84900D96B5E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				57FC89D611A07135005DED42 /* PBXTargetDependency */,
+			);
+			name = FontCreator;
+			productInstallPath = "$(HOME)/bin";
+			productName = FontCreator;
+			productReference = 8DD76F6C0486A84900D96B5E /* FontCreator */;
+			productType = "com.apple.product-type.tool";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		08FB7793FE84155DC02AAC07 /* Project object */ = {
+			isa = PBXProject;
+			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "FontCreator" */;
+			compatibilityVersion = "Xcode 3.1";
+			hasScannedForEncodings = 1;
+			mainGroup = 08FB7794FE84155DC02AAC07 /* FontCreator */;
+			projectDirPath = "";
+			projectReferences = (
+				{
+					ProductGroup = 57FC897B11A06E28005DED42 /* Products */;
+					ProjectRef = 57FC897A11A06E28005DED42 /* pragma.xcodeproj */;
+				},
+			);
+			projectRoot = "";
+			targets = (
+				8DD76F620486A84900D96B5E /* FontCreator */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXReferenceProxy section */
+		57FC898211A06E28005DED42 /* libpragma-iPhoneOS.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpragma-iPhoneOS.a";
+			remoteRef = 57FC898111A06E28005DED42 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+		57FC89C611A070C2005DED42 /* libpragma-OSX.a */ = {
+			isa = PBXReferenceProxy;
+			fileType = archive.ar;
+			path = "libpragma-OSX.a";
+			remoteRef = 57FC89C511A070C2005DED42 /* PBXContainerItemProxy */;
+			sourceTree = BUILT_PRODUCTS_DIR;
+		};
+/* End PBXReferenceProxy section */
+
+/* Begin PBXSourcesBuildPhase section */
+		8DD76F640486A84900D96B5E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
+				57FC8ACD11A0AEE2005DED42 /* FontGenerator.cpp in Sources */,
+				57F1BE4711A0DC4E00230F28 /* Font.cpp in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		57FC89D611A07135005DED42 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "pragma-OSX";
+			targetProxy = 57FC89D511A07135005DED42 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		1DEB923208733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_ENABLE_FIX_AND_CONTINUE = YES;
+				GCC_MODEL_TUNING = G5;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/../build/Debug-iphoneos\"",
+				);
+				PRODUCT_NAME = FontCreator;
+			};
+			name = Debug;
+		};
+		1DEB923308733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				GCC_MODEL_TUNING = G5;
+				INSTALL_PATH = /usr/local/bin;
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					/opt/local/lib,
+					"\"$(SRCROOT)/../build/Debug-iphoneos\"",
+				);
+				PRODUCT_NAME = FontCreator;
+			};
+			name = Release;
+		};
+		1DEB923608733DC60010E9CD /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include/freetype2,
+					/opt/local/include,
+					../../src,
+				);
+				ONLY_ACTIVE_ARCH = YES;
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Debug;
+		};
+		1DEB923708733DC60010E9CD /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = "$(ARCHS_STANDARD_32_64_BIT)";
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				HEADER_SEARCH_PATHS = (
+					/opt/local/include/freetype2,
+					/opt/local/include,
+					../../src,
+				);
+				PREBINDING = NO;
+				SDKROOT = macosx10.6;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1DEB923108733DC60010E9CD /* Build configuration list for PBXNativeTarget "FontCreator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923208733DC60010E9CD /* Debug */,
+				1DEB923308733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "FontCreator" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1DEB923608733DC60010E9CD /* Debug */,
+				1DEB923708733DC60010E9CD /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 08FB7793FE84155DC02AAC07 /* Project object */;
+}

@@ -70,6 +70,41 @@ namespace pragma
 		return true;
 	}
 
+	bool ExportToTGA(const uint8* aImage, size_t aWidth, size_t aHeight, const char* aFilename)
+	{
+		FILE* handle = fopen(aFilename, "wb");
+		
+		if(handle == 0)
+			return false;
+		
+		impl::TGAHeader lHeader;
+		lHeader.identsize		= 0; // no data between header and image raw
+		lHeader.colourmaptype	= 0; // no color map
+		lHeader.imagetype		= 3; // Grey scale
+		lHeader.colourmapstart	= 0;
+		lHeader.colourmaplength = 0;
+		lHeader.colourmapbits	= 0; // 8 bpp
+		lHeader.xstart			= 0;
+		lHeader.ystart			= 0;
+		lHeader.width			= uint16(aWidth);
+		lHeader.height			= uint16(aHeight);
+		lHeader.bits			= 8; // 8 bpp
+		lHeader.descriptor		= 1<<5; // bits 3-0 give the alpha channel depth, bits 5-4 give direction
+		
+		fwrite(&lHeader, 1, sizeof(lHeader), handle);
+
+		size_t lNumPixels = aWidth * aHeight;
+		while(lNumPixels)
+		{
+			fwrite(aImage, 1, sizeof(uint8), handle);
+			lNumPixels--;
+			aImage++;
+		}
+		
+		fclose(handle);
+		return true;
+	}
+
 	/*bool ImportFromTGA(Image& aImage, const char* aFilename)
 	{
 		FILE* handle = fopen(aFilename, "rb");
