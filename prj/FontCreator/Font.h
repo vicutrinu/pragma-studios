@@ -22,6 +22,8 @@ namespace pragma
 			int		mAdvanceX;		// Horizontal increment after drawing the glyph. In 26.6 fixed point format
 		};
 		
+		typedef void (*EnumerationCallback)(const Glyph& aGlyph);
+		
 	public:
 						Font		();
 		
@@ -32,17 +34,24 @@ namespace pragma
 		void			AddGlyph	(Glyph& aGlyph);
 		
 		const Glyph*	GetGlyph	(uint32 aCharCode) const;
-		
+		size_t			GetSize		() const { return mSize; }
+		size_t			GetNumGlyphs() const { return mGlyphs.size(); }
+
+		void			EnumerateAllGlyphs(EnumerationCallback aCallback) const;
+
 	private:
 		void			ClearVars	();
 		void			FreeVars	();
 		
 	private:
+		typedef std::map<uint32,Glyph>::iterator		iterator;
+		typedef std::map<uint32,Glyph>::const_iterator	const_iterator;
+		
 		bool					mOk;
 		size_t					mSize;
-		typedef std::map<uint32,Glyph>::iterator iterator;
-		typedef std::map<uint32,Glyph>::const_iterator const_iterator;
 		std::map<uint32,Glyph>	mGlyphs;
 	};
+	
+	bool LoadFont(const char* aFilename, Font& aFont);
+	bool SaveFont(const char* aFilename, const Font& aFont);
 }
-

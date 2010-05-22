@@ -21,11 +21,13 @@ namespace pragma
 		FT_UInt lGlyphIndex = FT_Get_Char_Index( aFace, aCharCode );
 		FT_Load_Glyph(aFace, lGlyphIndex, 0);
 		FT_Render_Glyph(aFace->glyph, FT_RENDER_MODE_NORMAL);
-		aGlyph.mBitmap = aFace->glyph->bitmap.buffer;
-		aGlyph.mWidth = aFace->glyph->bitmap.width;
-		aGlyph.mHeight = aFace->glyph->bitmap.rows;
-		aGlyph.mStartX = aFace->glyph->bitmap_left;
-		aGlyph.mStartY = aFace->glyph->bitmap_top;
+
+		aGlyph.mCode	 = aCharCode;
+		aGlyph.mBitmap	 = aFace->glyph->bitmap.buffer;
+		aGlyph.mWidth	 = aFace->glyph->bitmap.width;
+		aGlyph.mHeight	 = aFace->glyph->bitmap.rows;
+		aGlyph.mStartX	 = aFace->glyph->bitmap_left;
+		aGlyph.mStartY	 = aFace->glyph->bitmap_top;
 		aGlyph.mAdvanceX = aFace->glyph->advance.x;
 
 #ifdef _DEBUG_GENERATE_TGA_FILES_

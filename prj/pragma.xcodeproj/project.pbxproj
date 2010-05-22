@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		577740E611A6FDA50054BC7C /* pragma.h in Headers */ = {isa = PBXBuildFile; fileRef = 577740E511A6FDA50054BC7C /* pragma.h */; };
 		57FC887911A060A0005DED42 /* TGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC880611A05E16005DED42 /* TGA.cpp */; };
 		57FC887C11A060A9005DED42 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC880411A05E16005DED42 /* Image.cpp */; };
 		57FC88AF11A061CB005DED42 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC87F211A05E16005DED42 /* Camera.cpp */; };
@@ -36,6 +37,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		577740E511A6FDA50054BC7C /* pragma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragma.h; path = ../src/pragma/pragma.h; sourceTree = SOURCE_ROOT; };
 		57FC87E711A05E16005DED42 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		57FC87E911A05E16005DED42 /* AABB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AABB.h; sourceTree = "<group>"; };
 		57FC87EA11A05E16005DED42 /* UnitTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTest.cpp; sourceTree = "<group>"; };
@@ -127,6 +129,7 @@
 				57FC881711A05E16005DED42 /* system */,
 				57FC881C11A05E16005DED42 /* tests */,
 				57FC881E11A05E16005DED42 /* types.h */,
+				577740E511A6FDA50054BC7C /* pragma.h */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -280,6 +283,7 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				577740E611A6FDA50054BC7C /* pragma.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

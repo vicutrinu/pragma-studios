@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		577740CA11A6F9E60054BC7C /* TextBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 577740C911A6F9E60054BC7C /* TextBitmap.cpp */; };
 		57E33B80119F6F4E007D48DE /* libfreetype.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57E33B7F119F6F4E007D48DE /* libfreetype.a */; };
 		57F1BE4711A0DC4E00230F28 /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57F1BE4611A0DC4E00230F28 /* Font.cpp */; };
 		57FC89D211A07113005DED42 /* libpragma-OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 57FC89C611A070C2005DED42 /* libpragma-OSX.a */; };
@@ -54,6 +55,8 @@
 
 /* Begin PBXFileReference section */
 		08FB7796FE84155DC02AAC07 /* main.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
+		577740C811A6F9E60054BC7C /* TextBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBitmap.h; sourceTree = "<group>"; };
+		577740C911A6F9E60054BC7C /* TextBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBitmap.cpp; sourceTree = "<group>"; };
 		57E33B7F119F6F4E007D48DE /* libfreetype.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; name = libfreetype.a; path = /opt/local/lib/libfreetype.a; sourceTree = "<absolute>"; };
 		57F1BE4511A0DC4E00230F28 /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
 		57F1BE4611A0DC4E00230F28 /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
@@ -97,6 +100,8 @@
 				57FC8ACC11A0AEE2005DED42 /* FontGenerator.cpp */,
 				57F1BE4511A0DC4E00230F28 /* Font.h */,
 				57F1BE4611A0DC4E00230F28 /* Font.cpp */,
+				577740C811A6F9E60054BC7C /* TextBitmap.h */,
+				577740C911A6F9E60054BC7C /* TextBitmap.cpp */,
 			);
 			name = Source;
 			sourceTree = "<group>";
@@ -204,6 +209,7 @@
 				8DD76F650486A84900D96B5E /* main.cpp in Sources */,
 				57FC8ACD11A0AEE2005DED42 /* FontGenerator.cpp in Sources */,
 				57F1BE4711A0DC4E00230F28 /* Font.cpp in Sources */,
+				577740CA11A6F9E60054BC7C /* TextBitmap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
