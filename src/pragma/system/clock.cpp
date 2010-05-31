@@ -7,6 +7,6 @@ namespace pragma
 {
 	TMillisecond GetTimeMilliseconds()
 	{
-		return (clock() * 1000 / CLOCKS_PER_SEC);
+		return ((float)clock() * 1000.f / CLOCKS_PER_SEC);
 	}
 }

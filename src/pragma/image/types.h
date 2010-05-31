@@ -6,4 +6,5 @@ namespace pragma
 {
 	typedef float					ColorIntensity;
 	typedef vector3<ColorIntensity>	RGBPixel;
+	typedef float					AlphaPixel;
 }

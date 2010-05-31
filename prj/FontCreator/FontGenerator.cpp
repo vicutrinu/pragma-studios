@@ -1,7 +1,7 @@
 //#define _DEBUG_GENERATE_TGA_FILES_
 
 #include "FontGenerator.h"
-#include "Font.h"
+#include <pragma/image/Fonts/Font.h>
 #include <pragma/types.h>
 #include <ft2build.h>
 #include FT_FREETYPE_H

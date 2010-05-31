@@ -8,6 +8,14 @@
 
 /* Begin PBXBuildFile section */
 		577740E611A6FDA50054BC7C /* pragma.h in Headers */ = {isa = PBXBuildFile; fileRef = 577740E511A6FDA50054BC7C /* pragma.h */; };
+		57E00A0611ADD3430032AD9D /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0211ADD3430032AD9D /* Font.cpp */; };
+		57E00A0711ADD3430032AD9D /* Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0311ADD3430032AD9D /* Font.h */; };
+		57E00A0811ADD3430032AD9D /* TextBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0411ADD3430032AD9D /* TextBitmap.cpp */; };
+		57E00A0911ADD3430032AD9D /* TextBitmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0511ADD3430032AD9D /* TextBitmap.h */; };
+		57E00A1411ADD3970032AD9D /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0211ADD3430032AD9D /* Font.cpp */; };
+		57E00A1511ADD3980032AD9D /* Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0311ADD3430032AD9D /* Font.h */; };
+		57E00A1611ADD3980032AD9D /* TextBitmap.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0411ADD3430032AD9D /* TextBitmap.cpp */; };
+		57E00A1711ADD3990032AD9D /* TextBitmap.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0511ADD3430032AD9D /* TextBitmap.h */; };
 		57FC887911A060A0005DED42 /* TGA.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC880611A05E16005DED42 /* TGA.cpp */; };
 		57FC887C11A060A9005DED42 /* Image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC880411A05E16005DED42 /* Image.cpp */; };
 		57FC88AF11A061CB005DED42 /* Camera.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57FC87F211A05E16005DED42 /* Camera.cpp */; };
@@ -38,6 +46,10 @@
 
 /* Begin PBXFileReference section */
 		577740E511A6FDA50054BC7C /* pragma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragma.h; path = ../src/pragma/pragma.h; sourceTree = SOURCE_ROOT; };
+		57E00A0211ADD3430032AD9D /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
+		57E00A0311ADD3430032AD9D /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
+		57E00A0411ADD3430032AD9D /* TextBitmap.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextBitmap.cpp; sourceTree = "<group>"; };
+		57E00A0511ADD3430032AD9D /* TextBitmap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TextBitmap.h; sourceTree = "<group>"; };
 		57FC87E711A05E16005DED42 /* debug.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = debug.h; sourceTree = "<group>"; };
 		57FC87E911A05E16005DED42 /* AABB.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AABB.h; sourceTree = "<group>"; };
 		57FC87EA11A05E16005DED42 /* UnitTest.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = UnitTest.cpp; sourceTree = "<group>"; };
@@ -143,6 +155,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		57E00A0111ADD3430032AD9D /* Fonts */ = {
+			isa = PBXGroup;
+			children = (
+				57E00A0211ADD3430032AD9D /* Font.cpp */,
+				57E00A0311ADD3430032AD9D /* Font.h */,
+				57E00A0411ADD3430032AD9D /* TextBitmap.cpp */,
+				57E00A0511ADD3430032AD9D /* TextBitmap.h */,
+			);
+			path = Fonts;
+			sourceTree = "<group>";
+		};
 		57FC87E611A05E16005DED42 /* debug */ = {
 			isa = PBXGroup;
 			children = (
@@ -210,6 +233,7 @@
 		57FC880311A05E16005DED42 /* image */ = {
 			isa = PBXGroup;
 			children = (
+				57E00A0111ADD3430032AD9D /* Fonts */,
 				57FC880411A05E16005DED42 /* Image.cpp */,
 				57FC880511A05E16005DED42 /* Image.h */,
 				57FC880611A05E16005DED42 /* TGA.cpp */,
@@ -276,6 +300,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				57E00A1511ADD3980032AD9D /* Font.h in Headers */,
+				57E00A1711ADD3990032AD9D /* TextBitmap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -284,6 +310,8 @@
 			buildActionMask = 2147483647;
 			files = (
 				577740E611A6FDA50054BC7C /* pragma.h in Headers */,
+				57E00A0711ADD3430032AD9D /* Font.h in Headers */,
+				57E00A0911ADD3430032AD9D /* TextBitmap.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -360,6 +388,8 @@
 				57FC89F711A071C8005DED42 /* system.cpp in Sources */,
 				57FC89F811A071CB005DED42 /* TGA.cpp in Sources */,
 				57FC89F911A071D1005DED42 /* type_traits.cpp in Sources */,
+				57E00A1411ADD3970032AD9D /* Font.cpp in Sources */,
+				57E00A1611ADD3980032AD9D /* TextBitmap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +410,8 @@
 				57FC892E11A06C72005DED42 /* ASE_Parser.cpp in Sources */,
 				57FC892F11A06C74005DED42 /* OBJ_Parser.cpp in Sources */,
 				57FC893011A06C75005DED42 /* Parsers.cpp in Sources */,
+				57E00A0611ADD3430032AD9D /* Font.cpp in Sources */,
+				57E00A0811ADD3430032AD9D /* TextBitmap.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -389,7 +421,9 @@
 		1DEB91EC08733DB70010E9CD /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				ARCHS = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"ARCHS[sdk=iphoneos*]" = "$(ARCHS_UNIVERSAL_IPHONE_OS)";
+				"ARCHS[sdk=iphonesimulator*]" = i386;
 				COPY_PHASE_STRIP = NO;
 				GCC_C_LANGUAGE_STANDARD = c99;
 				GCC_DYNAMIC_NO_PIC = NO;

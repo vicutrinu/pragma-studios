@@ -105,7 +105,7 @@ namespace pragma
 		return true;
 	}
 
-	/*bool ImportFromTGA(Image& aImage, const char* aFilename)
+	bool ImportFromTGA(Image& aImage, const char* aFilename)
 	{
 		FILE* handle = fopen(aFilename, "rb");
 
@@ -115,9 +115,49 @@ namespace pragma
 		impl::TGAHeader lHeader;
 
 		fread(&lHeader, 1, sizeof(lHeader), handle);
+		if(lHeader.imagetype != 2)
+		{
+			fclose(handle);
+			return false;
+		}
+
+		aImage = Image(lHeader.width, lHeader.height);
+		if(lHeader.bits == 32)
+		{
+			Image::iterator lIter = aImage.begin();
+			Image::alpha_iterator lAlphaIter = aImage.alpha_begin();
+			while(lIter != aImage.end() )
+			{
+				vector3<uint8>	lRGB8;
+				uint8			lAlpha;
+				fread(&lRGB8, 1, sizeof(lRGB8), handle);
+				fread(&lAlpha, 1, sizeof(lAlpha), handle);
+				lIter->i[0] = lRGB8.i[2] / 255.f;
+				lIter->i[1] = lRGB8.i[1] / 255.f;
+				lIter->i[2] = lRGB8.i[0] / 255.f;
+				*lAlphaIter = lAlpha / 255.f;
+				++lIter;
+				++lAlphaIter;
+			}
+		}
+		else if(lHeader.bits == 24)
+		{
+			Image::iterator lIter = aImage.begin();
+			Image::alpha_iterator lAlphaIter = aImage.alpha_begin();
+			while(lIter != aImage.end() )
+			{
+				vector3<uint8> lRGB8;
+				fread(&lRGB8, 1, sizeof(lRGB8), handle);
+				lIter->i[0] = lRGB8.i[2] / 255.f;
+				lIter->i[1] = lRGB8.i[1] / 255.f;
+				lIter->i[2] = lRGB8.i[0] / 255.f;
+				*lAlphaIter = 1;
+				++lIter;
+				++lAlphaIter;
+			}
+		}
 
 		fclose(handle);
 		return true;
 	}
-	*/
 }

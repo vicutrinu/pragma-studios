@@ -9,5 +9,18 @@ namespace pragma
 	typedef unsigned char   uchar;
 	typedef unsigned int    uint;
 	typedef unsigned int    size_t;
+
+	template<typename T>
+	struct RectSize
+	{
+			RectSize	() { }
+			RectSize	( int aWidth, int aHeight )
+						: mWidth(aWidth), mHeight(aHeight) { }
+		int	mWidth;
+		int	mHeight;
+	};
+	
+	typedef RectSize<float>	RectSizef;
+	typedef RectSize<int>	RectSizei;
 	
 }
