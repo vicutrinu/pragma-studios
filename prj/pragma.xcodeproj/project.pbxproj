@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5712148812C6E33E00CC7784 /* data.h in Headers */ = {isa = PBXBuildFile; fileRef = 5712148712C6E33E00CC7784 /* data.h */; };
+		5712148912C6E33E00CC7784 /* data.h in Headers */ = {isa = PBXBuildFile; fileRef = 5712148712C6E33E00CC7784 /* data.h */; };
+		5712148B12C6E45000CC7784 /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712148A12C6E45000CC7784 /* data.cpp */; };
+		5712148C12C6E45000CC7784 /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712148A12C6E45000CC7784 /* data.cpp */; };
 		577740E611A6FDA50054BC7C /* pragma.h in Headers */ = {isa = PBXBuildFile; fileRef = 577740E511A6FDA50054BC7C /* pragma.h */; };
 		57E00A0611ADD3430032AD9D /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0211ADD3430032AD9D /* Font.cpp */; };
 		57E00A0711ADD3430032AD9D /* Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0311ADD3430032AD9D /* Font.h */; };
@@ -45,6 +49,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5712148712C6E33E00CC7784 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = data.h; path = ../src/pragma/data/data.h; sourceTree = SOURCE_ROOT; };
+		5712148A12C6E45000CC7784 /* data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = data.cpp; path = ../src/pragma/data/data.cpp; sourceTree = SOURCE_ROOT; };
 		577740E511A6FDA50054BC7C /* pragma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragma.h; path = ../src/pragma/pragma.h; sourceTree = SOURCE_ROOT; };
 		57E00A0211ADD3430032AD9D /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 		57E00A0311ADD3430032AD9D /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
@@ -133,6 +139,7 @@
 		08FB7795FE84155DC02AAC07 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				5712148412C6E30A00CC7784 /* data */,
 				57FC87E611A05E16005DED42 /* debug */,
 				57FC87E811A05E16005DED42 /* geometry */,
 				57FC87F111A05E16005DED42 /* graphics */,
@@ -153,6 +160,15 @@
 				57FC89C111A070C1005DED42 /* libpragma-OSX.a */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		5712148412C6E30A00CC7784 /* data */ = {
+			isa = PBXGroup;
+			children = (
+				5712148712C6E33E00CC7784 /* data.h */,
+				5712148A12C6E45000CC7784 /* data.cpp */,
+			);
+			name = data;
 			sourceTree = "<group>";
 		};
 		57E00A0111ADD3430032AD9D /* Fonts */ = {
@@ -302,6 +318,7 @@
 			files = (
 				57E00A1511ADD3980032AD9D /* Font.h in Headers */,
 				57E00A1711ADD3990032AD9D /* TextBitmap.h in Headers */,
+				5712148912C6E33E00CC7784 /* data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -312,6 +329,7 @@
 				577740E611A6FDA50054BC7C /* pragma.h in Headers */,
 				57E00A0711ADD3430032AD9D /* Font.h in Headers */,
 				57E00A0911ADD3430032AD9D /* TextBitmap.h in Headers */,
+				5712148812C6E33E00CC7784 /* data.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -359,7 +377,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB91EF08733DB70010E9CD /* Build configuration list for PBXProject "pragma" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* pragma */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -390,6 +415,7 @@
 				57FC89F911A071D1005DED42 /* type_traits.cpp in Sources */,
 				57E00A1411ADD3970032AD9D /* Font.cpp in Sources */,
 				57E00A1611ADD3980032AD9D /* TextBitmap.cpp in Sources */,
+				5712148C12C6E45000CC7784 /* data.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -412,6 +438,7 @@
 				57FC893011A06C75005DED42 /* Parsers.cpp in Sources */,
 				57E00A0611ADD3430032AD9D /* Font.cpp in Sources */,
 				57E00A0811ADD3430032AD9D /* TextBitmap.cpp in Sources */,
+				5712148B12C6E45000CC7784 /* data.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

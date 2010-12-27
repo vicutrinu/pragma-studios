@@ -14,7 +14,7 @@
 		572F1C6011A0E35B0097366F /* libpragma-OSX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572F1C5F11A0E3490097366F /* libpragma-OSX.a */; };
 		572F1D2011A0E3EC0097366F /* libpragma-iPhoneOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 572F1C5D11A0E3490097366F /* libpragma-iPhoneOS.a */; };
 		577057D5111F975100824133 /* MainMenu.xib in Resources */ = {isa = PBXBuildFile; fileRef = 57705765111F924800824133 /* MainMenu.xib */; };
-		577057EE111F97E400824133 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 577057ED111F97E400824133 /* main.m */; };
+		577057EE111F97E400824133 /* main.mm in Sources */ = {isa = PBXBuildFile; fileRef = 577057ED111F97E400824133 /* main.mm */; };
 		57705802111F98A400824133 /* Cocoa.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 57705779111F94A200824133 /* Cocoa.framework */; };
 		5770580C111F990200824133 /* TBRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 5770580B111F990200824133 /* TBRAppDelegate.m */; };
 		57705840111F9B3300824133 /* MainView.mm in Sources */ = {isa = PBXBuildFile; fileRef = 5770583F111F9B3300824133 /* MainView.mm */; };
@@ -34,28 +34,28 @@
 			isa = PBXContainerItemProxy;
 			containerPortal = 572F1C5411A0E3490097366F /* pragma.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = D2AAC046055464E500DB518D /* libpragma-iPhoneOS.a */;
+			remoteGlobalIDString = D2AAC046055464E500DB518D;
 			remoteInfo = "pragma-iPhoneOS";
 		};
 		572F1C5E11A0E3490097366F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 572F1C5411A0E3490097366F /* pragma.xcodeproj */;
 			proxyType = 2;
-			remoteGlobalIDString = 57FC89C111A070C1005DED42 /* libpragma-OSX.a */;
+			remoteGlobalIDString = 57FC89C111A070C1005DED42;
 			remoteInfo = "pragma-OSX";
 		};
 		572F1C6611A0E38E0097366F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 572F1C5411A0E3490097366F /* pragma.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = 57FC89C011A070C1005DED42 /* pragma-OSX */;
+			remoteGlobalIDString = 57FC89C011A070C1005DED42;
 			remoteInfo = "pragma-OSX";
 		};
 		572F1D1E11A0E3D10097366F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = 572F1C5411A0E3490097366F /* pragma.xcodeproj */;
 			proxyType = 1;
-			remoteGlobalIDString = D2AAC045055464E500DB518D /* pragma-iPhoneOS */;
+			remoteGlobalIDString = D2AAC045055464E500DB518D;
 			remoteInfo = "pragma-iPhoneOS";
 		};
 /* End PBXContainerItemProxy section */
@@ -81,7 +81,7 @@
 		5770578D111F95CA00824133 /* TileBasedRenderer-list.strings */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.strings; path = "TileBasedRenderer-list.strings"; sourceTree = "<group>"; };
 		577057C7111F96AD00824133 /* TileBasedRenderer.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TileBasedRenderer.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		577057C9111F96AD00824133 /* TileBasedRenderer-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TileBasedRenderer-Info.plist"; sourceTree = "<group>"; };
-		577057ED111F97E400824133 /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		577057ED111F97E400824133 /* main.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = main.mm; sourceTree = "<group>"; };
 		5770580A111F990200824133 /* TBRAppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TBRAppDelegate.h; sourceTree = "<group>"; };
 		5770580B111F990200824133 /* TBRAppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TBRAppDelegate.m; sourceTree = "<group>"; };
 		5770583E111F9B3300824133 /* MainView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MainView.h; sourceTree = "<group>"; };
@@ -262,7 +262,7 @@
 		57E326941138BB6F008721D5 /* OSX */ = {
 			isa = PBXGroup;
 			children = (
-				577057ED111F97E400824133 /* main.m */,
+				577057ED111F97E400824133 /* main.mm */,
 				5770580A111F990200824133 /* TBRAppDelegate.h */,
 				5770580B111F990200824133 /* TBRAppDelegate.m */,
 				5770583E111F9B3300824133 /* MainView.h */,
@@ -325,7 +325,14 @@
 			isa = PBXProject;
 			buildConfigurationList = 1DEB923508733DC60010E9CD /* Build configuration list for PBXProject "TileBasedRenderer" */;
 			compatibilityVersion = "Xcode 3.1";
+			developmentRegion = English;
 			hasScannedForEncodings = 1;
+			knownRegions = (
+				English,
+				Japanese,
+				French,
+				German,
+			);
 			mainGroup = 08FB7794FE84155DC02AAC07 /* TileBasedRenderer */;
 			projectDirPath = "";
 			projectReferences = (
@@ -383,7 +390,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				577057EE111F97E400824133 /* main.m in Sources */,
+				577057EE111F97E400824133 /* main.mm in Sources */,
 				5770580C111F990200824133 /* TBRAppDelegate.m in Sources */,
 				57705840111F9B3300824133 /* MainView.mm in Sources */,
 				570D7DA7112C84D4004C4260 /* Raster.cpp in Sources */,
