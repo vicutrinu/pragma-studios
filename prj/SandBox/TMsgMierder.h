@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Channel.h"
+#include <pragma/utils/Channel.h>
 
 struct TMsgDirectCall
 {
