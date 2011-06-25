@@ -1,4 +1,5 @@
-#pragma once
+#ifndef __HEADER_PRAGMA_UTILS_CHANNEL_H__
+#define __HEADER_PRAGMA_UTILS_CHANNEL_H__
 
 #include <map>
 #include <vector>
@@ -105,3 +106,5 @@ private:
 	Channel* mChannel;
 	const T* mObject;
 };
+
+#endif//__HEADER_PRAGMA_UTILS_CHANNEL_H__
