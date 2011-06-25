@@ -10,7 +10,9 @@
 		5712148812C6E33E00CC7784 /* data.h in Headers */ = {isa = PBXBuildFile; fileRef = 5712148712C6E33E00CC7784 /* data.h */; };
 		5712148912C6E33E00CC7784 /* data.h in Headers */ = {isa = PBXBuildFile; fileRef = 5712148712C6E33E00CC7784 /* data.h */; };
 		5712148B12C6E45000CC7784 /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712148A12C6E45000CC7784 /* data.cpp */; };
-		5712148C12C6E45000CC7784 /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712148A12C6E45000CC7784 /* data.cpp */; };
+		576BCE5112CCA269004CFEA9 /* strings.h in Headers */ = {isa = PBXBuildFile; fileRef = 576BCE4D12CCA269004CFEA9 /* strings.h */; };
+		576BCE5212CCA269004CFEA9 /* strings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 576BCE4E12CCA269004CFEA9 /* strings.cpp */; };
+		576BCEAE12CCA99F004CFEA9 /* data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 5712148A12C6E45000CC7784 /* data.cpp */; };
 		577740E611A6FDA50054BC7C /* pragma.h in Headers */ = {isa = PBXBuildFile; fileRef = 577740E511A6FDA50054BC7C /* pragma.h */; };
 		57E00A0611ADD3430032AD9D /* Font.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 57E00A0211ADD3430032AD9D /* Font.cpp */; };
 		57E00A0711ADD3430032AD9D /* Font.h in Headers */ = {isa = PBXBuildFile; fileRef = 57E00A0311ADD3430032AD9D /* Font.h */; };
@@ -51,6 +53,8 @@
 /* Begin PBXFileReference section */
 		5712148712C6E33E00CC7784 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = data.h; path = ../src/pragma/data/data.h; sourceTree = SOURCE_ROOT; };
 		5712148A12C6E45000CC7784 /* data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = data.cpp; path = ../src/pragma/data/data.cpp; sourceTree = SOURCE_ROOT; };
+		576BCE4D12CCA269004CFEA9 /* strings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = strings.h; path = ../src/pragma/data/strings.h; sourceTree = SOURCE_ROOT; };
+		576BCE4E12CCA269004CFEA9 /* strings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = strings.cpp; path = ../src/pragma/data/strings.cpp; sourceTree = SOURCE_ROOT; };
 		577740E511A6FDA50054BC7C /* pragma.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = pragma.h; path = ../src/pragma/pragma.h; sourceTree = SOURCE_ROOT; };
 		57E00A0211ADD3430032AD9D /* Font.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Font.cpp; sourceTree = "<group>"; };
 		57E00A0311ADD3430032AD9D /* Font.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Font.h; sourceTree = "<group>"; };
@@ -167,6 +171,8 @@
 			children = (
 				5712148712C6E33E00CC7784 /* data.h */,
 				5712148A12C6E45000CC7784 /* data.cpp */,
+				576BCE4D12CCA269004CFEA9 /* strings.h */,
+				576BCE4E12CCA269004CFEA9 /* strings.cpp */,
 			);
 			name = data;
 			sourceTree = "<group>";
@@ -330,6 +336,7 @@
 				57E00A0711ADD3430032AD9D /* Font.h in Headers */,
 				57E00A0911ADD3430032AD9D /* TextBitmap.h in Headers */,
 				5712148812C6E33E00CC7784 /* data.h in Headers */,
+				576BCE5112CCA269004CFEA9 /* strings.h in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -415,7 +422,7 @@
 				57FC89F911A071D1005DED42 /* type_traits.cpp in Sources */,
 				57E00A1411ADD3970032AD9D /* Font.cpp in Sources */,
 				57E00A1611ADD3980032AD9D /* TextBitmap.cpp in Sources */,
-				5712148C12C6E45000CC7784 /* data.cpp in Sources */,
+				576BCEAE12CCA99F004CFEA9 /* data.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,6 +446,7 @@
 				57E00A0611ADD3430032AD9D /* Font.cpp in Sources */,
 				57E00A0811ADD3430032AD9D /* TextBitmap.cpp in Sources */,
 				5712148B12C6E45000CC7784 /* data.cpp in Sources */,
+				576BCE5212CCA269004CFEA9 /* strings.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -461,7 +469,7 @@
 				ONLY_ACTIVE_ARCH = NO;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "pragma-iPhoneOS";
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Debug;
 		};
@@ -475,7 +483,7 @@
 				INSTALL_PATH = /usr/local/lib;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_NAME = "pragma-iPhoneOS";
-				SDKROOT = iphoneos3.0;
+				SDKROOT = iphoneos4.1;
 			};
 			name = Release;
 		};
