@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace pragma
 {
 
@@ -22,5 +24,6 @@ namespace pragma
 	
 	typedef RectSize<float>	RectSizef;
 	typedef RectSize<int>	RectSizei;
+	typedef std::string		string;
 	
 }

@@ -7,27 +7,13 @@
  *
  */
 
+#include <pragma/types.h>
 #include <vector>
 
 namespace pragma
 {
 	
 	bool PropertyList_UnitTest();
-	
-	class Key
-	{
-	public:
-		Key(const char* mName);
-		Key(const Key& aKey);
-		
-		bool IsOk() const { return mName != 0; }
-		
-		const char* Get() const { return mName; }
-	private:
-		void Init(const char* mName);
-		
-		char* mName; // Cadena de caracteres UTF8 acabada en 0
-	};
 	
 	class Value
 	{
@@ -82,11 +68,18 @@ namespace pragma
 	class PropertyList
 	{
 	public:
-		void Set(const Key& aKey, const Value& aValue);
+		void Set(const string& aKey, const Value& aValue);
+		Value Get(const string& aKey, const Value& aDefault);
+		
+		void SetString(const string& aKey, const string& aString);
+		void SetFloat(const string& aKey, const float aFloat);
+		
+		string GetString(const string& aKey, const string& aDefault = string());
+		float  GetFloat(const string& aKey, float aDefault = 0);
 		
 		void Log();
 	private:
-		std::vector< std::pair<Key, Value> > mList;
+		std::vector< std::pair<string, Value> > mList;
 	};
 	
 }

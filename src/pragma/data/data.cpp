@@ -7,7 +7,7 @@
  *
  */
 
-
+#include <pragma/types.h>
 #include "data.h"
 
 #include <stdlib.h>
@@ -45,42 +45,6 @@ namespace pragma
 		TUnion lData;
 		lData.mVoid = aPointer;
 		return lData.mFloat;
-	}
-
-	//------------------------------------------------------------------------------------------------------------------
-	// Init
-	//------------------------------------------------------------------------------------------------------------------
-	void Key::Init(const char* aName)
-	{
-		if(mName)
-		{
-			free((void*)mName);
-			mName = 0;
-		}
-		if(aName)
-		{
-			mName = (char*)malloc(strlen(aName) + 1);
-			strcpy(mName, aName);
-		}
-	}
-
-	//------------------------------------------------------------------------------------------------------------------
-	// Key
-	//------------------------------------------------------------------------------------------------------------------
-	Key::Key(const char* aName)
-	: mName(0)
-	{
-		Init(aName);
-	}
-
-	//------------------------------------------------------------------------------------------------------------------
-	// Key
-	//------------------------------------------------------------------------------------------------------------------
-	Key::Key(const Key& aKey)
-	: mName(0)
-	{
-		if(aKey.IsOk())
-			Init(aKey.mName);
 	}
 
 	//------------------------------------------------------------------------------------------------------------------
@@ -459,36 +423,86 @@ namespace pragma
 		}
 
 		PropertyList lList;
-		lList.Set(Key("HolaArray"), lVal);
+		lList.Set(string("HolaArray"), lVal);
 		
 		lVal.SetAsArray(false);
 		const char* lStr;
 		lVal.Get(lStr);
 		printf("%s\n", lStr);
-		lList.Set(Key("HolaStr"), lVal);
+		lList.Set(string("HolaStr"), lVal);
 
 		lVal.Clear();
 		lVal.Set(1234);
 		float lFloat;
 		lVal.Get(lFloat);
 		printf("%f\n", lFloat);
-		lList.Set(Key("HolaFloat"), lVal);
+		lList.Set(string("HolaFloat"), lVal);
 
 		lList.Log();
+		
+		printf("%f\n", lList.GetFloat(string("HolaFloat"), -1));
+		printf("%s\n", lList.GetString(string("HolaStr"), string("caca")).c_str());
 		return true;
 	}
 	
-	void PropertyList::Set(const Key& aKey, const Value& aValue)
+	void PropertyList::Set(const string& aKey, const Value& aValue)
 	{
-		std::pair<Key, Value> lPair(aKey, aValue);
+		std::pair<string, Value> lPair(aKey, aValue);
 		mList.push_back(lPair);
 	}
+	
+	Value PropertyList::Get(const string& aKey, const Value& aDefault)
+	{
+		for(size_t i = 0; i < mList.size(); ++i)
+		{
+			if(mList[i].first == aKey)
+			{
+				return mList[i].second;
+			}
+		}
+		return aDefault;
+	}
+	
+	void PropertyList::SetString(const string& aKey, const string& aString)
+	{
+		Value lDefault;
+		lDefault.Set(aString.c_str());
+		Set(aKey, lDefault);
+	}
+	
+	void PropertyList::SetFloat(const string& aKey, const float aFloat)
+	{
+		Value lDefault;
+		lDefault.Set(aFloat);
+		Set(aKey, lDefault);		
+	}
+	
+	string PropertyList::GetString(const string& aKey, const string& aDefault /*= string::Empty*/)
+	{
+		Value lDefault;
+		lDefault.Set(aDefault.c_str());
+		Value lRetVal = Get(aKey, lDefault);
+		const char* lStr;
+		lRetVal.Get(lStr);
+		return(string(lStr));
+	}
+	
+	float PropertyList::GetFloat(const string& aKey, float aDefault /*= 0*/)
+	{
+		Value lDefault;
+		lDefault.Set(aDefault);
+		Value lRetVal = Get(aKey, lDefault);
+		float lFloat;
+		lRetVal.Get(lFloat);
+		return lFloat;
+	}
+	
 	
 	void PropertyList::Log()
 	{
 		for(size_t i = 0; i < mList.size(); ++i)
 		{
-			printf("Key: %s\n", mList[i].first.Get());
+			printf("Key: %s\n", mList[i].first.c_str());
 			printf("Value:");
 			if(mList[i].second.IsArray())
 			{
