@@ -85,6 +85,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\..\src\pragma\utils\Channel.h" />
+    <ClInclude Include="..\..\..\..\src\pragma\utils\NotifyOnDestroy.h" />
     <ClInclude Include="..\..\ClassC.h" />
     <ClInclude Include="..\..\TMsgMierder.h" />
   </ItemGroup>
