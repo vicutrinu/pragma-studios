@@ -7,19 +7,22 @@
 #include "Array.h"
 #include "Dictionary.h"
 
-typedef const char* str;
+//- Template Instantiation -//
+template<> void                 AnyData::Set<float>         (const float& aVal);
+template<> const float&         AnyData::Get<float>         () const;
+template<> void                 AnyData::Set<AnyData::str>  (const str& aVal);
+template<> const                AnyData::str& AnyData::Get<AnyData::str>() const;
+template<> void                 AnyData::Set<bool>          (const bool& aVal);
+template<> const bool&          AnyData::Get<bool>          () const;
+template<> void                 AnyData::Set<Array>         (const Array& aVal);
+template<> const Array&         AnyData::Get<Array>         () const;
+template<> void                 AnyData::Set<Dictionary>    (const Dictionary& aVal);
+template<> const Dictionary&    AnyData::Get<Dictionary>    () const;
 
-template<> void AnyData::Set<float>(const float& aVal);
-template<> const float& AnyData::Get<float>() const;
-template<> void AnyData::Set<str>(const str& aVal);
-template<> const str& AnyData::Get<str>() const;
-template<> void AnyData::Set<bool>(const bool& aVal);
-template<> const bool& AnyData::Get<bool>() const;
-template<> void AnyData::Set<Array>(const Array& aVal);
-template<> const Array& AnyData::Get<Array>() const;
-template<> void AnyData::Set<Dictionary>(const Dictionary& aVal);
-template<> const Dictionary& AnyData::Get<Dictionary>() const;
 
+//-------------------------------------------------------------------------
+//  Constructor
+//-------------------------------------------------------------------------
 AnyData::AnyData(const AnyData& aData)
 {
 	mType = aData.mType;
@@ -33,6 +36,10 @@ AnyData::AnyData(const AnyData& aData)
 	}
 }
 
+
+//-------------------------------------------------------------------------
+//  Destructor
+//-------------------------------------------------------------------------
 AnyData::~AnyData()
 {
 	switch(mType)
@@ -44,6 +51,10 @@ AnyData::~AnyData()
 	}
 }
 
+
+//-------------------------------------------------------------------------
+//  Set
+//-------------------------------------------------------------------------
 template<>
 void AnyData::Set<float>(const float& aVal)
 {
@@ -51,14 +62,22 @@ void AnyData::Set<float>(const float& aVal)
 	mReal = aVal;
 }
 
+
+//-------------------------------------------------------------------------
+//  Get
+//-------------------------------------------------------------------------
 template<>
 const float& AnyData::Get<float>() const
 {
 	return mReal;
 }
 
+
+//-------------------------------------------------------------------------
+//  Set
+//-------------------------------------------------------------------------
 template<>
-void AnyData::Set<str>(const str& aVal)
+void AnyData::Set<AnyData::str>(const str& aVal)
 {
 	mType = eString;
 	size_t lLen = strlen(aVal);
@@ -66,12 +85,20 @@ void AnyData::Set<str>(const str& aVal)
 	strcpy(mString, aVal);
 }
 
+
+//-------------------------------------------------------------------------
+//  Get
+//-------------------------------------------------------------------------
 template<>
-const str& AnyData::Get<str>() const
+const AnyData::str& AnyData::Get<AnyData::str>() const
 {
 	return (str&)mString;
 }
 
+
+//-------------------------------------------------------------------------
+//  Set
+//-------------------------------------------------------------------------
 template<>
 void AnyData::Set<bool>(const bool& aVal)
 {
@@ -79,12 +106,20 @@ void AnyData::Set<bool>(const bool& aVal)
 	mBool = aVal;
 }
 
+
+//-------------------------------------------------------------------------
+//  Get
+//-------------------------------------------------------------------------
 template<>
 const bool& AnyData::Get<bool>() const
 {
 	return mBool;
 }
 
+
+//-------------------------------------------------------------------------
+//  Set
+//-------------------------------------------------------------------------
 template<>
 void AnyData::Set<Array>(const Array& aVal)
 {
@@ -92,12 +127,20 @@ void AnyData::Set<Array>(const Array& aVal)
 	mArray = new Array(aVal);
 }
 
+
+//-------------------------------------------------------------------------
+//  Get
+//-------------------------------------------------------------------------
 template<>
 const Array& AnyData::Get<Array>() const
 {
 	return *mArray;
 }
 
+
+//-------------------------------------------------------------------------
+//  Set
+//-------------------------------------------------------------------------
 template<>
 void AnyData::Set<Dictionary>(const Dictionary& aVal)
 {
@@ -105,33 +148,12 @@ void AnyData::Set<Dictionary>(const Dictionary& aVal)
 	mDict = new Dictionary(aVal);
 }
 
+//-------------------------------------------------------------------------
+//  Get
+//-------------------------------------------------------------------------
 template<>
 const Dictionary& AnyData::Get<Dictionary>() const
 {
 	return *mDict;
 }
 
-//----------------------------------------------------------------------------------------------------------------------
-//	ToStr
-//----------------------------------------------------------------------------------------------------------------------
-void ToStr(char* aDest, int aLength, const AnyData& aData)
-{
-	switch(aData.GetType())
-	{
-	case AnyData::eString:
-		snprintf(aDest, aLength, "%s", aData.Get<str>());
-		break;
-	case AnyData::eReal:
-		snprintf(aDest, aLength, "%f", aData.Get<float>());
-		break;
-	case AnyData::eBool:
-		snprintf(aDest, aLength, "%s", aData.Get<bool>()? "true" : "false" );
-		break;
-	case AnyData::eArray:
-		snprintf(aDest, aLength, "<array>");
-		break;
-	case AnyData::eDict:
-		snprintf(aDest, aLength, "<dict>");
-		break;
-	}
-}

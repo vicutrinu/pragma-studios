@@ -10,6 +10,8 @@ class Dictionary;
 
 struct AnyData
 {
+    typedef const char* str;
+
 	AnyData		() { }
 	AnyData		(const AnyData& aData);
 	~AnyData	();
