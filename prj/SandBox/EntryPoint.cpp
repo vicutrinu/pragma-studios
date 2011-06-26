@@ -6,6 +6,7 @@
 //- Headers -
 #include <stdio.h>
 #include <pragma/utils/Channel.h>
+#include <pragma/utils/NotifyOnDestroy.h>
 #include "TMsgMierder.h"
 #include "ClassC.h"
 

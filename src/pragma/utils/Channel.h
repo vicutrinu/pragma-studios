@@ -88,23 +88,4 @@ public:
 
 };
 
-template <typename T>
-class NotifyOnDestroy
-{
-public:
-	NotifyOnDestroy( Channel* aChannel, const T* aObject)
-	: mChannel(aChannel)
-	, mObject(aObject)
-	{ }
-	
-	~NotifyOnDestroy()
-	{
-		mChannel->RemoveCallbacks(mObject);
-	}
-	
-private:
-	Channel* mChannel;
-	const T* mObject;
-};
-
 #endif//__HEADER_PRAGMA_UTILS_CHANNEL_H__
