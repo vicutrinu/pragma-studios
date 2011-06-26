@@ -1,7 +1,8 @@
 CC=g++
 CC_FLAGS=-G -I"../" -I"../.."
 SRC=../
-TINY_XML=../tinyxml/
+TINY_XML=../../../3rdParty/tinyxml/
+3RD_PARTY_INCLUDE=-I "../../../3rdParty/"
 
 a.out: tinystr.o tinyxml.o tinyxmlerror.o tinyxmlparser.o plist.o Array.o AnyData.o Dictionary.o main.o utils.o
 	$(CC) tinystr.o tinyxml.o tinyxmlerror.o tinyxmlparser.o plist.o Array.o AnyData.o Dictionary.o main.o utils.o -G -o a.out
@@ -19,16 +20,16 @@ tinyxmlparser.o: $(TINY_XML)tinyxmlparser.cpp
 	$(CC) -c $(CC_FLAGS) $(TINY_XML)/tinyxmlparser.cpp -o tinyxmlparser.o
 
 plist.o: $(SRC)plist.cpp
-	$(CC) -c $(CC_FLAGS) $(SRC)plist.cpp -o plist.o
+	$(CC) -c $(CC_FLAGS) $(3RD_PARTY_INCLUDE) $(SRC)plist.cpp -o plist.o
 
 Array.o:	$(SRC)Array.cpp
-	$(CC) -c $(CC_FLAGS) $(SRC)Array.cpp -o Array.o
+		$(CC) -c $(CC_FLAGS) $(3RD_PARTY_INCLUDE) $(SRC)Array.cpp -o Array.o
 
 AnyData.o:	$(SRC)AnyData.cpp
 	$(CC) -c $(CC_FLAGS) $(SRC)AnyData.cpp -o AnyData.o
 
 Dictionary.o:	$(SRC)Dictionary.cpp
-	$(CC) -c $(CC_FLAGS) $(SRC)Dictionary.cpp -o Dictionary.o
+	$(CC) -c $(CC_FLAGS) $(3RD_PARTY_INCLUDE) $(SRC)Dictionary.cpp -o Dictionary.o
 
 main.o:	$(SRC)main.cpp
 	$(CC) -c $(CC_FLAGS) $(SRC)main.cpp -o main.o
