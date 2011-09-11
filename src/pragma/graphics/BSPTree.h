@@ -1,14 +1,29 @@
-//
-//  Header.h
-//  pragma
-//
-//  Created by Victor Jose Soria on 07/08/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+/**
+ *  @file   BSPTree.h
+ *  @author Victor Soria
+ **/
 
-#ifndef pragma_Header_h
-#define pragma_Header_h
+#ifndef _PRAGMA_SRC_GRAPHICS_BSPTREE_H_
+#define _PRAGMA_SRC_GRAPHICS_BSPTREE_H_
 
+namespace pragma
+{
+    
+    class Mesh;
+    
+    class BSPTree
+    {
+    public:
+        bool    Init(const Mesh& aMesh);
+    void    End();
+    
+    bool    IsOk() const;
 
+    private:
+        struct Data;
+        Data*   mData;
+    };
 
-#endif
+} // Closing namespace pragma
+    
+#endif//_PRAGMA_SRC_GRAPHICS_BSPTREE_H_
