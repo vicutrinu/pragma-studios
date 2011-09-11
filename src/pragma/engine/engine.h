@@ -1,14 +1,24 @@
-//
-//  engine.h
-//  pragma
-//
-//  Created by Victor Jose Soria on 11/09/11.
-//  Copyright 2011 __MyCompanyName__. All rights reserved.
-//
+/**
+ *  @author Victor Soria
+ *  @brief  Engine singleton
+ */
 
-#ifndef pragma_engine_h
-#define pragma_engine_h
+#ifndef _PRAGMA_ENGINE_H_
+#define _PRAGMA_ENGINE_H_
+
+namespace pragma
+{
+    
+    class Engine
+    {
+    public:
+        static Engine* GetInstance();
+        
+        bool Init();
+        void Shutdown();
+    };
+    
+}
 
 
-
-#endif
+#endif//_PRAGMA_ENGINE_H_

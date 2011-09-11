@@ -45,9 +45,9 @@ namespace pragma
 				std::string lName = lTokens[lCount+1];
 				Material lMaterial(lName.c_str(), Material::eSolid);
 				Color lDiffuse;
-				lDiffuse.i[0] = Parse<Real>(lTokens[lCount+21]);
-				lDiffuse.i[1] = Parse<Real>(lTokens[lCount+22]);
-				lDiffuse.i[2] = Parse<Real>(lTokens[lCount+23]);
+				lDiffuse.i[0] = 1;//Parse<Real>(lTokens[lCount+21]);
+				lDiffuse.i[1] = 1;//Parse<Real>(lTokens[lCount+22]);
+				lDiffuse.i[2] = 1;//Parse<Real>(lTokens[lCount+23]);
 				lMaterial.SetDiffuseColor(lDiffuse);
 				aMaterialLibrary.AddMaterial(lMaterial);
 				lCount+= 31;
@@ -111,7 +111,7 @@ namespace pragma
 		aMesh.SetVertexs(&lPositions[0], lPositions.size());
 
 		//-- Parse vertex normals ----------------------------------------------
-		std::vector<Vector> lNormals;
+		/*std::vector<Vector> lNormals;
 		while(lTokens[lPos] != "vn")
 			lPos++;
 		while(lTokens[lPos] == "vn")
@@ -123,7 +123,7 @@ namespace pragma
 			lNormal.z = Parse<Real>(lTokens[lPos+3]);
 			lPos+= 4;
 		}
-		aMesh.SetNormals(&lNormals[0], lNormals.size());
+		aMesh.SetNormals(&lNormals[0], lNormals.size());*/
 
 		while(lTokens[lPos] != "f")
 		{
